@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Capacitaciones - Panel de Administración</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <h2 class="sidebar-title">Capacitaciones</h2>
+                </div>
+                <div class="sidebar-user">
+                    <div class="sidebar-user-name" id="userName">Administrador</div>
+                    <div class="sidebar-user-role">Sistema de Gestión</div>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="#dashboard" class="sidebar-nav-link active" data-section="dashboard">
+                            <svg class="sidebar-nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#colaboradores" class="sidebar-nav-link" data-section="colaboradores">
+                            <svg class="sidebar-nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                            <span>Colaboradores</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#cursos" class="sidebar-nav-link" data-section="cursos">
+                            <svg class="sidebar-nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                            </svg>
+                            <span>Cursos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#historial" class="sidebar-nav-link" data-section="historial">
+                            <svg class="sidebar-nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+                            </svg>
+                            <span>Historial</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#departamentos" class="sidebar-nav-link" data-section="departamentos">
+                            <svg class="sidebar-nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                            </svg>
+                            <span>Departamentos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="#puestos" class="sidebar-nav-link" data-section="puestos">
+                            <svg class="sidebar-nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                            </svg>
+                            <span>Puestos</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item" style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <a href="#" class="sidebar-nav-link" id="logoutButton">
+                            <svg class="sidebar-nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                            </svg>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addNewButton">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                        Agregar Nuevo
+                    </button>
+                </div>
+            </header>
+
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="content-section">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="totalColaboradores">0</div>
+                                <div class="stat-label">Colaboradores</div>
+                            </div>
+                            <div class="stat-icon stat-icon-blue">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="totalDepartamentos">0</div>
+                                <div class="stat-label">Departamentos</div>
+                            </div>
+                            <div class="stat-icon stat-icon-purple">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="totalCursos">0</div>
+                                <div class="stat-label">Cursos Disponibles</div>
+                            </div>
+                            <div class="stat-icon stat-icon-green">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="totalActividades">0</div>
+                                <div class="stat-label">Actividades Recientes</div>
+                            </div>
+                            <div class="stat-icon stat-icon-orange">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividades Recientes -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Actividades Recientes</h3>
+                        <button class="btn btn-outline" id="refreshActivity">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                            </svg>
+                            Actualizar
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table id="actividadesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Colaborador</th>
+                                        <th>Curso</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Final</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="actividadesTableBody">
+                                    <tr>
+                                        <td colspan="5" class="table-loading">
+                                            <div class="spinner-large"></div>
+                                            <p>Cargando actividades...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Colaboradores Section -->
+            <section id="colaboradoresSection" class="content-section hidden">
+                <div class="filters-card">
+                    <div class="filter-group">
+                        <label for="filterDepartamentoColab">Filtrar por Departamento:</label>
+                        <select id="filterDepartamentoColab" class="form-select">
+                            <option value="">Todos los departamentos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Gestión de Colaboradores</h3>
+                        <button class="btn btn-primary" id="addColaboradorButton">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                            Nuevo Colaborador
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Asignación</th>
+                                        <th>Departamento</th>
+                                        <th>Puesto</th>
+                                        <th>Supervisor Activo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="colaboradoresTableBody">
+                                    <tr>
+                                        <td colspan="6" class="table-loading">
+                                            <div class="spinner-large"></div>
+                                            <p>Cargando colaboradores...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cursos Section -->
+            <section id="cursosSection" class="content-section hidden">
+                <div class="filters-card">
+                    <div class="filter-group">
+                        <label for="filterPuestoCurso">Filtrar por Puesto:</label>
+                        <select id="filterPuestoCurso" class="form-select">
+                            <option value="">Todos los puestos</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterClasificacion">Clasificación:</label>
+                        <select id="filterClasificacion" class="form-select">
+                            <option value="">Todas</option>
+                            <option value="Necesario">Necesario</option>
+                            <option value="Complementa">Complementa</option>
+                            <option value="Aporta">Aporta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Catálogo de Cursos por Puesto</h3>
+                        <button class="btn btn-primary" id="addCursoButton">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                            Nuevo Curso
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Curso</th>
+                                        <th>Puesto</th>
+                                        <th>Clasificación</th>
+                                        <th>Vigencia (años)</th>
+                                        <th>Grupo</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cursosTableBody">
+                                    <tr>
+                                        <td colspan="7" class="table-loading">
+                                            <div class="spinner-large"></div>
+                                            <p>Cargando cursos...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Historial Section -->
+            <section id="historialSection" class="content-section hidden">
+                <div class="filters-card">
+                    <div class="filter-group">
+                        <label for="filterDepartamentoHist">Departamento:</label>
+                        <select id="filterDepartamentoHist" class="form-select">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterPuestoHist">Puesto:</label>
+                        <select id="filterPuestoHist" class="form-select">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterEstadoHist">Estado:</label>
+                        <select id="filterEstadoHist" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="Completado">Completado</option>
+                            <option value="En Proceso">En Proceso</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Historial de Capacitaciones</h3>
+                        <button class="btn btn-outline" id="exportHistorialButton">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/>
+                            </svg>
+                            Exportar
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Colaborador</th>
+                                        <th>Departamento</th>
+                                        <th>Puesto</th>
+                                        <th>Curso</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Final</th>
+                                        <th>Duración (hrs)</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historialTableBody">
+                                    <tr>
+                                        <td colspan="8" class="table-loading">
+                                            <div class="spinner-large"></div>
+                                            <p>Cargando historial...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Departamentos Section -->
+            <section id="departamentosSection" class="content-section hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Gestión de Departamentos</h3>
+                        <button class="btn btn-primary" id="addDepartamentoButton">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                            Nuevo Departamento
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre del Departamento</th>
+                                        <th>Total Colaboradores</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="departamentosTableBody">
+                                    <tr>
+                                        <td colspan="4" class="table-loading">
+                                            <div class="spinner-large"></div>
+                                            <p>Cargando departamentos...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Puestos Section -->
+            <section id="puestosSection" class="content-section hidden">
+                <div class="filters-card">
+                    <div class="filter-group">
+                        <label for="filterDepartamentoPuesto">Filtrar por Departamento:</label>
+                        <select id="filterDepartamentoPuesto" class="form-select">
+                            <option value="">Todos los departamentos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Gestión de Puestos</h3>
+                        <button class="btn btn-primary" id="addPuestoButton">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                            Nuevo Puesto
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre del Puesto</th>
+                                        <th>Departamento</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="puestosTableBody">
+                                    <tr>
+                                        <td colspan="4" class="table-loading">
+                                            <div class="spinner-large"></div>
+                                            <p>Cargando puestos...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="mainModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Modal</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="btn btn-outline" id="cancelModal">Cancelar</button>
+                <button class="btn btn-primary" id="confirmModal">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+</body>
+</html>
