@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departamentos - Sistema de Capacitaciones</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:wght@700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-page="departamentos">
+    <div class="dashboard">
+        <div id="navigation"></div>
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="page-title">Departamentos</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addDepartamentoButton">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                        Nuevo Departamento
+                    </button>
+                </div>
+            </header>
+
+            <div id="alertContainer"></div>
+
+            <section class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lista de Departamentos</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th class="actions-column">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="departamentosTableBody">
+                                    <tr>
+                                        <td colspan="4" class="table-loading">
+                                            <div class="spinner-large"></div>
+                                            <p>Cargando departamentos...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="paginationDepartamentos"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="components/nav.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            if (typeof loadDepartamentos === 'function') {
+                loadDepartamentos();
+            }
+        });
+    </script>
+</body>
+
+</html>
