@@ -1,6 +1,7 @@
 /* ============================================
    LOGIN PAGE - SISTEMA DE CAPACITACIONES
    Formulario centrado, totalmente responsive
+   VERSIÓN: Patrón de puntos oscuro
    ============================================ */
 
 :root {
@@ -20,8 +21,9 @@
     --font-heading: 'Fraunces', Georgia, serif;
     --font-body:    'Archivo', sans-serif;
 
-    --shadow-card: 0 20px 60px -10px rgba(15, 23, 42, 0.15),
-                   0 4px 16px -4px rgba(15, 23, 42, 0.08);
+    --shadow-card: 0 20px 60px -10px rgba(15, 23, 42, 0.35),
+                   0 8px 28px -4px rgba(15, 23, 42, 0.25),
+                   0 0 120px rgba(245, 158, 11, 0.18);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -39,7 +41,7 @@ html {
 
 body {
     font-family: var(--font-body);
-    background: var(--bg);
+    background: #1e293b;
     color: var(--text-dark);
     min-height: 100vh;
     display: flex;
@@ -48,6 +50,17 @@ body {
     padding: 1.5rem;
     position: relative;
     overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 2px 2px, rgba(245, 158, 11, 0.15) 1px, transparent 0);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* === FONDO DECORATIVO === */
@@ -62,31 +75,31 @@ body {
 .bg-shape {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.06;
+    filter: blur(140px);
+    opacity: 0.18;
 }
 
 .shape-1 {
-    width: 600px;
-    height: 600px;
+    width: 800px;
+    height: 800px;
     background: var(--accent);
-    top: -200px;
-    left: -150px;
+    top: -300px;
+    left: -250px;
     animation: drift1 20s ease-in-out infinite;
 }
 
 .shape-2 {
-    width: 500px;
-    height: 500px;
+    width: 650px;
+    height: 650px;
     background: #3b82f6;
-    bottom: -150px;
-    right: -100px;
+    bottom: -250px;
+    right: -200px;
     animation: drift2 24s ease-in-out infinite;
 }
 
 .shape-3 {
-    width: 350px;
-    height: 350px;
+    width: 500px;
+    height: 500px;
     background: #10b981;
     top: 50%;
     left: 50%;
@@ -98,9 +111,9 @@ body {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
-    background-size: 44px 44px;
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
 }
 
 @keyframes drift1 {
@@ -143,7 +156,7 @@ body {
     border-radius: 1.5rem;
     padding: 3rem 2.75rem;
     box-shadow: var(--shadow-card);
-    border: 1px solid rgba(226, 232, 240, 0.8);
+    border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
 /* === CABECERA === */
