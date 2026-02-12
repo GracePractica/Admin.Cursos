@@ -481,7 +481,7 @@ async function loadConsolidarCursos() {
     }
 }
 
-function setupConsolidarEventListeners() {
+async function setupConsolidarEventListeners() {
     // Select all checkbox
     document.getElementById('selectAllCursos')?.addEventListener('change', (e) => {
         document.querySelectorAll('.curso-checkbox').forEach(cb => {
@@ -496,14 +496,11 @@ function setupConsolidarEventListeners() {
     });
 
     // Search functionality
-    document.getElementById('searchCursos')?.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        document.querySelectorAll('#consolidarTableBody tr').forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-    });
-
+    const searchTerm = document.getElementById('searchCursos').value.toLowerCase();
+    const { data } = await supabase
+        .from('cursos')
+        .select('*')
+        .ilike('nombre', `%${searchTerm}%`);
     // Merge button
     document.getElementById('mergeSelectedCursos')?.addEventListener('click', openMergeCursosModal);
 }
