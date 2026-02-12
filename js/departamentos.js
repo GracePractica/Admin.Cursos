@@ -27,7 +27,7 @@ async function loadDepartamentos(page = 1) {
         let query = supabaseClient.from('departamento').select('*');
         const searchTerm = document.getElementById('searchDepartamento')?.value.toLowerCase();
 
-        const { data: allDepartamentos, error } = await query.order('nombre_dep');
+        const { data: allDepartamentos, error } = await query.order('id_dep');
 
         if (error) throw error;
 
@@ -35,13 +35,12 @@ async function loadDepartamentos(page = 1) {
 
         if (searchTerm) {
             departamentos = departamentos.filter(d =>
-                (d.nombre_dep?.toLowerCase().includes(searchTerm)) ||
                 (d.id_dep?.toString().toLowerCase().includes(searchTerm))
             );
         }
 
         if (!departamentos || departamentos.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="text-center">No hay departamentos registrados</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="2" class="text-center">No hay departamentos registrados</td></tr>';
             renderPaginationControls(0, 1, PAGINATION.departamentos.limit, 'paginationDepartamentos', 'loadDepartamentos');
             return;
         }
@@ -54,13 +53,9 @@ async function loadDepartamentos(page = 1) {
         tbody.innerHTML = paginatedDepartamentos.map(dep => `
             <tr>
                 <td><strong>${dep.id_dep}</strong></td>
-                <td>${dep.nombre_dep}</td>
                 <td>
-                    <button class="btn btn-small btn-outline" onclick="editDepartamento(${dep.id_dep})">
+                    <button class="btn btn-small btn-outline" onclick="editDepartamento('${dep.id_dep}')">
                         Editar
-                    </button>
-                    <button class="btn btn-small btn-danger" onclick="deleteDepartamento(${dep.id_dep})">
-                        Eliminar
                     </button>
                 </td>
             </tr>
@@ -83,8 +78,8 @@ async function openAddDepartamentoModal() {
     modalBody.innerHTML = `
         <form id="addDepartamentoForm">
             <div class="form-group">
-                <label class="form-label">Nombre del Departamento *</label>
-                <input type="text" class="form-input" name="nombre_dep" required>
+                <label class="form-label">ID (SIGLAS) *</label>
+                <input type="text" class="form-input" name="id_dep" required>
             </div>
         </form>
     `;
@@ -101,7 +96,7 @@ async function saveDepartamento() {
     const formData = new FormData(form);
 
     const departamento = {
-        nombre_dep: formData.get('nombre_dep')
+        id_dep: formData.get('id_dep')
     };
 
     try {
@@ -137,11 +132,11 @@ async function editDepartamento(departamentoId) {
 
         modalBody.innerHTML = `
             <form id="editDepartamentoForm">
-                <input type="hidden" name="id_dep" value="${departamento.id_dep}">
+                <input type="hidden" name="original_id_dep" value="${departamento.id_dep}">
                 
                 <div class="form-group">
-                    <label class="form-label">Nombre del Departamento *</label>
-                    <input type="text" class="form-input" name="nombre_dep" value="${departamento.nombre_dep || ''}" required>
+                    <label class="form-label">ID (SIGLAS) *</label>
+                    <input type="text" class="form-input" name="id_dep" value="${departamento.id_dep || ''}" required>
                 </div>
             </form>
         `;
@@ -162,16 +157,24 @@ async function updateDepartamento() {
     const form = document.getElementById('editDepartamentoForm');
     const formData = new FormData(form);
 
-    const departamentoId = formData.get('id_dep');
+    const originalId = formData.get('original_id_dep');
+    const newId = formData.get('id_dep');
+
+    // Only update if ID changed
+    if (originalId === newId) {
+        closeModal();
+        return;
+    }
+
     const departamento = {
-        nombre_dep: formData.get('nombre_dep')
+        id_dep: newId
     };
 
     try {
         const { error } = await supabaseClient
             .from('departamento')
             .update(departamento)
-            .eq('id_dep', departamentoId);
+            .eq('id_dep', originalId);
 
         if (error) throw error;
 

@@ -101,12 +101,7 @@ async function loadCursos(page = 1) {
         }
 
         // Aplicar filtros dinámicos (estado y búsqueda)
-        const filterEstado = document.getElementById('filterEstadoCurso')?.value;
         const searchTerm = document.getElementById('searchCurso')?.value.toLowerCase();
-
-        if (filterEstado) {
-            cursos = cursos.filter(c => c.estado === filterEstado);
-        }
 
         if (searchTerm) {
             cursos = cursos.filter(c =>
