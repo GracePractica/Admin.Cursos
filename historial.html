@@ -32,47 +32,35 @@
             <div id="alertContainer"></div>
 
             <section class="content-section">
-                <div class="filters-card">
-                    <div class="filter-group">
-                        <label for="filterColaboradorHist">Colaborador:</label>
-                        <select id="filterColaboradorHist" class="form-select">
-                            <option value="">Todos</option>
-                        </select>
+                <div id="selectionCard" class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Historial por Colaborador</h3>
+                        <p class="card-subtitle">Selecciona un colaborador para ver su historial de capacitaciones</p>
                     </div>
-                    <div class="filter-group">
-                        <label for="filterCursoHist">Curso:</label>
-                        <select id="filterCursoHist" class="form-select">
-                            <option value="">Todos</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="filterEstadoHist">Estado:</label>
-                        <select id="filterEstadoHist" class="form-select">
-                            <option value="">Todos</option>
-                            <option value="Completado">Completado</option>
-                            <option value="En Progreso">En Progreso</option>
-                            <option value="Pendiente">Pendiente</option>
-                        </select>
-                        <div class="filter-group">
-                            <label for="searchHistorial">Buscar:</label>
-                            <input type="text" id="searchHistorial" class="form-input"
-                                placeholder="Colaborador o Curso...">
+                    <div class="card-body">
+                        <div class="form-group" style="max-width: 400px; margin-bottom: 2rem;">
+                            <label for="colaboradorSelect" class="form-label">Seleccionar Colaborador:</label>
+                            <select id="colaboradorSelect" class="form-select">
+                                <option value="">-- Selecciona un colaborador --</option>
+                            </select>
                         </div>
-                    </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Registro de Capacitaciones</h3>
-                        </div>
-                        <div class="card-body">
+                        <div id="historialListContainer" style="display: none;">
+                            <div class="filters-card" style="margin-bottom: 1.5rem;">
+                                <div class="filter-group">
+                                    <label for="searchHistorial">Buscar en resultados:</label>
+                                    <input type="text" id="searchHistorial" class="form-input"
+                                        placeholder="Nombre de curso o estado...">
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="data-table">
                                     <thead>
                                         <tr>
-                                            <th>Colaborador</th>
+                                            <th>Curso</th>
                                             <th>Departamento</th>
                                             <th>Puesto</th>
-                                            <th>Curso</th>
                                             <th>Fecha Inicio</th>
                                             <th>Fecha Final</th>
                                             <th>Duración (hrs)</th>
@@ -80,34 +68,29 @@
                                         </tr>
                                     </thead>
                                     <tbody id="historialTableBody">
-                                        <tr>
-                                            <td colspan="8" class="table-loading">
-                                                <div class="spinner-large"></div>
-                                                <p>Cargando historial...</p>
-                                            </td>
-                                        </tr>
+                                        <!-- Resultados se cargarán aquí -->
                                     </tbody>
                                 </table>
                             </div>
                             <div id="paginationHistorial"></div>
                         </div>
+
+                        <div id="historialLoading" class="table-loading" style="display: none;">
+                            <div class="spinner-large"></div>
+                            <p>Cargando historial...</p>
+                        </div>
                     </div>
+                </div>
             </section>
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/historial.js"></script>
     <script src="components/authGuard.js"></script>
     <script src="components/nav.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            if (typeof loadHistorial === 'function') {
-                loadHistorial();
-            }
-        });
-    </script>
 </body>
 
 </html>

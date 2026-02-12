@@ -98,17 +98,11 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/cursos.js"></script>
     <script src="components/authGuard.js"></script>
     <script src="components/nav.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            if (typeof loadCursos === 'function') {
-                loadCursos();
-            }
-        });
-    </script>
 </body>
 
 </html>

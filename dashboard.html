@@ -235,21 +235,11 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/dashboard.js"></script>
     <script src="components/authGuard.js"></script>
     <script src="components/nav.js"></script>
-    <script>
-        // Dashboard-specific initialization
-        document.addEventListener('DOMContentLoaded', async function () {
-            // Wait for app.js to initialize
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Load dashboard statistics
-            if (typeof loadDashboardStats === 'function') {
-                loadDashboardStats();
-            }
-        });
-    </script>
 
 </body>
 

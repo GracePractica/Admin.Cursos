@@ -69,20 +69,28 @@
                 </div>
             </section>
         </main>
+        <!-- Modal -->
+        <div id="mainModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Modal</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelModal">Cancelar</button>
+                    <button class="btn btn-primary" id="confirmModal">Guardar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/departamentos.js"></script>
     <script src="components/authGuard.js"></script>
     <script src="components/nav.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            if (typeof loadDepartamentos === 'function') {
-                loadDepartamentos();
-            }
-        });
-    </script>
 </body>
 
 </html>

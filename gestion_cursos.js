@@ -191,7 +191,7 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
                         </span>
                     </td>
                     <td>
-                        <button class="btn btn-small btn-outline">
+                        <button class="btn btn-small btn-outline" onclick="editCursoDetails('${curso.id_curso}')">
                             Editar Curso
                         </button>
                         <button class="btn btn-small btn-danger" onclick="deleteCursoAsignacion(${asignacion.id_puesto_curso})">
@@ -638,10 +638,143 @@ async function mergeCursos(cursoIds) {
     }
 }
 
-// La función de edición ha sido removida por solicitud del usuario para centralizar la gestión de datos en el catálogo principal.
-// Esta sección queda reservada para futuras herramientas de gestión de asignaciones.
+async function editCursoDetails(cursoId) {
+    console.log('editCursoDetails called with ID:', cursoId);
 
+    const modalBody = document.getElementById('modalBody');
+    const modalTitle = document.getElementById('modalTitle');
+    const confirmBtn = document.getElementById('confirmModal');
 
+    // Check if modal elements exist
+    if (!modalBody) {
+        console.error('modalBody element not found!');
+        alert('Error: No se encontró el elemento modal. Por favor recarga la página.');
+        return;
+    }
+    if (!modalTitle) {
+        console.error('modalTitle element not found!');
+        return;
+    }
+    if (!confirmBtn) {
+        console.error('confirmModal button not found!');
+        return;
+    }
+
+    modalTitle.textContent = 'Editar Detalles del Curso';
+
+    try {
+        console.log('Fetching course data for ID:', cursoId);
+        console.log('ID type:', typeof cursoId);
+        const { data: curso, error } = await supabaseClient
+            .from('cursos')
+            .select('*')
+            .eq('id_curso', cursoId)
+            .single();
+
+        if (error) {
+            console.error('Error fetching course:', error);
+            throw error;
+        }
+
+        if (!curso) {
+            console.error('Course not found');
+            showAlert('Curso no encontrado', 'error');
+            return;
+        }
+
+        console.log('Course data loaded:', curso);
+
+        const primeraFecha = curso.primera_fecha ? curso.primera_fecha.split('T')[0] : '';
+        const ultimaFecha = curso.ultima_fecha ? curso.ultima_fecha.split('T')[0] : '';
+
+        modalBody.innerHTML = `
+            <form id="editCursoDetailsForm">
+                <input type="hidden" name="id_curso" value="${curso.id_curso}">
+                
+                <div class="form-group">
+                    <label class="form-label">Nombre del Curso *</label>
+                    <input type="text" class="form-input" name="nombre_curso" value="${curso.nombre_curso || ''}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Primera Fecha</label>
+                    <input type="date" class="form-input" name="primera_fecha" value="${primeraFecha}">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Última Fecha</label>
+                    <input type="date" class="form-input" name="ultima_fecha" value="${ultimaFecha}">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Estado *</label>
+                    <select class="form-select" name="estado" required>
+                        <option value="activo" ${curso.estado === 'activo' ? 'selected' : ''}>Activo</option>
+                        <option value="inactivo" ${curso.estado === 'inactivo' ? 'selected' : ''}>Inactivo</option>
+                    </select>
+                </div>
+            </form>
+        `;
+
+        confirmBtn.onclick = async () => {
+            await updateCursoDetails();
+        };
+
+        console.log('Opening modal...');
+
+        // Check if openModal function exists
+        if (typeof openModal === 'function') {
+            openModal();
+            console.log('Modal opened successfully');
+        } else {
+            console.error('openModal function not found!');
+            // Fallback: manually open modal
+            const modal = document.getElementById('mainModal');
+            if (modal) {
+                modal.classList.add('active');
+                confirmBtn.style.display = 'inline-flex';
+                console.log('Modal opened using fallback method');
+            } else {
+                console.error('mainModal element not found!');
+                alert('Error: No se pudo abrir el modal. Por favor recarga la página.');
+            }
+        }
+
+    } catch (error) {
+        console.error('Error in editCursoDetails:', error);
+        showAlert('Error al cargar el curso: ' + error.message, 'error');
+    }
+}
+
+async function updateCursoDetails() {
+    const form = document.getElementById('editCursoDetailsForm');
+    const formData = new FormData(form);
+
+    const cursoId = formData.get('id_curso');
+    const curso = {
+        nombre_curso: formData.get('nombre_curso'),
+        primera_fecha: formData.get('primera_fecha') || null,
+        ultima_fecha: formData.get('ultima_fecha') || null,
+        estado: formData.get('estado')
+    };
+
+    try {
+        const { error } = await supabaseClient
+            .from('cursos')
+            .update(curso)
+            .eq('id_curso', cursoId);
+
+        if (error) throw error;
+
+        showAlert('Curso actualizado exitosamente', 'success');
+        closeModal();
+        await loadConsolidarCursos();
+
+    } catch (error) {
+        console.error('Error updating curso:', error);
+        showAlert('Error al actualizar el curso', 'error');
+    }
+}
 
 // === EXPORT TO EXCEL ===
 async function exportHistorial() {
