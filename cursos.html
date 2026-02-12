@@ -33,12 +33,7 @@
 
             <section class="content-section">
                 <div class="filters-card">
-                    <div class="filter-group">
-                        <label for="filterGrupoCurso">Filtrar por Grupo:</label>
-                        <select id="filterGrupoCurso" class="form-select">
-                            <option value="">Todos los grupos</option>
-                        </select>
-                    </div>
+
                     <div class="filter-group">
                         <label for="filterEstadoCurso">Estado:</label>
                         <select id="filterEstadoCurso" class="form-select">
@@ -64,9 +59,9 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre del Curso</th>
-                                        <th>Grupo</th>
                                         <th>Estado</th>
-                                        <th>Vigencia (años)</th>
+                                        <th>Primera Fecha</th>
+                                        <th>Última Fecha</th>
                                         <th class="actions-column">Acciones</th>
                                     </tr>
                                 </thead>
@@ -85,6 +80,21 @@
                 </div>
             </section>
         </main>
+
+        <!-- Modal -->
+        <div id="mainModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Modal</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelModal">Cancelar</button>
+                    <button class="btn btn-primary" id="confirmModal">Guardar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

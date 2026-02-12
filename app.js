@@ -17,7 +17,8 @@ let currentFilters = {
     departamento: '',
     puesto: '',
     clasificacion: '',
-    estado: ''
+    estado: '',
+    searchTerm: ''
 };
 
 const PAGINATION = {
@@ -90,6 +91,30 @@ function setupEventListeners() {
     document.getElementById('filterDepartamentoPuesto')?.addEventListener('change', (e) => {
         currentFilters.departamento = e.target.value;
         loadPuestos();
+    });
+
+    // Búsqueda en tiempo real
+    document.getElementById('searchColab')?.addEventListener('input', (e) => {
+        currentFilters.searchTerm = e.target.value;
+        loadColaboradores();
+    });
+
+    document.getElementById('searchCurso')?.addEventListener('input', (e) => {
+        // En cursos.html usamos un enfoque local sobre la tabla o recargamos
+        // Para consistencia con colaboradores, usaremos recarga o filtrado local
+        loadCursos();
+    });
+
+    document.getElementById('searchPuesto')?.addEventListener('input', (e) => {
+        loadPuestos();
+    });
+
+    document.getElementById('searchDepartamento')?.addEventListener('input', (e) => {
+        loadDepartamentos();
+    });
+
+    document.getElementById('searchHistorial')?.addEventListener('input', (e) => {
+        loadHistorial();
     });
 
     // Cerrar modal al hacer click fuera
@@ -403,7 +428,8 @@ async function loadColaboradores(page = 1) {
         }
 
         if (currentFilters.searchTerm) {
-            query = query.or(`nombre.ilike.%${currentFilters.searchTerm}%,apellido.ilike.%${currentFilters.searchTerm}%,correo.ilike.%${currentFilters.searchTerm}%`);
+            const term = currentFilters.searchTerm;
+            query = query.or(`id_colaborador.ilike.%${term}%,nombre.ilike.%${term}%,apellido.ilike.%${term}%,correo.ilike.%${term}%`);
         }
 
         const { data: allColaboradores, error } = await query.order('nombre');
@@ -572,7 +598,7 @@ async function saveColaborador() {
         showAlert('Colaborador agregado exitosamente', 'success');
         closeModal();
         await loadColaboradores();
-        await loadStats();
+        await loadDataQualityStats();
 
     } catch (error) {
         console.error('Error guardando colaborador:', error);
@@ -837,6 +863,21 @@ async function loadCursos(page = 1) {
             tbody.parentElement.parentElement.insertBefore(filterAlert, tbody.parentElement);
         }
 
+        // Aplicar filtros dinámicos (estado y búsqueda)
+        const filterEstado = document.getElementById('filterEstadoCurso')?.value;
+        const searchTerm = document.getElementById('searchCurso')?.value.toLowerCase();
+
+        if (filterEstado) {
+            cursos = cursos.filter(c => c.estado === filterEstado);
+        }
+
+        if (searchTerm) {
+            cursos = cursos.filter(c =>
+                (c.nombre_curso?.toLowerCase().includes(searchTerm)) ||
+                (c.id_curso?.toLowerCase().includes(searchTerm))
+            );
+        }
+
         if (!cursos || cursos.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron cursos con este filtro</td></tr>';
             renderPaginationControls(0, 1, PAGINATION.cursos.limit, 'paginationCursos', 'loadCursos');
@@ -848,25 +889,23 @@ async function loadCursos(page = 1) {
         const endIndex = startIndex + PAGINATION.cursos.limit;
         const paginatedCursos = cursos.slice(startIndex, endIndex);
 
-        // Obtener grupos de cursos
-        const { data: grupos } = await supabaseClient.from('curso_grupo').select('*');
-        const grupoMap = {};
-        grupos?.forEach(g => grupoMap[g.id_grupo] = g.grupo_nombre);
-
         tbody.innerHTML = paginatedCursos.map(curso => `
             <tr ${filter ? 'style="background-color: #fffbeb;"' : ''}>
                 <td>${curso.id_curso}</td>
                 <td><strong>${curso.nombre_curso || 'N/A'}</strong></td>
-                <td>${grupoMap[curso.grupo_curso] || 'N/A'}</td>
                 <td>
                     <span class="badge badge-${curso.estado === 'activo' ? 'success' : 'danger'}">
                         ${curso.estado || 'N/A'}
                     </span>
                 </td>
-                <td>${curso.vigencia_anio || 'N/A'}</td>
+                <td>${curso.primera_fecha ? new Date(curso.primera_fecha).toLocaleDateString() : 'N/A'}</td>
+                <td>${curso.ultima_fecha ? new Date(curso.ultima_fecha).toLocaleDateString() : 'N/A'}</td>
                 <td>
-                    <button class="btn btn-small btn-outline" onclick="editCurso(${curso.id_curso})">
+                    <button class="btn btn-small btn-outline" onclick="editCurso('${curso.id_curso}')">
                         Editar
+                    </button>
+                    <button class="btn btn-small btn-danger" onclick="deleteCurso('${curso.id_curso}', '${curso.nombre_curso?.replace(/'/g, "\\'")}')">
+                        Eliminar
                     </button>
                 </td>
             </tr>
@@ -906,9 +945,6 @@ async function openAddCursoModal() {
 
     modalTitle.textContent = 'Agregar Nuevo Curso';
 
-    const { data: puestos } = await supabaseClient.from('puestos').select('*').order('nombre_puesto');
-    const { data: departamentos } = await supabaseClient.from('departamento').select('*').order('nombre_dep');
-
     modalBody.innerHTML = `
         <form id="addCursoForm">
             <div class="form-group">
@@ -917,15 +953,15 @@ async function openAddCursoModal() {
             </div>
             
             <div class="form-group">
-                <label class="form-label">Grupo del Curso</label>
-                <input type="text" class="form-input" name="grupo_curso">
+                <label class="form-label">Primera Fecha (Opcional)</label>
+                <input type="date" class="form-input" name="primera_fecha">
             </div>
-            
+
             <div class="form-group">
-                <label class="form-label">Vigencia (años) *</label>
-                <input type="number" class="form-input" name="vigencia_anio" min="1" value="1" required>
+                <label class="form-label">Última Fecha (Opcional)</label>
+                <input type="date" class="form-input" name="ultima_fecha">
             </div>
-            
+
             <div class="form-group">
                 <label class="form-label">Estado *</label>
                 <select class="form-select" name="estado" required>
@@ -933,56 +969,8 @@ async function openAddCursoModal() {
                     <option value="inactivo">Inactivo</option>
                 </select>
             </div>
-            
-            <hr style="margin: 1.5rem 0; border: none; border-top: 2px solid var(--border-color);">
-            <h4 style="margin-bottom: 1rem; color: var(--primary-color);">Asignación a Puesto</h4>
-            
-            <div class="form-group">
-                <label class="form-label">Departamento</label>
-                <select class="form-select" name="dep_id" id="cursoDepartamento">
-                    <option value="">Todos los departamentos</option>
-                    ${departamentos?.map(dep => `<option value="${dep.id_dep}">${dep.nombre_dep}</option>`).join('') || ''}
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Puesto *</label>
-                <select class="form-select" name="puesto_id" id="cursoPuesto" required>
-                    <option value="">Seleccionar puesto</option>
-                    ${puestos?.map(puesto => `<option value="${puesto.id_puesto}" data-dep="${puesto.dep_id}">${puesto.nombre_puesto}</option>`).join('') || ''}
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Clasificación Estratégica *</label>
-                <select class="form-select" name="clasificacion_estrategica" required>
-                    <option value="">Seleccionar clasificación</option>
-                    <option value="Necesario">Necesario</option>
-                    <option value="Complementa">Complementa</option>
-                    <option value="Aporta">Aporta</option>
-                </select>
-            </div>
         </form>
     `;
-
-    // Filtrar puestos por departamento
-    document.getElementById('cursoDepartamento').addEventListener('change', function (e) {
-        const depId = e.target.value;
-        const puestoSelect = document.getElementById('cursoPuesto');
-        const options = puestoSelect.querySelectorAll('option');
-
-        options.forEach(option => {
-            if (option.value === '') {
-                option.style.display = 'block';
-            } else if (!depId || option.dataset.dep === depId) {
-                option.style.display = 'block';
-            } else {
-                option.style.display = 'none';
-            }
-        });
-
-        puestoSelect.value = '';
-    });
 
     document.getElementById('confirmModal').onclick = async () => {
         await saveCurso();
@@ -991,52 +979,52 @@ async function openAddCursoModal() {
     openModal();
 }
 
+async function getNextCursoId() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('cursos')
+            .select('id_curso')
+            .order('id_curso', { ascending: false })
+            .limit(1);
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) return 'CU_0001';
+
+        const lastId = data[0].id_curso;
+        const numberPart = lastId.split('_')[1];
+        const nextNumber = parseInt(numberPart) + 1;
+        return `CU_${nextNumber.toString().padStart(4, '0')}`;
+    } catch (error) {
+        console.error('Error generating next Curso ID:', error);
+        return 'CU_' + Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+    }
+}
+
 async function saveCurso() {
     const form = document.getElementById('addCursoForm');
     const formData = new FormData(form);
 
-    const curso = {
-        nombre_curso: formData.get('nombre_curso'),
-        grupo_curso: formData.get('grupo_curso') || null,
-        vigencia_anio: parseInt(formData.get('vigencia_anio')),
-        estado: formData.get('estado')
-    };
-
-    const puestoId = formData.get('puesto_id');
-    const clasificacion = formData.get('clasificacion_estrategica');
-    const vigenciaAnio = parseInt(formData.get('vigencia_anio'));
-
     try {
-        // Primero insertar el curso
-        const { data: cursoInsertado, error: errorCurso } = await supabaseClient
+        const nextId = await getNextCursoId();
+        const curso = {
+            id_curso: nextId,
+            nombre_curso: formData.get('nombre_curso'),
+            primera_fecha: formData.get('primera_fecha') || null,
+            ultima_fecha: formData.get('ultima_fecha') || null,
+            estado: formData.get('estado')
+        };
+        // Solo insertar el curso
+        const { error: errorCurso } = await supabaseClient
             .from('cursos')
-            .insert([curso])
-            .select()
-            .single();
+            .insert([curso]);
 
         if (errorCurso) throw errorCurso;
-
-        // Luego insertar la relación puesto_curso
-        if (puestoId && clasificacion) {
-            const puestoCurso = {
-                puesto_id: parseInt(puestoId),
-                curso_id: cursoInsertado.id_curso,
-                clasificacion_estrategica: clasificacion,
-                vigencia_anio: vigenciaAnio,
-                estado: 'activo'
-            };
-
-            const { error: errorRelacion } = await supabaseClient
-                .from('puesto_curso')
-                .insert([puestoCurso]);
-
-            if (errorRelacion) throw errorRelacion;
-        }
 
         showAlert('Curso agregado exitosamente', 'success');
         closeModal();
         await loadCursos();
-        await loadStats();
+        await loadDataQualityStats();
 
     } catch (error) {
         console.error('Error guardando curso:', error);
@@ -1134,6 +1122,218 @@ async function updatePuestoCurso() {
     }
 }
 
+// === EDITAR CURSO ===
+function editCurso(cursoId) {
+    console.log('editCurso function called with ID:', cursoId);
+    console.log('Modal exists:', !!document.getElementById('mainModal'));
+
+    loadCursoData(cursoId);
+}
+
+async function loadCursoData(cursoId) {
+    try {
+        console.log('Fetching course data for ID:', cursoId);
+
+        const { data: curso, error } = await supabaseClient
+            .from('cursos')
+            .select('*')
+            .eq('id_curso', cursoId)
+            .single();
+
+        console.log('Course data received:', curso);
+        console.log('Error:', error);
+
+        if (error) {
+            console.error('Database error:', error);
+            showAlert('Error al cargar el curso: ' + error.message, 'error');
+            return;
+        }
+
+        if (!curso) {
+            showAlert('Curso no encontrado', 'error');
+            return;
+        }
+
+        // Populate modal
+        displayEditCursoModal(curso);
+
+    } catch (error) {
+        console.error('Exception in loadCursoData:', error);
+        showAlert('Error: ' + error.message, 'error');
+    }
+}
+
+function displayEditCursoModal(curso) {
+    console.log('Displaying edit modal for course:', curso.id_curso);
+
+    const modalBody = document.getElementById('modalBody');
+    const modalTitle = document.getElementById('modalTitle');
+    const confirmBtn = document.getElementById('confirmModal');
+
+    if (!modalBody || !modalTitle) {
+        console.error('Modal elements not found');
+        showAlert('Error: Modal elements not found', 'error');
+        return;
+    }
+
+    modalTitle.textContent = 'Editar Curso';
+
+    const primeraFecha = curso.primera_fecha ? curso.primera_fecha.split('T')[0] : '';
+    const ultimaFecha = curso.ultima_fecha ? curso.ultima_fecha.split('T')[0] : '';
+
+    modalBody.innerHTML = `
+        <form id="editCursoForm">
+            <input type="hidden" name="id_curso" value="${curso.id_curso}">
+            
+            <div class="form-group">
+                <label class="form-label">Nombre del Curso *</label>
+                <input type="text" class="form-input" name="nombre_curso" value="${curso.nombre_curso || ''}" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Primera Fecha</label>
+                <input type="date" class="form-input" name="primera_fecha" value="${primeraFecha}">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Última Fecha</label>
+                <input type="date" class="form-input" name="ultima_fecha" value="${ultimaFecha}">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Estado *</label>
+                <select class="form-select" name="estado" required>
+                    <option value="activo" ${curso.estado === 'activo' ? 'selected' : ''}>Activo</option>
+                    <option value="inactivo" ${curso.estado === 'inactivo' ? 'selected' : ''}>Inactivo</option>
+                </select>
+            </div>
+        </form>
+    `;
+
+    confirmBtn.onclick = updateCurso;
+
+    console.log('Calling openModal');
+    openModal();
+    console.log('Modal should now be open');
+}
+
+async function updateCurso() {
+    console.log('updateCurso called');
+
+    const form = document.getElementById('editCursoForm');
+    if (!form) {
+        showAlert('Formulario no encontrado', 'error');
+        return;
+    }
+
+    const formData = new FormData(form);
+    const cursoId = formData.get('id_curso');
+
+    const curso = {
+        nombre_curso: formData.get('nombre_curso'),
+        primera_fecha: formData.get('primera_fecha') || null,
+        ultima_fecha: formData.get('ultima_fecha') || null,
+        estado: formData.get('estado')
+    };
+
+    console.log('Updating course:', cursoId, curso);
+
+    try {
+        const { error } = await supabaseClient
+            .from('cursos')
+            .update(curso)
+            .eq('id_curso', cursoId);
+
+        if (error) {
+            console.error('Update error:', error);
+            throw error;
+        }
+
+        showAlert('Curso actualizado exitosamente', 'success');
+        closeModal();
+        await loadCursos();
+
+    } catch (error) {
+        console.error('Error updating course:', error);
+        showAlert('Error al actualizar el curso: ' + error.message, 'error');
+    }
+}
+
+async function deleteCurso(cursoId, cursoNombre) {
+    const modalBody = document.getElementById('modalBody');
+    const modalTitle = document.getElementById('modalTitle');
+    const confirmBtn = document.getElementById('confirmModal');
+
+    modalTitle.textContent = 'Confirmar Eliminación';
+
+    modalBody.innerHTML = `
+        <div class="alert alert-warning">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+            </svg>
+            <div style="flex: 1;">
+                <strong>¿Estás seguro de que deseas eliminar este curso?</strong>
+                <div style="margin-top: 0.5rem;">
+                    <strong>Curso:</strong> ${cursoNombre}
+                </div>
+                <div style="font-size: 0.875rem; margin-top: 0.5rem; color: #dc2626;">
+                    Esta acción no se puede deshacer. Se eliminarán todas las asignaciones y registros relacionados con este curso.
+                </div>
+            </div>
+        </div>
+    `;
+
+    confirmBtn.textContent = 'Eliminar';
+    confirmBtn.className = 'btn btn-danger';
+    confirmBtn.onclick = async () => {
+        await confirmDeleteCurso(cursoId);
+    };
+
+    openModal();
+}
+
+async function confirmDeleteCurso(cursoId) {
+    try {
+        // First, delete related records in puesto_curso
+        const { error: puestoCursoError } = await supabaseClient
+            .from('puesto_curso')
+            .delete()
+            .eq('curso_id', cursoId);
+
+        if (puestoCursoError) throw puestoCursoError;
+
+        // Then, delete related records in historial_cursos
+        const { error: historialError } = await supabaseClient
+            .from('historial_cursos')
+            .delete()
+            .eq('curso_id', cursoId);
+
+        if (historialError) throw historialError;
+
+        // Finally, delete the course itself
+        const { error } = await supabaseClient
+            .from('cursos')
+            .delete()
+            .eq('id_curso', cursoId);
+
+        if (error) throw error;
+
+        showAlert('Curso eliminado exitosamente', 'success');
+        closeModal();
+        await loadCursos();
+
+        // Reset confirm button to default state
+        const confirmBtn = document.getElementById('confirmModal');
+        confirmBtn.textContent = 'Guardar';
+        confirmBtn.className = 'btn btn-primary';
+
+    } catch (error) {
+        console.error('Error deleting course:', error);
+        showAlert('Error al eliminar el curso: ' + error.message, 'error');
+    }
+}
+
+
 // === HISTORIAL ===
 async function loadHistorial(page = 1) {
     PAGINATION.historial.page = page;
@@ -1156,31 +1356,43 @@ async function loadHistorial(page = 1) {
             return;
         }
 
-        // Paginación
-        const startIndex = (page - 1) * PAGINATION.historial.limit;
-        const endIndex = startIndex + PAGINATION.historial.limit;
-        const paginatedHistorial = historial.slice(startIndex, endIndex);
-
-        // Obtener datos relacionados
-        const colaboradorIds = [...new Set(paginatedHistorial.map(h => h.colaborador_id).filter(Boolean))];
-        const cursoIds = [...new Set(paginatedHistorial.map(h => h.curso_id).filter(Boolean))];
-
-        const { data: colaboradores } = await supabaseClient.from('colaboradores').select('*').in('id_colab', colaboradorIds);
-        const { data: cursos } = await supabaseClient.from('cursos').select('*').in('id_curso', cursoIds);
+        // Obtener datos relacionados para todos los registros del historial para poder filtrar por nombre
+        const { data: allColaboradores } = await supabaseClient.from('colaboradores').select('*');
+        const { data: allCursos } = await supabaseClient.from('cursos').select('*');
         const { data: departamentos } = await supabaseClient.from('departamento').select('*');
         const { data: puestos } = await supabaseClient.from('puestos').select('*');
 
         const colabMap = {};
-        colaboradores?.forEach(c => colabMap[c.id_colab] = c);
+        allColaboradores?.forEach(c => colabMap[c.id_colab] = c);
 
         const cursoMap = {};
-        cursos?.forEach(c => cursoMap[c.id_curso] = c.nombre_curso);
+        allCursos?.forEach(c => cursoMap[c.id_curso] = c.nombre_curso);
 
         const depMap = {};
         departamentos?.forEach(d => depMap[d.id_dep] = d.nombre_dep);
 
         const puestoMap = {};
         puestos?.forEach(p => puestoMap[p.id_puesto] = p.nombre_puesto);
+
+        // Búsqueda
+        const searchTerm = document.getElementById('searchHistorial')?.value.toLowerCase();
+        let displayHistorial = historial;
+
+        if (searchTerm) {
+            displayHistorial = historial.filter(item => {
+                const colab = colabMap[item.colaborador_id] || {};
+                const cursoNombre = cursoMap[item.curso_id] || '';
+                return (colab.nombre_colab?.toLowerCase().includes(searchTerm)) ||
+                    (cursoNombre.toLowerCase().includes(searchTerm)) ||
+                    (item.colaborador_id?.toString().toLowerCase().includes(searchTerm)) ||
+                    (item.curso_id?.toString().toLowerCase().includes(searchTerm));
+            });
+        }
+
+        // Paginación sobre los datos filtrados
+        const startIndex = (page - 1) * PAGINATION.historial.limit;
+        const endIndex = startIndex + PAGINATION.historial.limit;
+        const paginatedHistorial = displayHistorial.slice(startIndex, endIndex);
 
         tbody.innerHTML = paginatedHistorial.map(item => {
             const colab = colabMap[item.colaborador_id] || {};
@@ -1201,7 +1413,7 @@ async function loadHistorial(page = 1) {
             </tr>
         `}).join('');
 
-        renderPaginationControls(historial.length, page, PAGINATION.historial.limit, 'paginationHistorial', 'loadHistorial');
+        renderPaginationControls(displayHistorial.length, page, PAGINATION.historial.limit, 'paginationHistorial', 'loadHistorial');
 
     } catch (error) {
         console.error('Error cargando historial:', error);
@@ -1215,19 +1427,24 @@ async function loadDepartamentos(page = 1) {
     const tbody = document.getElementById('departamentosTableBody');
 
     try {
-        const { data: departamentos, error } = await supabaseClient
-            .from('departamento')
-            .select('*')
-            .order('nombre_dep'); // Mantener orden por nombre aunque no se muestre
+        let query = supabaseClient.from('departamento').select('*');
+        const searchTerm = document.getElementById('searchDepartamento')?.value.toLowerCase();
+
+        const { data: allDepartamentos, error } = await query.order('nombre_dep');
 
         if (error) throw error;
 
-        // Fetch counts (aunque no se muestren, mantenemos consistencia o eliminamos si es costoso)
-        // Para esta vista simplificada, podríamos no necesitar conteos si ya no se muestran
-        // Pero si "colaboradores" se refería a la columna de conteo, entonces ya no la necesitamos.
+        let departamentos = allDepartamentos || [];
+
+        if (searchTerm) {
+            departamentos = departamentos.filter(d =>
+                (d.nombre_dep?.toLowerCase().includes(searchTerm)) ||
+                (d.id_dep?.toString().toLowerCase().includes(searchTerm))
+            );
+        }
 
         if (!departamentos || departamentos.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="2" class="text-center">No hay departamentos registrados</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center">No hay departamentos registrados</td></tr>';
             renderPaginationControls(0, 1, PAGINATION.departamentos.limit, 'paginationDepartamentos', 'loadDepartamentos');
             return;
         }
@@ -1240,6 +1457,7 @@ async function loadDepartamentos(page = 1) {
         tbody.innerHTML = paginatedDepartamentos.map(dep => `
             <tr>
                 <td><strong>${dep.id_dep}</strong></td>
+                <td>${dep.nombre_dep}</td>
                 <td>
                     <button class="btn btn-small btn-outline" onclick="editDepartamento(${dep.id_dep})">
                         Editar
@@ -1299,7 +1517,7 @@ async function saveDepartamento() {
         showAlert('Departamento agregado exitosamente', 'success');
         closeModal();
         await loadDepartamentos();
-        await loadStats();
+        await loadDataQualityStats();
 
     } catch (error) {
         console.error('Error guardando departamento:', error);
@@ -1385,7 +1603,7 @@ async function deleteDepartamento(departamentoId) {
 
         showAlert('Departamento eliminado exitosamente', 'success');
         await loadDepartamentos();
-        await loadStats();
+        await loadDataQualityStats();
 
     } catch (error) {
         console.error('Error eliminando departamento:', error);
@@ -1405,9 +1623,20 @@ async function loadPuestos(page = 1) {
             query = query.eq('dep_id', currentFilters.departamento);
         }
 
-        const { data: puestos, error } = await query.order('nombre_puesto');
+        const searchTerm = document.getElementById('searchPuesto')?.value.toLowerCase();
+
+        const { data: allPuestos, error } = await query.order('nombre_puesto');
 
         if (error) throw error;
+
+        let puestos = allPuestos || [];
+
+        if (searchTerm) {
+            puestos = puestos.filter(p =>
+                (p.nombre_puesto?.toLowerCase().includes(searchTerm)) ||
+                (p.id_puesto?.toString().toLowerCase().includes(searchTerm))
+            );
+        }
 
         if (!puestos || puestos.length === 0) {
             tbody.innerHTML = '<tr><td colspan="4" class="text-center">No hay puestos registrados</td></tr>';
@@ -1703,13 +1932,25 @@ function renderPaginationControls(totalItems, currentPage, itemsPerPage, contain
     const startItem = (currentPage - 1) * itemsPerPage + 1;
     const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
+    // Adjust onPageChange call to handle both function names and function calls
+    let prevCall, nextCall;
+    if (onPageChange.includes('(')) {
+        // If it's a call like "loadData(123)", inject the page argument
+        prevCall = onPageChange.replace(')', `, ${currentPage - 1})`);
+        nextCall = onPageChange.replace(')', `, ${currentPage + 1})`);
+    } else {
+        // If it's just a function name like "loadData", append the page argument
+        prevCall = `${onPageChange}(${currentPage - 1})`;
+        nextCall = `${onPageChange}(${currentPage + 1})`;
+    }
+
     container.innerHTML = `
         <div class="pagination-container">
             <span class="pagination-info">Mostrando ${startItem}-${endItem} de ${totalItems} registros</span>
             <div class="pagination-controls">
-                <button class="btn-page" ${currentPage === 1 ? 'disabled' : ''} onclick="${onPageChange}(${currentPage - 1})">Anterior</button>
+                <button class="btn-page" ${currentPage === 1 ? 'disabled' : ''} onclick="${prevCall}">Anterior</button>
                 <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.9rem;">Página ${currentPage} de ${totalPages}</div>
-                <button class="btn-page" ${currentPage === totalPages ? 'disabled' : ''} onclick="${onPageChange}(${currentPage + 1})">Siguiente</button>
+                <button class="btn-page" ${currentPage === totalPages ? 'disabled' : ''} onclick="${nextCall}">Siguiente</button>
             </div>
         </div>
     `;

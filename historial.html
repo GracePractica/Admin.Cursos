@@ -53,41 +53,45 @@
                             <option value="En Progreso">En Progreso</option>
                             <option value="Pendiente">Pendiente</option>
                         </select>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Registro de Capacitaciones</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Colaborador</th>
-                                        <th>Departamento</th>
-                                        <th>Puesto</th>
-                                        <th>Curso</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Final</th>
-                                        <th>Duración (hrs)</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="historialTableBody">
-                                    <tr>
-                                        <td colspan="8" class="table-loading">
-                                            <div class="spinner-large"></div>
-                                            <p>Cargando historial...</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="filter-group">
+                            <label for="searchHistorial">Buscar:</label>
+                            <input type="text" id="searchHistorial" class="form-input"
+                                placeholder="Colaborador o Curso...">
                         </div>
-                        <div id="paginationHistorial"></div>
                     </div>
-                </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Registro de Capacitaciones</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Colaborador</th>
+                                            <th>Departamento</th>
+                                            <th>Puesto</th>
+                                            <th>Curso</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Final</th>
+                                            <th>Duración (hrs)</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historialTableBody">
+                                        <tr>
+                                            <td colspan="8" class="table-loading">
+                                                <div class="spinner-large"></div>
+                                                <p>Cargando historial...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="paginationHistorial"></div>
+                        </div>
+                    </div>
             </section>
         </main>
     </div>

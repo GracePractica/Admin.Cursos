@@ -145,7 +145,7 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
             tbody.innerHTML = '<tr><td colspan="6" class="text-center">Este puesto no tiene cursos asignados</td></tr>';
             loading.style.display = 'none';
             container.style.display = 'block';
-            renderPaginationControls(0, 1, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', `loadCursosPorPuesto(${puestoId})`);
+            renderPaginationControls(0, 1, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', `loadCursosPorPuesto('${puestoId}')`);
             return;
         }
 
@@ -176,7 +176,12 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
 
             return `
                 <tr>
-                    <td><strong>${curso.nombre_curso}</strong></td>
+                    <td>
+                        <div class="d-flex flex-column">
+                            <strong>${curso.nombre_curso}</strong>
+                            <span class="text-muted" style="font-size: 0.75rem;">ID: ${curso.id_curso}</span>
+                        </div>
+                    </td>
                     <td>${curso.grupo_curso || 'N/A'}</td>
                     <td>${asignacion.clasificacion_estrategica || 'N/A'}</td>
                     <td>${asignacion.vigencia_anio || 'N/A'}</td>
@@ -186,8 +191,8 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
                         </span>
                     </td>
                     <td>
-                        <button class="btn btn-small btn-outline" onclick="editCursoAsignacion(${asignacion.id_puesto_curso})">
-                            Editar
+                        <button class="btn btn-small btn-outline">
+                            Editar Curso
                         </button>
                         <button class="btn btn-small btn-danger" onclick="deleteCursoAsignacion(${asignacion.id_puesto_curso})">
                             Eliminar
@@ -197,7 +202,7 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
             `;
         }).join('');
 
-        renderPaginationControls(asignaciones.length, page, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', `loadCursosPorPuesto(${puestoId})`);
+        renderPaginationControls(asignaciones.length, page, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', `loadCursosPorPuesto('${puestoId}')`);
 
         loading.style.display = 'none';
         container.style.display = 'block';
@@ -297,9 +302,85 @@ function editCursoAsignacion(assignmentId) {
     // TODO: Implementar modal de edición
 }
 
-function deleteCursoAsignacion(assignmentId) {
-    console.log('Eliminar asignación:', assignmentId);
-    // TODO: Implementar confirmación y eliminación
+async function deleteCursoAsignacion(assignmentId) {
+    const modalBody = document.getElementById('modalBody');
+    const modalTitle = document.getElementById('modalTitle');
+    const confirmBtn = document.getElementById('confirmModal');
+
+    try {
+        // Get assignment details first
+        const { data: assignment } = await supabaseClient
+            .from('puesto_curso')
+            .select('*, cursos(nombre_curso), puestos(nombre_puesto)')
+            .eq('id_puesto_curso', assignmentId)
+            .single();
+
+        if (!assignment) {
+            showAlert('Asignación no encontrada', 'error');
+            return;
+        }
+
+        modalTitle.textContent = 'Confirmar Eliminación';
+
+        modalBody.innerHTML = `
+            <div class="alert alert-warning">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                <div style="flex: 1;">
+                    <strong>¿Estás seguro de que deseas eliminar esta asignación?</strong>
+                    <div style="margin-top: 0.5rem;">
+                        <strong>Curso:</strong> ${assignment.cursos?.nombre_curso || 'N/A'}<br>
+                        <strong>Puesto:</strong> ${assignment.puestos?.nombre_puesto || 'N/A'}
+                    </div>
+                    <div style="font-size: 0.875rem; margin-top: 0.5rem; color: #dc2626;">
+                        Esta acción no se puede deshacer.
+                    </div>
+                </div>
+            </div>
+        `;
+
+        confirmBtn.textContent = 'Eliminar';
+        confirmBtn.className = 'btn btn-danger';
+        confirmBtn.onclick = async () => {
+            await confirmDeleteCursoAsignacion(assignmentId);
+        };
+
+        openModal();
+
+    } catch (error) {
+        console.error('Error loading assignment:', error);
+        showAlert('Error al cargar la asignación', 'error');
+    }
+}
+
+async function confirmDeleteCursoAsignacion(assignmentId) {
+    try {
+        const { error } = await supabaseClient
+            .from('puesto_curso')
+            .delete()
+            .eq('id_puesto_curso', assignmentId);
+
+        if (error) throw error;
+
+        showAlert('Asignación eliminada exitosamente', 'success');
+        closeModal();
+
+        // Reload the current position's courses
+        const puestoSelect = document.getElementById('puestoSelect');
+        if (puestoSelect && puestoSelect.value) {
+            await loadCursosPorPuesto(puestoSelect.value);
+        }
+
+        // Reset confirm button to default state
+        const confirmBtn = document.getElementById('confirmModal');
+        confirmBtn.textContent = 'Guardar';
+        confirmBtn.className = 'btn btn-primary';
+
+    } catch (error) {
+        console.error('Error deleting assignment:', error);
+        showAlert('Error al eliminar la asignación: ' + error.message, 'error');
+    }
 }
 
 
@@ -557,89 +638,10 @@ async function mergeCursos(cursoIds) {
     }
 }
 
-async function editCursoDetails(cursoId) {
-    const modalBody = document.getElementById('modalBody');
-    const modalTitle = document.getElementById('modalTitle');
+// La función de edición ha sido removida por solicitud del usuario para centralizar la gestión de datos en el catálogo principal.
+// Esta sección queda reservada para futuras herramientas de gestión de asignaciones.
 
-    modalTitle.textContent = 'Editar Detalles del Curso';
 
-    try {
-        const { data: curso } = await supabaseClient
-            .from('cursos')
-            .select('*')
-            .eq('id_curso', cursoId)
-            .single();
-
-        modalBody.innerHTML = `
-            <form id="editCursoDetailsForm">
-                <input type="hidden" name="id_curso" value="${curso.id_curso}">
-                
-                <div class="form-group">
-                    <label class="form-label">Nombre del Curso *</label>
-                    <input type="text" class="form-input" name="nombre_curso" value="${curso.nombre_curso || ''}" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Grupo del Curso</label>
-                    <input type="text" class="form-input" name="grupo_curso" value="${curso.grupo_curso || ''}">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Vigencia (años) *</label>
-                    <input type="number" class="form-input" name="vigencia_anio" value="${curso.vigencia_anio || 1}" min="1" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Estado *</label>
-                    <select class="form-select" name="estado" required>
-                        <option value="activo" ${curso.estado === 'activo' ? 'selected' : ''}>Activo</option>
-                        <option value="inactivo" ${curso.estado === 'inactivo' ? 'selected' : ''}>Inactivo</option>
-                    </select>
-                </div>
-            </form>
-        `;
-
-        document.getElementById('confirmModal').onclick = async () => {
-            await updateCursoDetails();
-        };
-
-        openModal();
-
-    } catch (error) {
-        console.error('Error loading curso:', error);
-        showAlert('Error al cargar el curso', 'error');
-    }
-}
-
-async function updateCursoDetails() {
-    const form = document.getElementById('editCursoDetailsForm');
-    const formData = new FormData(form);
-
-    const cursoId = formData.get('id_curso');
-    const curso = {
-        nombre_curso: formData.get('nombre_curso'),
-        grupo_curso: formData.get('grupo_curso') || null,
-        vigencia_anio: parseInt(formData.get('vigencia_anio')),
-        estado: formData.get('estado')
-    };
-
-    try {
-        const { error } = await supabaseClient
-            .from('cursos')
-            .update(curso)
-            .eq('id_curso', cursoId);
-
-        if (error) throw error;
-
-        showAlert('Curso actualizado exitosamente', 'success');
-        closeModal();
-        await loadConsolidarCursos();
-
-    } catch (error) {
-        console.error('Error updating curso:', error);
-        showAlert('Error al actualizar el curso', 'error');
-    }
-}
 
 // === EXPORT TO EXCEL ===
 async function exportHistorial() {
