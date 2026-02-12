@@ -1608,3 +1608,17 @@ input[type="checkbox"] {
 .content-section {
     animation: fadeIn 0.3s ease-out;
 }
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.logout-btn:hover {
+    opacity: 0.8;
+}
