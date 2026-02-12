@@ -18,7 +18,7 @@ function setupPuestosListeners() {
         loadPuestos();
     });
 
-    document.getElementById('searchPuesto')?.addEventListener('input', (e) => {
+    document.getElementById('searchPuesto')?.addEventListener('input', () => {
         loadPuestos();
     });
 }
@@ -30,16 +30,24 @@ async function loadPuestos(page = 1) {
     if (!tbody) return;
 
     try {
-        let query = supabaseClient.from('puestos').select('*');
+        let query = supabaseClient
+            .from('puestos')
+            .select(`
+                id_puesto,
+                nombre_puesto,
+                departamento_puesto (
+                    dep_id
+                )
+            `);
 
+        // 🔑 Filtro por departamento seleccionado
         if (currentFilters.departamento) {
-            query = query.eq('dep_id', currentFilters.departamento);
+            query = query.eq('departamento_puesto.dep_id', currentFilters.departamento);
         }
 
         const searchTerm = document.getElementById('searchPuesto')?.value.toLowerCase();
 
         const { data: allPuestos, error } = await query.order('nombre_puesto');
-
         if (error) throw error;
 
         let puestos = allPuestos || [];
@@ -62,25 +70,20 @@ async function loadPuestos(page = 1) {
         const endIndex = startIndex + PAGINATION.puestos.limit;
         const paginatedPuestos = puestos.slice(startIndex, endIndex);
 
-        const { data: departamentos } = await supabaseClient.from('departamento').select('*');
-        const depMap = {};
-        departamentos?.forEach(d => depMap[d.id_dep] = d.nombre_dep);
-
-        tbody.innerHTML = paginatedPuestos.map(puesto => `
-            <tr>
-                <td><strong>${puesto.id_puesto}</strong></td>
-                <td>${puesto.nombre_puesto}</td>
-                <td>${depMap[puesto.dep_id] || 'N/A'}</td>
-                <td>
-                    <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto})">
-                        Editar
-                    </button>
-                    <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto})">
-                        Eliminar
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        tbody.innerHTML = paginatedPuestos.map(puesto => {
+            const deps = puesto.departamento_puesto?.map(dp => dp.dep_id).join(', ') || 'N/A';
+            return `
+                <tr>
+                    <td><strong>${puesto.id_puesto}</strong></td>
+                    <td>${puesto.nombre_puesto}</td>
+                    <td>${deps}</td>
+                    <td>
+                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto})">Editar</button>
+                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
 
         renderPaginationControls(puestos.length, page, PAGINATION.puestos.limit, 'paginationPuestos', 'loadPuestos');
 
@@ -96,7 +99,7 @@ async function openAddPuestoModal() {
 
     modalTitle.textContent = 'Agregar Nuevo Puesto';
 
-    const { data: departamentos } = await supabaseClient.from('departamento').select('*').order('nombre_dep');
+    const { data: departamentos } = await supabaseClient.from('departamento').select('*').order('id_dep');
 
     modalBody.innerHTML = `
         <form id="addPuestoForm">
@@ -106,10 +109,10 @@ async function openAddPuestoModal() {
             </div>
             
             <div class="form-group">
-                <label class="form-label">Departamento *</label>
+                <label class="form-label">Departamento (ID) *</label>
                 <select class="form-select" name="dep_id" required>
                     <option value="">Seleccionar departamento</option>
-                    ${departamentos?.map(dep => `<option value="${dep.id_dep}">${dep.nombre_dep}</option>`).join('') || ''}
+                    ${departamentos?.map(dep => `<option value="${dep.id_dep}">${dep.id_dep}</option>`).join('') || ''}
                 </select>
             </div>
         </form>
@@ -126,17 +129,25 @@ async function savePuesto() {
     const form = document.getElementById('addPuestoForm');
     const formData = new FormData(form);
 
-    const puesto = {
-        nombre_puesto: formData.get('nombre_puesto'),
-        dep_id: formData.get('dep_id')
-    };
-
     try {
-        const { error } = await supabaseClient
+        // Insertamos el puesto
+        const { data: newPuesto, error: puestoError } = await supabaseClient
             .from('puestos')
-            .insert([puesto]);
+            .insert([{ nombre_puesto: formData.get('nombre_puesto') }])
+            .select()
+            .single();
 
-        if (error) throw error;
+        if (puestoError) throw puestoError;
+
+        // Insertamos la relación en departamento_puesto con upsert
+        const { error: depError } = await supabaseClient
+            .from('departamento_puesto')
+            .upsert([{
+                puesto_id: newPuesto.id_puesto,
+                dep_id: formData.get('dep_id')
+            }], { onConflict: ['puesto_id', 'dep_id'] });
+
+        if (depError) throw depError;
 
         showAlert('Puesto agregado exitosamente', 'success');
         closeModal();
@@ -157,11 +168,19 @@ async function editPuesto(puestoId) {
     try {
         const { data: puesto } = await supabaseClient
             .from('puestos')
-            .select('*')
+            .select(`
+                id_puesto,
+                nombre_puesto,
+                departamento_puesto (
+                    dep_id
+                )
+            `)
             .eq('id_puesto', puestoId)
             .single();
 
-        const { data: departamentos } = await supabaseClient.from('departamento').select('*').order('nombre_dep');
+        const { data: departamentos } = await supabaseClient.from('departamento').select('*').order('id_dep');
+
+        const depActual = puesto.departamento_puesto?.[0]?.dep_id || '';
 
         modalBody.innerHTML = `
             <form id="editPuestoForm">
@@ -173,10 +192,10 @@ async function editPuesto(puestoId) {
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Departamento *</label>
+                    <label class="form-label">Departamento (ID) *</label>
                     <select class="form-select" name="dep_id" required>
                         <option value="">Seleccionar departamento</option>
-                        ${departamentos?.map(dep => `<option value="${dep.id_dep}" ${dep.id_dep === puesto.dep_id ? 'selected' : ''}>${dep.nombre_dep}</option>`).join('') || ''}
+                        ${departamentos?.map(dep => `<option value="${dep.id_dep}" ${dep.id_dep === depActual ? 'selected' : ''}>${dep.id_dep}</option>`).join('') || ''}
                     </select>
                 </div>
             </form>
@@ -199,18 +218,25 @@ async function updatePuesto() {
     const formData = new FormData(form);
 
     const puestoId = formData.get('id_puesto');
-    const puesto = {
-        nombre_puesto: formData.get('nombre_puesto'),
-        dep_id: formData.get('dep_id')
-    };
 
     try {
-        const { error } = await supabaseClient
+        // Actualizamos el puesto
+        const { error: puestoError } = await supabaseClient
             .from('puestos')
-            .update(puesto)
+            .update({ nombre_puesto: formData.get('nombre_puesto') })
             .eq('id_puesto', puestoId);
 
-        if (error) throw error;
+        if (puestoError) throw puestoError;
+
+        // Actualizamos la relación con upsert
+        const { error: depError } = await supabaseClient
+            .from('departamento_puesto')
+            .upsert([{
+                puesto_id: puestoId,
+                dep_id: formData.get('dep_id')
+            }], { onConflict: ['puesto_id', 'dep_id'] });
+
+        if (depError) throw depError;
 
         showAlert('Puesto actualizado exitosamente', 'success');
         closeModal();
@@ -228,6 +254,13 @@ async function deletePuesto(puestoId) {
     }
 
     try {
+        // Primero eliminamos las relaciones en la tabla intermedia
+        await supabaseClient
+            .from('departamento_puesto')
+            .delete()
+            .eq('puesto_id', puestoId);
+
+        // Luego eliminamos el puesto
         const { error } = await supabaseClient
             .from('puestos')
             .delete()
@@ -241,5 +274,28 @@ async function deletePuesto(puestoId) {
     } catch (error) {
         console.error('Error eliminando puesto:', error);
         showAlert('Error al eliminar. Puede que tenga datos relacionados.', 'error');
+    }
+}
+
+// === FILTRO DE DEPARTAMENTOS POR ID ===
+async function loadDepartamentosFilter(selectId) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    try {
+        const { data: departamentos, error } = await supabaseClient
+            .from('departamento')
+            .select('*')
+            .order('id_dep');
+
+        if (error) throw error;
+
+        select.innerHTML = `
+            <option value="">Todos</option>
+            ${departamentos?.map(dep => `<option value="${dep.id_dep}">${dep.id_dep}</option>`).join('') || ''}
+        `;
+    } catch (error) {
+        console.error('Error cargando departamentos:', error);
+        select.innerHTML = '<option value="">Error al cargar</option>';
     }
 }
