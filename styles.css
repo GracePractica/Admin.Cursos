@@ -761,6 +761,16 @@ p {
     box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
+/* Resaltado amarillo para selección de cursos en modal */
+#cursoSelectModal option:checked {
+    background: var(--accent-light) linear-gradient(0deg, var(--accent-light) 0%, var(--accent-light) 100%) !important;
+    color: var(--primary-dark) !important;
+}
+
+#cursoSelectModal option:hover {
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
 /* === TABLAS === */
 .table-responsive {
     display: block;
@@ -797,6 +807,67 @@ p {
     border: 2px solid #cbd5e1;
 }
 
+/* === AUTOCOMPLETE DROPDOWN === */
+.dropdown-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 4px;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+.dropdown-item.no-results {
+    color: var(--text-secondary);
+    font-style: italic;
+    cursor: default;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#clearPuestoSearch {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+}
+
+#clearPuestoSearch:hover {
+    color: var(--danger-color);
+}
+
+/* Scrollbar hover state */
 .table-responsive::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
 }
@@ -1608,6 +1679,7 @@ input[type="checkbox"] {
 .content-section {
     animation: fadeIn 0.3s ease-out;
 }
+
 .logout-btn {
     background: transparent;
     border: none;
