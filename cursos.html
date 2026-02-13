@@ -35,9 +35,19 @@
                 <div class="filters-card">
 
 
-                    <div class="filter-group">
-                        <label for="searchCurso">Buscar:</label>
-                        <input type="text" id="searchCurso" class="form-input" placeholder="Buscar curso...">
+                    <div class="filter-group" style="display: flex; gap: 1rem; align-items: flex-end;">
+                        <div style="flex: 1;">
+                            <label for="searchCurso">Buscar:</label>
+                            <input type="text" id="searchCurso" class="form-input" placeholder="Buscar curso...">
+                        </div>
+                        <div style="width: 200px;">
+                            <label for="filterEstado">Estado:</label>
+                            <select id="filterEstado" class="form-select">
+                                <option value="">Todos</option>
+                                <option value="activo">Activos</option>
+                                <option value="inactivo">Inactivos</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 

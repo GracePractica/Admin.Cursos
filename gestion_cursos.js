@@ -3,6 +3,9 @@ const PAGINATION_GESTION = {
     cursosAsignados: { page: 1, limit: 10 }
 };
 
+let currentAsignaciones = [];
+let asignacionesMetadata = {};
+
 async function loadGestionCursos() {
     setupTabNavigation();
     await initGestionPorPuesto();
@@ -73,7 +76,7 @@ async function initGestionPorPuesto() {
 
     // Funciones Helper
     function filterPuestos(term) {
-        if (!term) return [];
+        if (!term) return allPuestos;
         return allPuestos.filter(p =>
             p.nombre_puesto.toLowerCase().includes(term.toLowerCase())
         );
@@ -104,7 +107,9 @@ async function initGestionPorPuesto() {
         clearBtn.style.display = 'block';
 
         loadCursosPorPuesto(puesto.id_puesto);
-        document.getElementById('btnAddCursoAsignacion').onclick = () => openAddAsignacionModal(puesto.id_puesto);
+        const btnAdd = document.getElementById('btnAddCursoAsignacion');
+        btnAdd.style.display = 'block';
+        btnAdd.onclick = () => openAddAsignacionModal(puesto.id_puesto);
     }
 
     function clearSelection() {
@@ -113,27 +118,33 @@ async function initGestionPorPuesto() {
         resultsContainer.style.display = 'none';
         clearBtn.style.display = 'none';
         document.getElementById('cursosListContainer').style.display = 'none';
+        document.getElementById('btnAddCursoAsignacion').style.display = 'none';
         searchInput.focus();
     }
 
     // Event Listeners
+    const showAllPuestos = () => {
+        const results = filterPuestos('');
+        renderResults(results);
+        if (searchInput.value) {
+            clearBtn.style.display = 'block';
+        }
+    };
+
     searchInput.addEventListener('input', (e) => {
         const term = e.target.value;
+        const results = filterPuestos(term);
+        renderResults(results);
+
         if (term.length > 0) {
-            const results = filterPuestos(term);
-            renderResults(results);
             clearBtn.style.display = 'block';
         } else {
-            resultsContainer.style.display = 'none';
             clearBtn.style.display = 'none';
         }
     });
 
-    searchInput.addEventListener('focus', () => {
-        if (searchInput.value.length > 0) {
-            resultsContainer.style.display = 'block';
-        }
-    });
+    searchInput.addEventListener('focus', showAllPuestos);
+    searchInput.addEventListener('click', showAllPuestos);
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
@@ -144,19 +155,16 @@ async function initGestionPorPuesto() {
 
     clearBtn.addEventListener('click', clearSelection);
 
-    // Existing search logic for courses
-    courseSearchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll('#cursosAsignacionBody tr');
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(term) ? '' : 'none';
-        });
-    });
+    // Listeners for filters
+    const filterClasificacion = document.getElementById('filterClasificacionAsignacion');
+    const triggerRender = () => renderAsignacionesTable(1);
+
+    courseSearchInput.addEventListener('input', triggerRender);
+    filterClasificacion?.addEventListener('change', triggerRender);
 }
 
 async function loadCursosPorPuesto(puestoId, page = 1) {
-    PAGINATION_GESTION.cursosAsignados.page = page;
+    // PAGINATION_GESTION.cursosAsignados.page = page; // Handled in render now
     const container = document.getElementById('cursosListContainer');
     const tbody = document.getElementById('cursosAsignacionBody');
     const loading = document.getElementById('gestionLoading');
@@ -164,6 +172,10 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
     container.style.display = 'none';
     loading.style.display = 'block';
     tbody.innerHTML = '';
+
+    // Reset Globals
+    currentAsignaciones = [];
+    asignacionesMetadata = {};
 
     try {
         // 1. Obtener asignaciones de cursos para este puesto
@@ -174,67 +186,25 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
 
         if (errorAsign) throw errorAsign;
 
-        if (!asignaciones || asignaciones.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center">Este puesto no tiene cursos asignados</td></tr>';
-            loading.style.display = 'none';
-            container.style.display = 'block';
-            renderPaginationControls(0, 1, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', `loadCursosPorPuesto('${puestoId}')`);
-            return;
+        currentAsignaciones = asignaciones || [];
+
+        if (currentAsignaciones.length > 0) {
+            // 2. Obtener detalles de los cursos (SOLO si hay asignaciones)
+            const cursoIds = currentAsignaciones.map(a => a.curso_id);
+            const { data: cursos, error: errorCursos } = await supabaseClient
+                .from('cursos')
+                .select('*')
+                .in('id_curso', cursoIds);
+
+            if (errorCursos) throw errorCursos;
+
+            // Crear mapa de cursos y guardarlo en metadata
+            cursos?.forEach(c => {
+                asignacionesMetadata[c.id_curso] = c;
+            });
         }
 
-        // 2. Obtener detalles de los cursos
-        const cursoIds = asignaciones.map(a => a.curso_id);
-        const { data: cursos, error: errorCursos } = await supabaseClient
-            .from('cursos')
-            .select('*')
-            .in('id_curso', cursoIds);
-
-        if (errorCursos) throw errorCursos;
-
-        // Crear mapa de cursos
-        const cursoMap = {};
-        cursos?.forEach(c => {
-            cursoMap[c.id_curso] = c;
-        });
-
-        // Paginación
-        const startIndex = (page - 1) * PAGINATION_GESTION.cursosAsignados.limit;
-        const endIndex = startIndex + PAGINATION_GESTION.cursosAsignados.limit;
-        const paginatedAsignaciones = asignaciones.slice(startIndex, endIndex);
-
-        // 3. Renderizar tabla con solo los cursos asignados
-        tbody.innerHTML = paginatedAsignaciones.map(asignacion => {
-            const curso = cursoMap[asignacion.curso_id];
-            if (!curso) return ''; // Skip si no se encuentra el curso
-
-            return `
-                <tr>
-                    <td>
-                        <div class="d-flex flex-column">
-                            <strong>${curso.nombre_curso}</strong>
-                            <span class="text-muted" style="font-size: 0.75rem;">ID: ${curso.id_curso}</span>
-                        </div>
-                    </td>
-                    <td>${asignacion.clasificacion_estrategica || 'N/A'}</td>
-                    <td>${(asignacion.vigencia_anio !== null && asignacion.vigencia_anio !== undefined) ? asignacion.vigencia_anio : 'N/A'}</td>
-                    <td>
-                        <span class="badge badge-${asignacion.estado === 'OK' ? 'success' : 'warning'}">
-                            ${asignacion.estado || 'N/A'}
-                        </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-small btn-outline" onclick="editCursoAsignacion(${asignacion.id_puesto_curso})">
-                            Editar Asignación
-                        </button>
-                        <button class="btn btn-small btn-danger" onclick="deleteCursoAsignacion(${asignacion.id_puesto_curso})">
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        renderPaginationControls(asignaciones.length, page, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', `loadCursosPorPuesto('${puestoId}')`);
+        renderAsignacionesTable(1);
 
         loading.style.display = 'none';
         container.style.display = 'block';
@@ -244,6 +214,81 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
         loading.style.display = 'none';
         showAlert('Error al cargar cursos', 'error');
     }
+}
+
+function renderAsignacionesTable(page = 1) {
+    PAGINATION_GESTION.cursosAsignados.page = page;
+    const tbody = document.getElementById('cursosAsignacionBody');
+    const puestoId = document.getElementById('selectedPuestoId').value;
+
+    // 1. Get Filters
+    const searchTerm = document.getElementById('searchCursoAsignacion')?.value.toLowerCase() || '';
+    const clasificacionFilter = document.getElementById('filterClasificacionAsignacion')?.value || '';
+
+    // 2. Filter Data
+    let filteredData = currentAsignaciones;
+
+    if (searchTerm) {
+        filteredData = filteredData.filter(item => {
+            const curso = asignacionesMetadata[item.curso_id];
+            return curso && (
+                curso.nombre_curso.toLowerCase().includes(searchTerm) ||
+                curso.id_curso.toLowerCase().includes(searchTerm)
+            );
+        });
+    }
+
+    if (clasificacionFilter) {
+        filteredData = filteredData.filter(item => item.clasificacion_estrategica === clasificacionFilter);
+    }
+
+    // 3. Handle Empty State
+    if (filteredData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron cursos asignados</td></tr>';
+        renderPaginationControls(0, 1, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', 'renderAsignacionesTable');
+        return;
+    }
+
+    // 4. Pagination Slicing
+    const startIndex = (page - 1) * PAGINATION_GESTION.cursosAsignados.limit;
+    const endIndex = startIndex + PAGINATION_GESTION.cursosAsignados.limit;
+    const paginatedData = filteredData.slice(startIndex, endIndex);
+
+    // 5. Render Rows
+    tbody.innerHTML = paginatedData.map(asignacion => {
+        const curso = asignacionesMetadata[asignacion.curso_id];
+        if (!curso) return '';
+
+        return `
+            <tr>
+                <td>
+                    <div class="d-flex flex-column">
+                        <strong>${curso.nombre_curso}</strong>
+                        <span class="text-muted" style="font-size: 0.75rem;">ID: ${curso.id_curso}</span>
+                    </div>
+                </td>
+                <td>${asignacion.clasificacion_estrategica || 'N/A'}</td>
+                <td>${(asignacion.vigencia_anio !== null && asignacion.vigencia_anio !== undefined) ? asignacion.vigencia_anio : 'N/A'}</td>
+                <td>
+                    <span class="badge badge-${asignacion.estado === 'OK' ? 'success' : 'warning'}">
+                        ${asignacion.estado || 'N/A'}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-small btn-outline" onclick="editCursoAsignacion(${asignacion.id_puesto_curso})">
+                        Editar
+                    </button>
+                    <button class="btn btn-small btn-danger" onclick="deleteCursoAsignacion(${asignacion.id_puesto_curso})">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    // 6. Render Pagination Controls
+    // Note: Use 'renderAsignacionesTable' as the callback string since we are paginating locally
+    renderPaginationControls(filteredData.length, page, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', 'renderAsignacionesTable');
 }
 
 async function toggleAsignacion(checkbox) {
@@ -336,11 +381,13 @@ async function openAddAsignacionModal(puestoId) {
 
     modalTitle.textContent = 'Asignar Curso a Puesto';
 
-    // Fetch all courses to populate the list, maybe filter out already assigned ones if needed, 
-    // but for now let's just show them and maybe disable or handle duplicates validation on save.
-    // Better: Fetch courses NOT assigned to this puesto.
-
     try {
+        const { data: puesto } = await supabaseClient
+            .from('puestos')
+            .select('nombre_puesto')
+            .eq('id_puesto', puestoId)
+            .single();
+
         const { data: allCursos, error } = await supabaseClient
             .from('cursos')
             .select('*')
@@ -361,12 +408,31 @@ async function openAddAsignacionModal(puestoId) {
             <form id="addAsignacionForm">
                 <input type="hidden" name="puesto_id" value="${puestoId}">
                 
-                <div class="form-group">
+                <p class="mb-4"><strong>Puesto:</strong> ${puesto?.nombre_puesto}</p>
+                
+                <div class="alert alert-info" style="margin-bottom: 1rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                    </svg>
+                    <div style="flex: 1;">
+                        <strong>Nota:</strong> Solo se muestran cursos que aún no están asignados a este puesto.
+                    </div>
+                </div>
+                
+                <div id="modalValidationError" class="alert alert-warning" style="margin-bottom: 1rem; display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    <div style="flex: 1;">
+                        <strong id="modalValidationErrorText"></strong>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="position: relative;">
                     <label class="form-label">Buscar y Seleccionar Curso *</label>
-                    <input type="text" id="searchCursoModal" class="form-input" placeholder="Escribe para buscar..." style="margin-bottom: 0.5rem;" autocomplete="off">
-                    <select class="form-select" name="curso_id" id="cursoSelectModal" size="5" required>
-                        ${availableCursos.map(c => `<option value="${c.id_curso}">${c.nombre_curso}</option>`).join('')}
-                    </select>
+                    <input type="text" id="cursoSearchInput" class="form-input" placeholder="Escribe el nombre del curso..." autocomplete="off">
+                    <input type="hidden" name="curso_id" id="selectedCursoId">
+                    <div id="cursoSearchResults" class="dropdown-results" style="display: none;"></div>
                 </div>
 
                 <div class="form-group">
@@ -393,37 +459,22 @@ async function openAddAsignacionModal(puestoId) {
             </form>
         `;
 
-        // Add search functionality in modal
-        const searchInput = document.getElementById('searchCursoModal');
-        const select = document.getElementById('cursoSelectModal');
-
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            select.innerHTML = '';
-
-            const filtered = availableCursos.filter(c => c.nombre_curso.toLowerCase().includes(term));
-
-            filtered.forEach(c => {
-                const option = document.createElement('option');
-                option.value = c.id_curso;
-                option.textContent = c.nombre_curso;
-                select.appendChild(option);
-            });
-
-            if (filtered.length === 0) {
-                const option = document.createElement('option');
-                option.disabled = true;
-                option.textContent = 'No se encontraron cursos';
-                select.appendChild(option);
-            }
-        });
+        // Setup course search
+        setupCursoSearch(availableCursos || []);
 
         confirmBtn.onclick = async () => {
-            // Validate that a course is selected
-            if (!select.value) {
-                showAlert('Por favor selecciona un curso de la lista', 'warning');
+            const selectedId = document.getElementById('selectedCursoId').value;
+            const errorDiv = document.getElementById('modalValidationError');
+            const errorText = document.getElementById('modalValidationErrorText');
+
+            if (!selectedId) {
+                errorText.textContent = 'Por favor selecciona un curso de la lista';
+                errorDiv.style.display = 'flex';
                 return;
             }
+
+            // Hide error if validation passes
+            errorDiv.style.display = 'none';
             await saveAsignacion();
         };
 
@@ -433,6 +484,61 @@ async function openAddAsignacionModal(puestoId) {
         console.error('Error opening add modal:', error);
         showAlert('Error al cargar cursos disponibles', 'error');
     }
+}
+
+function setupCursoSearch(cursos) {
+    const searchInput = document.getElementById('cursoSearchInput');
+    const hiddenInput = document.getElementById('selectedCursoId');
+    const resultsContainer = document.getElementById('cursoSearchResults');
+
+    const showAllCursos = () => {
+        renderCursoResults(cursos, searchInput, hiddenInput, resultsContainer);
+        resultsContainer.style.display = 'block';
+    };
+
+    const filterCursos = (term) => {
+        if (!term) return cursos;
+        return cursos.filter(c => c.nombre_curso.toLowerCase().includes(term.toLowerCase()));
+    };
+
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value;
+        const results = filterCursos(term);
+        renderCursoResults(results, searchInput, hiddenInput, resultsContainer);
+        resultsContainer.style.display = 'block';
+    });
+
+    searchInput.addEventListener('focus', showAllCursos);
+    searchInput.addEventListener('click', showAllCursos);
+
+    // Hide when clicking outside
+    document.addEventListener('click', (e) => {
+        if (searchInput && resultsContainer) {
+            if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+                resultsContainer.style.display = 'none';
+            }
+        }
+    });
+}
+
+function renderCursoResults(results, searchInput, hiddenInput, resultsContainer) {
+    resultsContainer.innerHTML = '';
+    if (results.length === 0) {
+        resultsContainer.innerHTML = '<div class="dropdown-item no-results">No se encontraron cursos</div>';
+        return;
+    }
+
+    results.forEach(curso => {
+        const div = document.createElement('div');
+        div.className = 'dropdown-item';
+        div.textContent = curso.nombre_curso;
+        div.onclick = () => {
+            searchInput.value = curso.nombre_curso;
+            hiddenInput.value = curso.id_curso;
+            resultsContainer.style.display = 'none';
+        };
+        resultsContainer.appendChild(div);
+    });
 }
 
 async function getNextPuestoCursoId() {
@@ -492,7 +598,7 @@ async function editCursoAsignacion(assignmentId) {
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');
 
-    modalTitle.textContent = 'Editar Asignación de Curso';
+    modalTitle.textContent = 'Editar Curso';
 
     try {
         // Get assignment details

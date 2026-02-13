@@ -25,6 +25,10 @@ function setupCursosListeners() {
     document.getElementById('searchCurso')?.addEventListener('input', (e) => {
         loadCursos();
     });
+
+    document.getElementById('filterEstado')?.addEventListener('change', (e) => {
+        loadCursos();
+    });
 }
 
 // === CURSOS ===
@@ -102,6 +106,12 @@ async function loadCursos(page = 1) {
 
         // Aplicar filtros dinámicos (estado y búsqueda)
         const searchTerm = document.getElementById('searchCurso')?.value.toLowerCase();
+        const estadoFilter = document.getElementById('filterEstado')?.value;
+
+        // Apply status filter from dropdown if not overridden by URL filter
+        if (estadoFilter && !filter) {
+            cursos = cursos.filter(c => c.estado === estadoFilter);
+        }
 
         if (searchTerm) {
             cursos = cursos.filter(c =>
@@ -267,7 +277,7 @@ async function editPuestoCurso(puestoCursoId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
 
-    modalTitle.textContent = 'Editar Asignación de Curso';
+    modalTitle.textContent = 'Editar Curso';
 
     try {
         const { data: puestoCurso } = await supabaseClient

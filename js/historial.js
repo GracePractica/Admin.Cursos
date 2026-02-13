@@ -329,6 +329,15 @@ async function openAddHistorialModal(colaboradorId) {
                 <input type="hidden" name="colaborador_id" value="${colaboradorId}">
                 <p class="mb-4"><strong>Colaborador:</strong> ${colab?.nombre_colab}</p>
 
+                <div id="modalValidationError" class="alert alert-warning" style="margin-bottom: 1rem; display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    <div style="flex: 1;">
+                        <strong id="modalValidationErrorText"></strong>
+                    </div>
+                </div>
+
                 <div class="form-group" style="position: relative;">
                     <label class="form-label">Buscar Curso *</label>
                     <input type="text" class="form-input" id="cursoSearchInput" placeholder="Escribe el nombre del curso..." autocomplete="off" required>
@@ -368,6 +377,18 @@ async function openAddHistorialModal(colaboradorId) {
         setupCursoSearch(cursos || []);
 
         confirmBtn.onclick = async () => {
+            const selectedId = document.getElementById('selectedCursoId').value;
+            const errorDiv = document.getElementById('modalValidationError');
+            const errorText = document.getElementById('modalValidationErrorText');
+
+            if (!selectedId) {
+                errorText.textContent = 'Por favor selecciona un curso de la lista';
+                errorDiv.style.display = 'flex';
+                return;
+            }
+
+            // Hide error if validation passes
+            errorDiv.style.display = 'none';
             await saveHistorial();
         };
 
@@ -456,7 +477,15 @@ async function saveHistorial() {
 
     } catch (error) {
         console.error('Error saving historial:', error);
-        showAlert('Error al registrar la capacitación: ' + (error.message || 'Error desconocido'), 'error');
+        const errorDiv = document.getElementById('modalValidationError');
+        const errorText = document.getElementById('modalValidationErrorText');
+
+        if (errorDiv && errorText) {
+            errorText.textContent = 'Error al registrar la capacitación: ' + (error.message || 'Error desconocido');
+            errorDiv.style.display = 'flex';
+        } else {
+            showAlert('Error al registrar la capacitación: ' + (error.message || 'Error desconocido'), 'error');
+        }
     }
 }
 
@@ -481,18 +510,25 @@ async function editHistorial(historialId) {
             .select('id_curso, nombre_curso')
             .order('nombre_curso');
 
+        const { data: colab } = await supabaseClient
+            .from('colaboradores')
+            .select('nombre_colab')
+            .eq('id_colab', historial.colaborador_id)
+            .single();
+
         const cursoActual = cursos?.find(c => c.id_curso == historial.curso_id);
 
         modalBody.innerHTML = `
             <form id="editHistorialForm">
                 <input type="hidden" name="id" value="${historial.id_historial}">
                 <input type="hidden" name="colaborador_id" value="${historial.colaborador_id}">
+                <input type="hidden" name="curso_id" id="selectedCursoId" value="${historial.curso_id}">
+
+                <p class="mb-4"><strong>Colaborador:</strong> ${colab?.nombre_colab}</p>
 
                 <div class="form-group" style="position: relative;">
-                    <label class="form-label">Buscar Curso *</label>
-                    <input type="text" class="form-input" id="cursoSearchInput" placeholder="Escribe el nombre del curso..." autocomplete="off" value="${cursoActual?.nombre_curso || ''}" required>
-                    <input type="hidden" name="curso_id" id="selectedCursoId" value="${historial.curso_id}">
-                    <div id="cursoSearchResults" class="dropdown-results" style="display: none;"></div>
+                    <label class="form-label">Curso</label>
+                    <input type="text" class="form-input" value="${cursoActual?.nombre_curso || ''}" readonly>
                 </div>
 
                 <div class="form-group-row">
@@ -522,9 +558,6 @@ async function editHistorial(historialId) {
                 </div>
             </form>
         `;
-
-        // Setup course search
-        setupCursoSearch(cursos || []);
 
         confirmBtn.textContent = 'Guardar';
         confirmBtn.className = 'btn btn-primary';

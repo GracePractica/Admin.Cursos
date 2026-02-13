@@ -89,34 +89,6 @@
                         </div>
                     </a>
 
-                    <!-- Cursos Inactivos -->
-                    <a href="cursos.html?filter=inactivos" class="stat-card stat-card-link">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value" id="cursosInactivos">0</div>
-                                <div class="stat-label">Cursos Inactivos</div>
-                            </div>
-                            <div class="stat-icon stat-icon-blue">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="stat-progress">
-                            <div class="stat-percentage">
-                                <span class="stat-percentage-label">Porcentaje</span>
-                                <span class="stat-percentage-value" id="cursosInactivosPct">0%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="cursosInactivosBar" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <div class="stat-action">
-                            <span>Click para gestionar →</span>
-                        </div>
-                    </a>
-
                     <!-- Cursos sin Estado -->
                     <a href="cursos.html?filter=sin_estado" class="stat-card stat-card-link">
                         <div class="stat-header">
@@ -145,92 +117,86 @@
                         </div>
                     </a>
 
-                    <!-- Colaboradores sin Puesto -->
-                    <a href="colaboradores.html?filter=sin_puesto" class="stat-card stat-card-link">
+                    <!-- Cursos Inactivos -->
+                    <a href="cursos.html?filter=inactivos" class="stat-card stat-card-link">
                         <div class="stat-header">
                             <div>
-                                <div class="stat-value" id="colaboradoresSinPuesto">0</div>
-                                <div class="stat-label">Colaboradores sin Puesto</div>
+                                <div class="stat-value" id="cursosInactivos">0</div>
+                                <div class="stat-label">Cursos Inactivos</div>
                             </div>
-                            <div class="stat-icon stat-icon-red">
+                            <div class="stat-icon stat-icon-orange">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
                                     <path
-                                        d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3z" />
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                                 </svg>
                             </div>
                         </div>
                         <div class="stat-progress">
                             <div class="stat-percentage">
                                 <span class="stat-percentage-label">Porcentaje</span>
-                                <span class="stat-percentage-value" id="colaboradoresSinPuestoPct">0%</span>
+                                <span class="stat-percentage-value" id="cursosInactivosPct">0%</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill" id="colaboradoresSinPuestoBar" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <div class="stat-details">
-                            <div class="stat-count">
-                                <span class="stat-count-label">Total Colaboradores</span>
-                                <span class="stat-count-value" id="totalColaboradores">0</span>
+                                <div class="progress-fill" id="cursosInactivosBar" style="width: 0%"></div>
                             </div>
                         </div>
                         <div class="stat-action">
-                            <span>Click para asignar puestos →</span>
+                            <span>Click para revisar →</span>
                         </div>
                     </a>
                 </div>
+    </div>
 
-                <!-- Quick Actions -->
-                <div class="quick-actions">
-                    <h2 class="section-title">Accesos Rápidos</h2>
-                    <div class="action-grid">
-                        <a href="colaboradores.html" class="action-card">
-                            <div class="action-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
-                                </svg>
-                            </div>
-                            <h3>Gestionar Colaboradores</h3>
-                            <p>Agregar, editar o eliminar colaboradores</p>
-                        </a>
-
-                        <a href="cursos.html" class="action-card">
-                            <div class="action-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
-                                </svg>
-                            </div>
-                            <h3>Gestionar Cursos</h3>
-                            <p>Administrar catálogo de cursos</p>
-                        </a>
-
-                        <a href="gestion.html" class="action-card">
-                            <div class="action-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                                </svg>
-                            </div>
-                            <h3>Asignar Cursos</h3>
-                            <p>Matriz de asignación curso-puesto</p>
-                        </a>
-
-                        <a href="historial.html" class="action-card">
-                            <div class="action-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
-                                </svg>
-                            </div>
-                            <h3>Ver Historial</h3>
-                            <p>Historial de capacitaciones</p>
-                        </a>
-                    </div>
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h2 class="section-title">Accesos Rápidos</h2>
+        <div class="action-grid">
+            <a href="colaboradores.html" class="action-card">
+                <div class="action-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                    </svg>
                 </div>
-            </section>
-        </main>
+                <h3>Gestionar Colaboradores</h3>
+                <p>Agregar, editar o eliminar colaboradores</p>
+            </a>
+
+            <a href="cursos.html" class="action-card">
+                <div class="action-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
+                    </svg>
+                </div>
+                <h3>Gestionar Cursos</h3>
+                <p>Administrar catálogo de cursos</p>
+            </a>
+
+            <a href="gestion.html" class="action-card">
+                <div class="action-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                    </svg>
+                </div>
+                <h3>Asignar Cursos</h3>
+                <p>Matriz de asignación curso-puesto</p>
+            </a>
+
+            <a href="historial.html" class="action-card">
+                <div class="action-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
+                    </svg>
+                </div>
+                <h3>Ver Historial</h3>
+                <p>Historial de capacitaciones</p>
+            </a>
+        </div>
+    </div>
+    </section>
+    </main>
     </div>
 
     <!-- Scripts -->

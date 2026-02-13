@@ -898,17 +898,173 @@ table,
     min-width: 900px;
     border-collapse: collapse;
     background: var(--surface-color);
-    table-layout: auto;
+    table-layout: fixed;
+    /* Fix column widths */
 }
 
 /* Columnas compactas para laptops */
 .data-table th,
 .data-table td {
-    min-width: 100px;
     padding: 8px 10px;
     /* Reducir padding */
     white-space: nowrap;
     font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* === GESTIÓN PAGE TABLE STYLES === */
+body[data-page="gestion"] .data-table td:first-child,
+body[data-page="gestion"] .data-table th:first-child {
+    white-space: normal;
+    word-wrap: break-word;
+    width: 40%;
+}
+
+body[data-page="gestion"] .data-table th:nth-child(2),
+body[data-page="gestion"] .data-table td:nth-child(2) {
+    width: 15%;
+}
+
+/* Clasificación */
+
+body[data-page="gestion"] .data-table th:nth-child(3),
+body[data-page="gestion"] .data-table td:nth-child(3) {
+    width: 10%;
+}
+
+/* Vigencia */
+
+body[data-page="gestion"] .data-table th:nth-child(4),
+body[data-page="gestion"] .data-table td:nth-child(4) {
+    width: 15%;
+}
+
+/* Estado */
+
+body[data-page="gestion"] .data-table th:last-child,
+body[data-page="gestion"] .data-table td:last-child {
+    width: 20%;
+    text-align: center;
+}
+
+/* === CURSOS PAGE TABLE STYLES === */
+body[data-page="cursos"] .data-table th:nth-child(1),
+body[data-page="cursos"] .data-table td:nth-child(1) {
+    width: 15%;
+}
+
+/* ID */
+
+body[data-page="cursos"] .data-table th:nth-child(2),
+body[data-page="cursos"] .data-table td:nth-child(2) {
+    width: 30%;
+    white-space: normal;
+}
+
+/* Nombre */
+
+body[data-page="cursos"] .data-table th:nth-child(3),
+body[data-page="cursos"] .data-table td:nth-child(3) {
+    width: 10%;
+    text-align: center;
+}
+
+/* Estado */
+
+body[data-page="cursos"] .data-table th:nth-child(4),
+body[data-page="cursos"] .data-table td:nth-child(4) {
+    width: 15%;
+}
+
+/* Primera Fecha */
+
+body[data-page="cursos"] .data-table th:nth-child(5),
+body[data-page="cursos"] .data-table td:nth-child(5) {
+    width: 15%;
+}
+
+/* Última Fecha */
+
+body[data-page="cursos"] .data-table th:last-child,
+body[data-page="cursos"] .data-table td:last-child {
+    width: 15%;
+    text-align: center;
+}
+
+/* === PUESTOS PAGE TABLE STYLES === */
+body[data-page="puestos"] .data-table th:nth-child(1),
+body[data-page="puestos"] .data-table td:nth-child(1) {
+    width: 10%;
+    text-align: center;
+}
+
+/* ID */
+
+body[data-page="puestos"] .data-table th:nth-child(2),
+body[data-page="puestos"] .data-table td:nth-child(2) {
+    width: 40%;
+    white-space: normal;
+}
+
+/* Nombre del Puesto */
+
+body[data-page="puestos"] .data-table th:nth-child(3),
+body[data-page="puestos"] .data-table td:nth-child(3) {
+    width: 30%;
+}
+
+/* Departamento */
+
+body[data-page="puestos"] .data-table th:last-child,
+body[data-page="puestos"] .data-table td:last-child {
+    width: 20%;
+    text-align: center;
+}
+
+/* === HISTORIAL PAGE TABLE STYLES === */
+body[data-page="historial"] .data-table th:nth-child(1),
+body[data-page="historial"] .data-table td:nth-child(1) {
+    width: 35%;
+    white-space: normal;
+}
+
+/* Curso */
+
+body[data-page="historial"] .data-table th:nth-child(2),
+body[data-page="historial"] .data-table td:nth-child(2) {
+    width: 13%;
+}
+
+/* Inicio */
+
+body[data-page="historial"] .data-table th:nth-child(3),
+body[data-page="historial"] .data-table td:nth-child(3) {
+    width: 13%;
+}
+
+/* Final */
+
+body[data-page="historial"] .data-table th:nth-child(4),
+body[data-page="historial"] .data-table td:nth-child(4) {
+    width: 12%;
+    text-align: center;
+}
+
+/* Duración */
+
+body[data-page="historial"] .data-table th:nth-child(5),
+body[data-page="historial"] .data-table td:nth-child(5) {
+    width: 12%;
+    text-align: center;
+}
+
+/* Estado */
+
+body[data-page="historial"] .data-table th:last-child,
+body[data-page="historial"] .data-table td:last-child {
+    width: 15%;
+    text-align: center;
 }
 
 thead {
