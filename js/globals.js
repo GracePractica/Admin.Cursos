@@ -243,6 +243,11 @@ function findPossibleDuplicates(nombres) {
 
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
+    // If it's a simple date string YYYY-MM-DD, split it to avoid timezone issues
+    if (dateString.length === 10 && dateString.includes('-')) {
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+    }
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
         year: 'numeric',
