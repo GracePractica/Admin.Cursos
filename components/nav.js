@@ -61,7 +61,6 @@ function getNavigationHTML(activePage = 'dashboard') {
                     </a>
                 </nav>
                 <div class="navbar-user">
-                    <span class="navbar-user-name">Admin</span>
                     <button class="logout-btn" id="logoutBtn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M10 17l5-5-5-5v3H3v4h7v3zm9-12H12v2h7v10h-7v2h7c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/>
@@ -81,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (navContainer) {
         navContainer.innerHTML = getNavigationHTML(currentPage);
     }
-// Logout handler
+    // Logout handler
     document.addEventListener('click', async function (e) {
         if (e.target.closest('#logoutBtn')) {
             if (!window.supabaseClient) return;
@@ -97,5 +96,5 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    
+
 });

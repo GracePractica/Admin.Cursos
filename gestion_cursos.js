@@ -631,8 +631,8 @@ async function editCursoAsignacion(assignmentId) {
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Vigencia (años) (Opcional, 0 = Indefinida)</label>
-                    <input type="number" class="form-input" name="vigencia_anio" value="${assignment.vigencia_anio || 0}" min="0">
+                    <label class="form-label">Vigencia (años)</label>
+                    <input type="number" id="editVigencia" class="form-input" value="${assignment.vigencia_anio || 0}" min="0">
                 </div>
 
                 <div class="form-group">
