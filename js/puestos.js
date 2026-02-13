@@ -71,7 +71,12 @@ async function loadPuestos(page = 1) {
         const paginatedPuestos = puestos.slice(startIndex, endIndex);
 
         tbody.innerHTML = paginatedPuestos.map(puesto => {
-            const deps = puesto.departamento_puesto?.map(dp => dp.dep_id).join(', ') || 'N/A';
+            const deps = puesto.departamento_puesto?.length
+                ? puesto.departamento_puesto
+                    .map(dp => `<div>${dp.dep_id}</div>`)
+                    .join('')
+                : 'N/A';
+
             return `
                 <tr>
                     <td><strong>${puesto.id_puesto}</strong></td>
