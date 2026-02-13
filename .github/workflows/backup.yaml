@@ -7,7 +7,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "30 9 * * *" # Runs every day at 9:90 am UTC
+    - cron: "55 9 * * *" # Runs every day at 9:90 am UTC
 
 env:
   BACKUP_ENABLED: true
