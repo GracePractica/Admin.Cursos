@@ -19,8 +19,6 @@
         <main class="main-content">
             <header class="main-header">
                 <h1 class="page-title">Historial de Capacitaciones</h1>
-                <div class="header-actions">
-                </div>
             </header>
 
             <div id="alertContainer"></div>
@@ -32,11 +30,26 @@
                         <p class="card-subtitle">Selecciona un colaborador para ver su historial de capacitaciones</p>
                     </div>
                     <div class="card-body">
-                        <div class="form-group" style="max-width: 400px; margin-bottom: 2rem;">
-                            <label for="colaboradorSelect" class="form-label">Seleccionar Colaborador:</label>
-                            <select id="colaboradorSelect" class="form-select">
-                                <option value="">-- Selecciona un colaborador --</option>
-                            </select>
+                        <div class="form-group" style="max-width: 100%; margin-bottom: 2rem; position: relative;">
+                            <label for="colaboradorSearchInput" class="form-label">Buscar Colaborador:</label>
+                            <div class="input-group">
+                                <input type="text" id="colaboradorSearchInput" class="form-input"
+                                    placeholder="Escribe el nombre del colaborador..." autocomplete="off">
+                                <input type="hidden" id="selectedColaboradorId">
+                                <button class="btn btn-outline" id="clearColaboradorSearch" style="display: none;">
+                                    &times;
+                                </button>
+                            </div>
+                            <div id="colaboradorSearchResults" class="dropdown-results" style="display: none;"></div>
+
+                            <div style="margin-top: 1rem;">
+                                <button class="btn btn-primary" id="addHistorialButton" style="display: none;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                                    </svg>
+                                    Registrar Capacitación
+                                </button>
+                            </div>
                         </div>
 
                         <div id="historialListContainer" style="display: none;">
@@ -44,7 +57,16 @@
                                 <div class="filter-group">
                                     <label for="searchHistorial">Buscar en resultados:</label>
                                     <input type="text" id="searchHistorial" class="form-input"
-                                        placeholder="Nombre de curso o estado...">
+                                        placeholder="Nombre de curso...">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterEstadoHistorial">Estado:</label>
+                                    <select id="filterEstadoHistorial" class="form-select">
+                                        <option value="">Todos</option>
+                                        <option value="Completado">Completado</option>
+                                        <option value="En Proceso">En Proceso</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -53,12 +75,13 @@
                                     <thead>
                                         <tr>
                                             <th>Curso</th>
-                                            <th>Departamento</th>
-                                            <th>Puesto</th>
+
+
                                             <th>Fecha Inicio</th>
                                             <th>Fecha Final</th>
                                             <th>Duración (hrs)</th>
                                             <th>Estado</th>
+                                            <th class="actions-column">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody id="historialTableBody">
@@ -77,6 +100,21 @@
                 </div>
             </section>
         </main>
+
+        <!-- Modal -->
+        <div id="mainModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Modal</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelModal">Cancelar</button>
+                    <button class="btn btn-primary" id="confirmModal">Guardar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
