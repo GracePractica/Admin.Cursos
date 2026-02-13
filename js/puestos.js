@@ -71,21 +71,32 @@ async function loadPuestos(page = 1) {
         const paginatedPuestos = puestos.slice(startIndex, endIndex);
 
         tbody.innerHTML = paginatedPuestos.map(puesto => {
+            // Renderizamos departamentos
             const deps = puesto.departamento_puesto?.length
-                ? puesto.departamento_puesto
-                    .map(dp => `<div>${dp.dep_id}</div>`)
-                    .join('')
+                ? puesto.departamento_puesto.map(dp => `<div>${dp.dep_id}</div>`).join('')
                 : 'N/A';
+
+            // Renderizamos acciones por cada departamento (sin mostrar el ID en el botón)
+            const acciones = puesto.departamento_puesto?.length
+                ? puesto.departamento_puesto.map(dp => `
+                    <div>
+                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto}, '${dp.dep_id}')">Editar</button>
+                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto}, '${dp.dep_id}')">Eliminar</button>
+                    </div>
+                `).join('')
+                : `
+                    <div>
+                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto})">Editar</button>
+                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto})">Eliminar</button>
+                    </div>
+                `;
 
             return `
                 <tr>
                     <td><strong>${puesto.id_puesto}</strong></td>
                     <td>${puesto.nombre_puesto}</td>
                     <td>${deps}</td>
-                    <td>
-                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto})">Editar</button>
-                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto})">Eliminar</button>
-                    </td>
+                    <td>${acciones}</td>
                 </tr>
             `;
         }).join('');
@@ -144,13 +155,21 @@ async function savePuesto() {
 
         if (puestoError) throw puestoError;
 
-        // Insertamos la relación en departamento_puesto con upsert
+        // Obtenemos el ID del nuevo puesto
+        const puestoId = newPuesto.id_puesto;
+
+        // Obtenemos todos los departamentos seleccionados
+        const depIds = formData.getAll('dep_id').filter(id => id !== "");
+
+        // Insertamos las relaciones en departamento_puesto
+        const relaciones = depIds.map(depId => ({
+            puesto_id: puestoId,
+            dep_id: depId
+        }));
+
         const { error: depError } = await supabaseClient
             .from('departamento_puesto')
-            .upsert([{
-                puesto_id: newPuesto.id_puesto,
-                dep_id: formData.get('dep_id')
-            }], { onConflict: ['puesto_id', 'dep_id'] });
+            .insert(relaciones);
 
         if (depError) throw depError;
 
@@ -164,7 +183,7 @@ async function savePuesto() {
     }
 }
 
-async function editPuesto(puestoId) {
+async function editPuesto(puestoId, depId = null) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
 
@@ -185,7 +204,8 @@ async function editPuesto(puestoId) {
 
         const { data: departamentos } = await supabaseClient.from('departamento').select('*').order('id_dep');
 
-        const depActual = puesto.departamento_puesto?.[0]?.dep_id || '';
+        // Si se pasa depId, solo se edita esa relación
+        const depActual = depId || (puesto.departamento_puesto?.[0]?.dep_id || '');
 
         modalBody.innerHTML = `
             <form id="editPuestoForm">
@@ -223,9 +243,10 @@ async function updatePuesto() {
     const formData = new FormData(form);
 
     const puestoId = formData.get('id_puesto');
+    const depIds = formData.getAll('dep_id'); // 🔑 aquí definimos depIds correctamente
 
     try {
-        // Actualizamos el puesto
+        // Actualizamos el nombre del puesto
         const { error: puestoError } = await supabaseClient
             .from('puestos')
             .update({ nombre_puesto: formData.get('nombre_puesto') })
@@ -233,13 +254,21 @@ async function updatePuesto() {
 
         if (puestoError) throw puestoError;
 
-        // Actualizamos la relación con upsert
+        // Eliminamos relaciones viejas
+        await supabaseClient
+            .from('departamento_puesto')
+            .delete()
+            .eq('puesto_id', puestoId);
+
+        // Insertamos nuevas relaciones
+        const relaciones = depIds.map(depId => ({
+            puesto_id: puestoId,
+            dep_id: depId
+        }));
+
         const { error: depError } = await supabaseClient
             .from('departamento_puesto')
-            .upsert([{
-                puesto_id: puestoId,
-                dep_id: formData.get('dep_id')
-            }], { onConflict: ['puesto_id', 'dep_id'] });
+            .insert(relaciones);
 
         if (depError) throw depError;
 
@@ -253,35 +282,53 @@ async function updatePuesto() {
     }
 }
 
-async function deletePuesto(puestoId) {
-    if (!confirm('¿Está seguro de eliminar este puesto? Esta acción no se puede deshacer.')) {
-        return;
-    }
+async function deletePuesto(puestoId, depId = null) {
+    if (depId) {
+        if (!confirm('¿Está seguro de eliminar este departamento del puesto?')) {
+            return;
+        }
 
-    try {
-        // Primero eliminamos las relaciones en la tabla intermedia
-        await supabaseClient
-            .from('departamento_puesto')
-            .delete()
-            .eq('puesto_id', puestoId);
+        try {
+            await supabaseClient
+                .from('departamento_puesto')
+                .delete()
+                .eq('puesto_id', puestoId)
+                .eq('dep_id', depId);
 
-        // Luego eliminamos el puesto
-        const { error } = await supabaseClient
-            .from('puestos')
-            .delete()
-            .eq('id_puesto', puestoId);
+            showAlert('Departamento eliminado del puesto exitosamente', 'success');
+            await loadPuestos();
 
-        if (error) throw error;
+        } catch (error) {
+            console.error('Error eliminando departamento del puesto:', error);
+            showAlert('Error al eliminar el departamento del puesto', 'error');
+        }
+    } else {
+        if (!confirm('¿Está seguro de eliminar este puesto completo? Esta acción no se puede deshacer.')) {
+            return;
+        }
 
-        showAlert('Puesto eliminado exitosamente', 'success');
-        await loadPuestos();
+        try {
+            await supabaseClient
+                .from('departamento_puesto')
+                .delete()
+                .eq('puesto_id', puestoId);
 
-    } catch (error) {
-        console.error('Error eliminando puesto:', error);
-        showAlert('Error al eliminar. Puede que tenga datos relacionados.', 'error');
+            const { error } = await supabaseClient
+                .from('puestos')
+                .delete()
+                .eq('id_puesto', puestoId);
+
+            if (error) throw error;
+
+            showAlert('Puesto eliminado exitosamente', 'success');
+            await loadPuestos();
+
+        } catch (error) {
+            console.error('Error eliminando puesto:', error);
+            showAlert('Error al eliminar el puesto', 'error');
+        }
     }
 }
-
 // === FILTRO DE DEPARTAMENTOS POR ID ===
 async function loadDepartamentosFilter(selectId) {
     const select = document.getElementById(selectId);
