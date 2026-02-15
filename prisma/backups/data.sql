@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict 7XgDehgMGQbxFmgiIkjTV9wKrk9KHG2F5wGhWS8T77WDho3tHrj5teqdY2tYbAO
+-- \restrict 2cYRYHEYS4VQvgx7PuN46E6PnIcj6NyKR24HGU3T9Cb1uMqQNc3WSGsWTFxoSUq
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -44,7 +44,7 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
 00000000-0000-0000-0000-000000000000	cbbc086a-33c0-4909-9525-a3558d21ed43	authenticated	authenticated	usuario2@gmail.com	$2a$10$xmBlIaWoNwnnKLixH9UNt.J0ZhSEjUjUjIu2PuwYj.EdIqAycRTiK	2026-02-12 20:39:57.024033+00	\N		\N		\N			\N	\N	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-12 20:39:57.016457+00	2026-02-12 20:39:57.024944+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	f963d3fc-7219-4c94-8f99-e93658a1ea24	authenticated	authenticated	usuario1@gmail.com	$2a$10$Ib2yN/fFRt4lhPSS7.zDleWHpUB0Vj7wHtLWMzB7BUOlBh7bzwU/.	2026-02-12 20:34:43.8507+00	\N		\N		\N			\N	2026-02-13 18:34:10.695679+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-12 20:34:43.825361+00	2026-02-13 18:34:10.71237+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-13 20:28:59.761418+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-13 21:47:27.96181+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-15 03:57:43.292955+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-15 03:57:43.380807+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -81,6 +81,7 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
 9aa90b16-9221-479a-a219-d0b809e86917	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	2026-02-13 20:28:59.761515+00	2026-02-13 21:47:27.975234+00	\N	aal1	\N	2026-02-13 21:47:27.975125	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36	190.32.30.178	\N	\N	\N	\N	\N
+376c705d-bf5d-4f8b-a205-450f7de3a093	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	2026-02-15 03:57:43.29415+00	2026-02-15 03:57:43.29415+00	\N	aal1	\N	\N	Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Mobile Safari/537.36	143.105.66.229	\N	\N	\N	\N	\N
 7c3892e9-3fa4-4535-86e7-755c0b6d3081	f963d3fc-7219-4c94-8f99-e93658a1ea24	2026-02-13 18:34:10.695785+00	2026-02-13 18:34:10.695785+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36	186.73.144.223	\N	\N	\N	\N	\N
 \.
 
@@ -92,6 +93,7 @@ COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id"
 COPY "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") FROM stdin;
 7c3892e9-3fa4-4535-86e7-755c0b6d3081	2026-02-13 18:34:10.712941+00	2026-02-13 18:34:10.712941+00	password	0b4a8e7b-884b-41da-a163-e6fe256a277a
 9aa90b16-9221-479a-a219-d0b809e86917	2026-02-13 20:28:59.831072+00	2026-02-13 20:28:59.831072+00	password	b6a04190-dbb3-47a8-b702-b3afd110e732
+376c705d-bf5d-4f8b-a205-450f7de3a093	2026-02-15 03:57:43.390547+00	2026-02-15 03:57:43.390547+00	password	f637db4d-c9c5-4d9c-947c-464801843003
 \.
 
 
@@ -151,6 +153,7 @@ COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked"
 00000000-0000-0000-0000-000000000000	60	6ksw2cscohgg	f963d3fc-7219-4c94-8f99-e93658a1ea24	f	2026-02-13 18:34:10.710556+00	2026-02-13 18:34:10.710556+00	\N	7c3892e9-3fa4-4535-86e7-755c0b6d3081
 00000000-0000-0000-0000-000000000000	61	5myxy27hv5xv	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	t	2026-02-13 20:28:59.796736+00	2026-02-13 21:47:27.933969+00	\N	9aa90b16-9221-479a-a219-d0b809e86917
 00000000-0000-0000-0000-000000000000	62	n7vjbfiuzky6	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	f	2026-02-13 21:47:27.950935+00	2026-02-13 21:47:27.950935+00	5myxy27hv5xv	9aa90b16-9221-479a-a219-d0b809e86917
+00000000-0000-0000-0000-000000000000	63	7aafbps5wj2o	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	f	2026-02-15 03:57:43.342183+00	2026-02-15 03:57:43.342183+00	\N	376c705d-bf5d-4f8b-a205-450f7de3a093
 \.
 
 
@@ -20609,7 +20612,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 62, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 63, true);
 
 
 --
@@ -20644,6 +20647,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500177, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict 7XgDehgMGQbxFmgiIkjTV9wKrk9KHG2F5wGhWS8T77WDho3tHrj5teqdY2tYbAO
+-- \unrestrict 2cYRYHEYS4VQvgx7PuN46E6PnIcj6NyKR24HGU3T9Cb1uMqQNc3WSGsWTFxoSUq
 
 RESET ALL;
