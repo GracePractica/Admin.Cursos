@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Configura los listeners de la página de departamentos
+// Añade manejadores para abrir el modal de creación y para buscar
 function setupDepartamentosListeners() {
     document.getElementById('addDepartamentoButton')?.addEventListener('click', () => openAddDepartamentoModal());
 
@@ -18,12 +20,14 @@ function setupDepartamentosListeners() {
 }
 
 // === DEPARTAMENTOS ===
+// Carga y muestra la lista de departamentos con paginación y búsqueda
 async function loadDepartamentos(page = 1) {
     PAGINATION.departamentos.page = page;
     const tbody = document.getElementById('departamentosTableBody');
     if (!tbody) return;
 
     try {
+        // Consultar la tabla de departamentos y obtener término de búsqueda
         let query = supabaseClient.from('departamento').select('*');
         const searchTerm = document.getElementById('searchDepartamento')?.value.toLowerCase();
 
@@ -45,7 +49,7 @@ async function loadDepartamentos(page = 1) {
             return;
         }
 
-        // Paginación
+        // Aplicar paginación local sobre los resultados
         const startIndex = (page - 1) * PAGINATION.departamentos.limit;
         const endIndex = startIndex + PAGINATION.departamentos.limit;
         const paginatedDepartamentos = departamentos.slice(startIndex, endIndex);
@@ -69,6 +73,7 @@ async function loadDepartamentos(page = 1) {
     }
 }
 
+// Abre el modal para crear un nuevo departamento (solo ID)
 async function openAddDepartamentoModal() {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -91,6 +96,7 @@ async function openAddDepartamentoModal() {
     openModal();
 }
 
+// Inserta un nuevo departamento en la base de datos
 async function saveDepartamento() {
     const form = document.getElementById('addDepartamentoForm');
     const formData = new FormData(form);
@@ -117,6 +123,7 @@ async function saveDepartamento() {
     }
 }
 
+// Abre el modal para editar el ID del departamento seleccionado
 async function editDepartamento(departamentoId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -153,6 +160,7 @@ async function editDepartamento(departamentoId) {
     }
 }
 
+// Actualiza el ID del departamento si fue modificado
 async function updateDepartamento() {
     const form = document.getElementById('editDepartamentoForm');
     const formData = new FormData(form);
@@ -160,7 +168,7 @@ async function updateDepartamento() {
     const originalId = formData.get('original_id_dep');
     const newId = formData.get('id_dep');
 
-    // Only update if ID changed
+    // Solo actualizar si el ID cambió
     if (originalId === newId) {
         closeModal();
         return;
@@ -185,28 +193,5 @@ async function updateDepartamento() {
     } catch (error) {
         console.error('Error actualizando departamento:', error);
         showAlert('Error al actualizar el departamento', 'error');
-    }
-}
-
-async function deleteDepartamento(departamentoId) {
-    if (!confirm('¿Está seguro de eliminar este departamento? Esta acción no se puede deshacer.')) {
-        return;
-    }
-
-    try {
-        const { error } = await supabaseClient
-            .from('departamento')
-            .delete()
-            .eq('id_dep', departamentoId);
-
-        if (error) throw error;
-
-        showAlert('Departamento eliminado exitosamente', 'success');
-        await loadDepartamentos();
-        // await loadDataQualityStats();
-
-    } catch (error) {
-        console.error('Error eliminando departamento:', error);
-        showAlert('Error al eliminar. Puede que tenga datos relacionados.', 'error');
     }
 }

@@ -19,11 +19,12 @@ async function loadDashboardData() {
 
 async function loadDataQualityStats() {
     try {
-        // 1. Get all courses
+        // 1. Obtener todos los cursos (solo IDs) para calcular totales
         const { data: allCursos } = await supabaseClient.from('cursos').select('id_curso');
         const totalCursos = allCursos?.length || 0;
 
-        // 2. Potential duplicates using Levenshtein distance
+        // 2. Buscar posibles duplicados 
+        //    Comparamos nombres y contamos IDs únicos que parecen duplicados
         const { data: cursosForDuplicates } = await supabaseClient.from('cursos').select('id_curso, nombre_curso');
         let duplicados = 0;
         if (cursosForDuplicates) {
@@ -42,22 +43,23 @@ async function loadDataQualityStats() {
         const duplicadosPct = totalCursos > 0 ? (duplicados / totalCursos) * 100 : 0;
         updateStatWithProgress('cursosDuplicados', duplicados, duplicadosPct);
 
-        // 3. Courses without state
+        // 3. Cursos sin estado definido
         const { data: cursosWithState } = await supabaseClient.from('cursos').select('id_curso, estado');
         const cursosSinEstado = cursosWithState?.filter(c => !c.estado || c.estado === null || c.estado === '').length || 0;
         const sinEstadoPct = totalCursos > 0 ? (cursosSinEstado / totalCursos) * 100 : 0;
         updateStatWithProgress('cursosSinEstado', cursosSinEstado, sinEstadoPct);
 
-        // 4. Inactive Courses
+        // 4. Cursos marcados como inactivos
         const cursosInactivos = cursosWithState?.filter(c => c.estado === 'inactivo').length || 0;
         const inactivosPct = totalCursos > 0 ? (cursosInactivos / totalCursos) * 100 : 0;
         updateStatWithProgress('cursosInactivos', cursosInactivos, inactivosPct);
 
-        // Calculate overall health score (100% - average of remaining problem percentages)
+        // Calcular puntuación de salud general:
+        // 100% menos el promedio de los porcentajes de problemas detectados
         const avgProblems = (duplicadosPct + sinEstadoPct + inactivosPct) / 3;
         const healthScore = Math.max(0, 100 - avgProblems);
 
-        // Update health score
+        // Actualizar indicador visual de salud en el dashboard
         updateHealthScore(healthScore);
 
     } catch (error) {

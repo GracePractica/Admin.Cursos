@@ -10,22 +10,22 @@ async function loadGestionCursos() {
     setupTabNavigation();
     await initGestionPorPuesto();
     await initGestionPorPuesto();
-    // await loadConsolidarCursos(); // Element removed from HTML
+    // await loadConsolidarCursos(); // Elemento eliminado del HTML
 }
 
-// === TAB NAVIGATION ===
+// === NAVEGACIÓN POR PESTAÑAS ===
 function setupTabNavigation() {
     const tabButtons = document.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            // Remove active class from all buttons and contents
+            // Eliminar clase activa de todos los botones y contenidos
             document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-            // Add active class to clicked button
+            // Añadir clase activa al botón clicado
             e.target.classList.add('active');
 
-            // Show corresponding tab content
+            // Mostrar contenido de la pestaña correspondiente
             const tabName = e.target.dataset.tab;
             document.getElementById(`${tabName}Tab`).classList.add('active');
         });
@@ -33,6 +33,7 @@ function setupTabNavigation() {
 }
 
 // === GESTIÓN POR PUESTO ===
+// Inicializa la gestión de cursos por puesto
 async function initGestionPorPuesto() {
     const searchInput = document.getElementById('puestoSearchInput');
     const hiddenIdInput = document.getElementById('selectedPuestoId');
@@ -42,7 +43,7 @@ async function initGestionPorPuesto() {
 
     let allPuestos = [];
 
-    // Check for URL filter parameter
+    // Comprobar parámetro de filtro en URL
     const urlParams = new URLSearchParams(window.location.search);
     const filter = urlParams.get('filter');
 
@@ -56,7 +57,7 @@ async function initGestionPorPuesto() {
         if (error) throw error;
         allPuestos = puestos || [];
 
-        // Handle URL Filter Logic (e.g. from Dashboard)
+        // Manejar lógica de filtro por URL (ej. desde Dashboard)
         if (filter === 'puestos_sin_cursos' && allPuestos.length > 0) {
             const { data: puestoCursos } = await supabaseClient.from('puesto_curso').select('puesto_id');
             const puestosConCursos = new Set(puestoCursos?.map(pc => pc.puesto_id) || []);
@@ -64,7 +65,7 @@ async function initGestionPorPuesto() {
 
             if (puestosSinCursos.length > 0) {
                 selectPuesto(puestosSinCursos[0]);
-                // Optional: Show alert about filtering
+                // Opcional: Mostrar alerta sobre filtrado
                 showAlert(`Filtrando: Puestos sin cursos (${puestosSinCursos.length})`, 'info');
             }
         }
@@ -74,7 +75,7 @@ async function initGestionPorPuesto() {
         showAlert('Error al cargar la lista de puestos', 'error');
     }
 
-    // Funciones Helper
+    // Funciones Auxiliares
     function filterPuestos(term) {
         if (!term) return allPuestos;
         return allPuestos.filter(p =>
@@ -122,7 +123,7 @@ async function initGestionPorPuesto() {
         searchInput.focus();
     }
 
-    // Event Listeners
+    // Escuchas de eventos
     const showAllPuestos = () => {
         const results = filterPuestos('');
         renderResults(results);
@@ -146,7 +147,7 @@ async function initGestionPorPuesto() {
     searchInput.addEventListener('focus', showAllPuestos);
     searchInput.addEventListener('click', showAllPuestos);
 
-    // Close dropdown when clicking outside
+    // Cerrar menú desplegable al hacer clic fuera
     document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
             resultsContainer.style.display = 'none';
@@ -155,7 +156,7 @@ async function initGestionPorPuesto() {
 
     clearBtn.addEventListener('click', clearSelection);
 
-    // Listeners for filters
+    // Listeners para filtros
     const filterClasificacion = document.getElementById('filterClasificacionAsignacion');
     const triggerRender = () => renderAsignacionesTable(1);
 
@@ -163,8 +164,9 @@ async function initGestionPorPuesto() {
     filterClasificacion?.addEventListener('change', triggerRender);
 }
 
+// Carga los cursos asignados a un puesto específico
 async function loadCursosPorPuesto(puestoId, page = 1) {
-    // PAGINATION_GESTION.cursosAsignados.page = page; // Handled in render now
+    // PAGINATION_GESTION.cursosAsignados.page = page; // Manejado en render ahora
     const container = document.getElementById('cursosListContainer');
     const tbody = document.getElementById('cursosAsignacionBody');
     const loading = document.getElementById('gestionLoading');
@@ -173,7 +175,7 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
     loading.style.display = 'block';
     tbody.innerHTML = '';
 
-    // Reset Globals
+    // Reiniciar Globales
     currentAsignaciones = [];
     asignacionesMetadata = {};
 
@@ -216,16 +218,17 @@ async function loadCursosPorPuesto(puestoId, page = 1) {
     }
 }
 
+// Renderiza la tabla de asignaciones de cursos
 function renderAsignacionesTable(page = 1) {
     PAGINATION_GESTION.cursosAsignados.page = page;
     const tbody = document.getElementById('cursosAsignacionBody');
     const puestoId = document.getElementById('selectedPuestoId').value;
 
-    // 1. Get Filters
+    // 1. Obtener Filtros
     const searchTerm = document.getElementById('searchCursoAsignacion')?.value.toLowerCase() || '';
     const clasificacionFilter = document.getElementById('filterClasificacionAsignacion')?.value || '';
 
-    // 2. Filter Data
+    // 2. Filtrar Datos
     let filteredData = currentAsignaciones;
 
     if (searchTerm) {
@@ -242,19 +245,19 @@ function renderAsignacionesTable(page = 1) {
         filteredData = filteredData.filter(item => item.clasificacion_estrategica === clasificacionFilter);
     }
 
-    // 3. Handle Empty State
+    // 3. Manejar Estado Vacío
     if (filteredData.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron cursos asignados</td></tr>';
         renderPaginationControls(0, 1, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', 'renderAsignacionesTable');
         return;
     }
 
-    // 4. Pagination Slicing
+    // 4. Corte de Paginación
     const startIndex = (page - 1) * PAGINATION_GESTION.cursosAsignados.limit;
     const endIndex = startIndex + PAGINATION_GESTION.cursosAsignados.limit;
     const paginatedData = filteredData.slice(startIndex, endIndex);
 
-    // 5. Render Rows
+    // 5. Renderizar Filas
     tbody.innerHTML = paginatedData.map(asignacion => {
         const curso = asignacionesMetadata[asignacion.curso_id];
         if (!curso) return '';
@@ -286,11 +289,11 @@ function renderAsignacionesTable(page = 1) {
         `;
     }).join('');
 
-    // 6. Render Pagination Controls
-    // Note: Use 'renderAsignacionesTable' as the callback string since we are paginating locally
+    // 6. Renderizar Controles de Paginación
     renderPaginationControls(filteredData.length, page, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', 'renderAsignacionesTable');
 }
 
+// Alterna la asignación de un curso (checkbox)
 async function toggleAsignacion(checkbox) {
     const cursoId = checkbox.dataset.cursoId;
     const puestoId = checkbox.dataset.puestoId;
@@ -347,6 +350,7 @@ async function toggleAsignacion(checkbox) {
     }
 }
 
+// Actualiza un detalle específico de una asignación (inline editing)
 async function updateAsignacionDetalle(input, field) {
     const assignmentId = input.dataset.assignmentId;
 
@@ -373,7 +377,8 @@ async function updateAsignacionDetalle(input, field) {
     }
 }
 
-// === PLACEHOLDER FUNCTIONS (Por implementar) ===
+// === FUNCIONES UTILITARIAS Y MODALES ===
+// Abre el modal para asignar un nuevo curso a un puesto
 async function openAddAsignacionModal(puestoId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -395,7 +400,7 @@ async function openAddAsignacionModal(puestoId) {
 
         if (error) throw error;
 
-        // Get current assignments to filter
+        // Obtener asignaciones actuales para filtrar
         const { data: existingAssignments } = await supabaseClient
             .from('puesto_curso')
             .select('curso_id')
@@ -459,7 +464,7 @@ async function openAddAsignacionModal(puestoId) {
             </form>
         `;
 
-        // Setup course search
+        // Configurar búsqueda de cursos
         setupCursoSearch(availableCursos || []);
 
         confirmBtn.onclick = async () => {
@@ -473,7 +478,7 @@ async function openAddAsignacionModal(puestoId) {
                 return;
             }
 
-            // Hide error if validation passes
+            // Ocultar error si la validación pasa
             errorDiv.style.display = 'none';
             await saveAsignacion();
         };
@@ -486,6 +491,7 @@ async function openAddAsignacionModal(puestoId) {
     }
 }
 
+// Configura la búsqueda de cursos en el modal de asignación
 function setupCursoSearch(cursos) {
     const searchInput = document.getElementById('cursoSearchInput');
     const hiddenInput = document.getElementById('selectedCursoId');
@@ -511,7 +517,7 @@ function setupCursoSearch(cursos) {
     searchInput.addEventListener('focus', showAllCursos);
     searchInput.addEventListener('click', showAllCursos);
 
-    // Hide when clicking outside
+    // Ocultar al hacer clic fuera
     document.addEventListener('click', (e) => {
         if (searchInput && resultsContainer) {
             if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
@@ -521,6 +527,7 @@ function setupCursoSearch(cursos) {
     });
 }
 
+// Renderiza los resultados de búsqueda de cursos
 function renderCursoResults(results, searchInput, hiddenInput, resultsContainer) {
     resultsContainer.innerHTML = '';
     if (results.length === 0) {
@@ -541,6 +548,7 @@ function renderCursoResults(results, searchInput, hiddenInput, resultsContainer)
     });
 }
 
+// Obtiene el siguiente ID disponible para puesto_curso
 async function getNextPuestoCursoId() {
     try {
         const { data, error } = await supabaseClient
@@ -556,10 +564,11 @@ async function getNextPuestoCursoId() {
         return parseInt(data[0].id_puesto_curso) + 1;
     } catch (error) {
         console.error('Error getting next ID:', error);
-        return Date.now(); // Fallback to timestamp if query fails
+        return Date.now(); // Respaldo a timestamp si falla la consulta
     }
 }
 
+// Guarda una nueva asignación de curso
 async function saveAsignacion() {
     const form = document.getElementById('addAsignacionForm');
     if (!form) return;
@@ -593,6 +602,7 @@ async function saveAsignacion() {
     }
 }
 
+// Abre el modal para editar una asignación existente
 async function editCursoAsignacion(assignmentId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -601,7 +611,7 @@ async function editCursoAsignacion(assignmentId) {
     modalTitle.textContent = 'Editar Curso';
 
     try {
-        // Get assignment details
+        // Obtener detalles de la asignación
         const { data: assignment, error } = await supabaseClient
             .from('puesto_curso')
             .select('*, cursos(nombre_curso), puestos(nombre_puesto)')
@@ -657,6 +667,7 @@ async function editCursoAsignacion(assignmentId) {
     }
 }
 
+// Actualiza una asignación existente en la base de datos
 async function updateAsignacion() {
     const form = document.getElementById('editAsignacionForm');
     const formData = new FormData(form);
@@ -687,13 +698,14 @@ async function updateAsignacion() {
     }
 }
 
+// Inicia el proceso de eliminación de una asignación
 async function deleteCursoAsignacion(assignmentId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');
 
     try {
-        // Get assignment details first
+        // Obtener detalles de la asignación primero
         const { data: assignment } = await supabaseClient
             .from('puesto_curso')
             .select('*, cursos(nombre_curso), puestos(nombre_puesto)')
@@ -739,6 +751,7 @@ async function deleteCursoAsignacion(assignmentId) {
     }
 }
 
+// Confirma y ejecuta la eliminación de la asignación
 async function confirmDeleteCursoAsignacion(assignmentId) {
     try {
         const { error } = await supabaseClient
@@ -751,13 +764,13 @@ async function confirmDeleteCursoAsignacion(assignmentId) {
         showAlert('Asignación eliminada exitosamente', 'success');
         closeModal();
 
-        // Reload the current position's courses
+        // Recargar los cursos del puesto actual
         const puestoId = document.getElementById('selectedPuestoId').value;
         if (puestoId) {
             await loadCursosPorPuesto(puestoId);
         }
 
-        // Reset confirm button to default state
+        // Restablecer el botón de confirmación al estado predeterminado
         const confirmBtn = document.getElementById('confirmModal');
         confirmBtn.textContent = 'Guardar';
         confirmBtn.className = 'btn btn-primary';
@@ -767,485 +780,3 @@ async function confirmDeleteCursoAsignacion(assignmentId) {
         showAlert('Error al eliminar la asignación: ' + error.message, 'error');
     }
 }
-
-
-// === CONSOLIDAR CURSOS ===
-async function loadConsolidarCursos() {
-    const tbody = document.getElementById('consolidarTableBody');
-
-    try {
-        // Check for URL filter parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const filter = urlParams.get('filter');
-
-        const { data: cursos } = await supabaseClient.from('cursos').select('*').order('nombre_curso');
-        const { data: puestoCursos } = await supabaseClient.from('puesto_curso').select('curso_id, puesto_id');
-        const { data: puestos } = await supabaseClient.from('puestos').select('*');
-
-        if (!cursos) {
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Error al cargar cursos</td></tr>';
-            return;
-        }
-
-        // Create puesto map
-        const puestoMap = {};
-        puestos?.forEach(p => puestoMap[p.id_puesto] = p.nombre_puesto);
-
-        // Calculate courses without classification
-        let displayCursos = cursos;
-        let filterMessage = '';
-
-        if (filter === 'sin_clasificacion') {
-            // Filter courses that have no assignments
-            displayCursos = cursos.filter(curso => {
-                const assignedPuestos = puestoCursos?.filter(pc => pc.curso_id === curso.id_curso) || [];
-                return assignedPuestos.length === 0;
-            });
-            filterMessage = `Mostrando ${displayCursos.length} cursos sin asignar a ningún puesto`;
-        }
-
-        // Display filter message if active
-        if (filterMessage) {
-            // Remove any existing filter alerts first
-            const existingAlerts = tbody.parentElement.parentElement.querySelectorAll('.filter-alert');
-            existingAlerts.forEach(alert => alert.remove());
-
-            const filterAlert = document.createElement('div');
-            filterAlert.className = 'alert alert-warning filter-alert';
-            filterAlert.style.marginBottom = '1rem';
-            filterAlert.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/>
-                </svg>
-                <div style="flex: 1;">
-                    <strong>${filterMessage}</strong>
-                    <div style="font-size: 0.875rem; margin-top: 0.25rem;">
-                        Usa la pestaña "Gestión por Puesto" para asignarlos →
-                        <a href="gestion.html" style="color: inherit; text-decoration: underline; margin-left: 0.5rem;">Ver todos los cursos</a>
-                    </div>
-                </div>
-            `;
-            tbody.parentElement.parentElement.insertBefore(filterAlert, tbody.parentElement);
-        }
-
-        tbody.innerHTML = displayCursos.map(curso => {
-            // Count assigned positions
-            const assignedPuestos = puestoCursos?.filter(pc => pc.curso_id === curso.id_curso) || [];
-            const puestosNames = assignedPuestos.map(pc => puestoMap[pc.puesto_id]).filter(Boolean);
-            const isUnassigned = assignedPuestos.length === 0;
-
-            return `
-                <tr ${(filter && isUnassigned) ? 'style="background-color: #fef3c7;"' : ''}>
-                    <td>
-                        <input type="checkbox" class="curso-checkbox" data-curso-id="${curso.id_curso}">
-                    </td>
-                    <td><strong>${curso.nombre_curso}</strong></td>
-                    <td>${curso.grupo_curso || 'N/A'}</td>
-                    <td>
-                        <span class="badge badge-${curso.estado === 'activo' ? 'success' : 'warning'}">
-                            ${curso.estado || 'N/A'}
-                        </span>
-                    </td>
-                    <td>${(curso.vigencia_anio !== null && curso.vigencia_anio !== undefined) ? curso.vigencia_anio : 'N/A'}</td>
-                    <td>${puestosNames.length > 0 ? puestosNames.join(', ') : '<span style="color: #dc2626; font-weight: 600;">Ninguno</span>'}</td>
-                    <td>
-                        <button class="btn btn-small btn-outline" onclick="editCursoDetails(${curso.id_curso})">
-                            Editar
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        //Setup event listeners
-        setupConsolidarEventListeners();
-
-    } catch (error) {
-        console.error('Error cargando cursos:', error);
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Error al cargar cursos</td></tr>';
-    }
-}
-
-async function setupConsolidarEventListeners() {
-    // Select all checkbox
-    document.getElementById('selectAllCursos')?.addEventListener('change', (e) => {
-        document.querySelectorAll('.curso-checkbox').forEach(cb => {
-            cb.checked = e.target.checked;
-        });
-        updateMergeButton();
-    });
-
-    // Individual checkboxes
-    document.querySelectorAll('.curso-checkbox').forEach(cb => {
-        cb.addEventListener('change', updateMergeButton);
-    });
-
-    // Search functionality
-    const searchTerm = document.getElementById('searchCursos').value.toLowerCase();
-    const { data } = await supabase
-        .from('cursos')
-        .select('*')
-        .ilike('nombre', `%${searchTerm}%`);
-    // Merge button
-    document.getElementById('mergeSelectedCursos')?.addEventListener('click', openMergeCursosModal);
-}
-
-function updateMergeButton() {
-    const selectedCount = document.querySelectorAll('.curso-checkbox:checked').length;
-    const mergeButton = document.getElementById('mergeSelectedCursos');
-    if (mergeButton) {
-        mergeButton.disabled = selectedCount < 2;
-        mergeButton.textContent = selectedCount >= 2
-            ? `Fusionar ${selectedCount} Cursos Seleccionados`
-            : 'Fusionar Cursos Seleccionados';
-    }
-}
-
-async function openMergeCursosModal() {
-    const selectedCheckboxes = document.querySelectorAll('.curso-checkbox:checked');
-    const selectedIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.dataset.cursoId));
-
-    if (selectedIds.length < 2) {
-        showAlert('Selecciona al menos 2 cursos para fusionar', 'warning');
-        return;
-    }
-
-    const modalBody = document.getElementById('modalBody');
-    const modalTitle = document.getElementById('modalTitle');
-
-    modalTitle.textContent = 'Fusionar Cursos';
-
-    // Get curso details
-    const { data: cursos } = await supabaseClient
-        .from('cursos')
-        .select('*')
-        .in('id_curso', selectedIds);
-
-    modalBody.innerHTML = `
-        <div class="form-group">
-            <p><strong>Cursos seleccionados para fusionar:</strong></p>
-            <ul>
-                ${cursos.map(c => `<li>${c.nombre_curso} (${c.grupo_curso || 'Sin grupo'})</li>`).join('')}
-            </ul>
-        </div>
-        
-        <div class="form-group">
-            <label class="form-label">Selecciona el curso principal (los demás se fusionarán en este):</label>
-            <select class="form-select" id="targetCursoId" required>
-                ${cursos.map(c => `<option value="${c.id_curso}">${c.nombre_curso}</option>`).join('')}
-            </select>
-        </div>
-        
-        <div class="alert alert-warning">
-            <strong>Advertencia:</strong> Esta acción actualizará todos los registros del historial para apuntar al curso principal y eliminará los cursos duplicados. Esta acción no se puede deshacer.
-        </div>
-    `;
-
-    document.getElementById('confirmModal').onclick = async () => {
-        await mergeCursos(selectedIds);
-    };
-
-    openModal();
-}
-
-async function mergeCursos(cursoIds) {
-    const targetCursoId = parseInt(document.getElementById('targetCursoId').value);
-    const cursosToDelete = cursoIds.filter(id => id !== targetCursoId);
-
-    try {
-        // Update historial_cursos to point to target curso
-        for (const cursoId of cursosToDelete) {
-            await supabaseClient
-                .from('historial_cursos')
-                .update({ curso_id: targetCursoId })
-                .eq('curso_id', cursoId);
-        }
-
-        // Update puesto_curso assignments
-        for (const cursoId of cursosToDelete) {
-            // Get existing assignments for this curso
-            const { data: existingAssignments } = await supabaseClient
-                .from('puesto_curso')
-                .select('*')
-                .eq('curso_id', cursoId);
-
-            if (existingAssignments) {
-                for (const assignment of existingAssignments) {
-                    // Check if target curso already has this puesto assignment
-                    const { data: targetAssignment } = await supabaseClient
-                        .from('puesto_curso')
-                        .select('*')
-                        .eq('curso_id', targetCursoId)
-                        .eq('puesto_id', assignment.puesto_id)
-                        .single();
-
-                    if (!targetAssignment) {
-                        // Create new assignment for target curso
-                        await supabaseClient
-                            .from('puesto_curso')
-                            .insert([{
-                                curso_id: targetCursoId,
-                                puesto_id: assignment.puesto_id,
-                                clasificacion_estrategica: assignment.clasificacion_estrategica,
-                                vigencia_anio: assignment.vigencia_anio,
-                                estado: assignment.estado
-                            }]);
-                    }
-                }
-            }
-
-            // Delete old puesto_curso assignments
-            await supabaseClient
-                .from('puesto_curso')
-                .delete()
-                .eq('curso_id', cursoId);
-        }
-
-        // Delete the merged cursos
-        const { error } = await supabaseClient
-            .from('cursos')
-            .delete()
-            .in('id_curso', cursosToDelete);
-
-        if (error) throw error;
-
-        showAlert('Cursos fusionados exitosamente', 'success');
-        closeModal();
-        await loadConsolidarCursos();
-        await loadMatrizCursoPuesto();
-
-    } catch (error) {
-        console.error('Error merging cursos:', error);
-        showAlert('Error al fusionar cursos: ' + error.message, 'error');
-    }
-}
-
-async function editCursoDetails(cursoId) {
-    console.log('editCursoDetails called with ID:', cursoId);
-
-    const modalBody = document.getElementById('modalBody');
-    const modalTitle = document.getElementById('modalTitle');
-    const confirmBtn = document.getElementById('confirmModal');
-
-    // Check if modal elements exist
-    if (!modalBody) {
-        console.error('modalBody element not found!');
-        alert('Error: No se encontró el elemento modal. Por favor recarga la página.');
-        return;
-    }
-    if (!modalTitle) {
-        console.error('modalTitle element not found!');
-        return;
-    }
-    if (!confirmBtn) {
-        console.error('confirmModal button not found!');
-        return;
-    }
-
-    modalTitle.textContent = 'Editar Detalles del Curso';
-
-    try {
-        console.log('Fetching course data for ID:', cursoId);
-        console.log('ID type:', typeof cursoId);
-        const { data: curso, error } = await supabaseClient
-            .from('cursos')
-            .select('*')
-            .eq('id_curso', cursoId)
-            .single();
-
-        if (error) {
-            console.error('Error fetching course:', error);
-            throw error;
-        }
-
-        if (!curso) {
-            console.error('Course not found');
-            showAlert('Curso no encontrado', 'error');
-            return;
-        }
-
-        console.log('Course data loaded:', curso);
-
-        const primeraFecha = curso.primera_fecha ? curso.primera_fecha.split('T')[0] : '';
-        const ultimaFecha = curso.ultima_fecha ? curso.ultima_fecha.split('T')[0] : '';
-
-        modalBody.innerHTML = `
-            <form id="editCursoDetailsForm">
-                <input type="hidden" name="id_curso" value="${curso.id_curso}">
-                
-                <div class="form-group">
-                    <label class="form-label">Nombre del Curso *</label>
-                    <input type="text" class="form-input" name="nombre_curso" value="${curso.nombre_curso || ''}" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Primera Fecha</label>
-                    <input type="date" class="form-input" name="primera_fecha" value="${primeraFecha}">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Última Fecha</label>
-                    <input type="date" class="form-input" name="ultima_fecha" value="${ultimaFecha}">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Estado *</label>
-                    <select class="form-select" name="estado" required>
-                        <option value="activo" ${curso.estado === 'activo' ? 'selected' : ''}>Activo</option>
-                        <option value="inactivo" ${curso.estado === 'inactivo' ? 'selected' : ''}>Inactivo</option>
-                    </select>
-                </div>
-            </form>
-        `;
-
-        confirmBtn.onclick = async () => {
-            await updateCursoDetails();
-        };
-
-        console.log('Opening modal...');
-
-        // Check if openModal function exists
-        if (typeof openModal === 'function') {
-            openModal();
-            console.log('Modal opened successfully');
-        } else {
-            console.error('openModal function not found!');
-            // Fallback: manually open modal
-            const modal = document.getElementById('mainModal');
-            if (modal) {
-                modal.classList.add('active');
-                confirmBtn.style.display = 'inline-flex';
-                console.log('Modal opened using fallback method');
-            } else {
-                console.error('mainModal element not found!');
-                alert('Error: No se pudo abrir el modal. Por favor recarga la página.');
-            }
-        }
-
-    } catch (error) {
-        console.error('Error in editCursoDetails:', error);
-        showAlert('Error al cargar el curso: ' + error.message, 'error');
-    }
-}
-
-async function updateCursoDetails() {
-    const form = document.getElementById('editCursoDetailsForm');
-    const formData = new FormData(form);
-
-    const cursoId = formData.get('id_curso');
-    const curso = {
-        nombre_curso: formData.get('nombre_curso'),
-        primera_fecha: formData.get('primera_fecha') || null,
-        ultima_fecha: formData.get('ultima_fecha') || null,
-        estado: formData.get('estado')
-    };
-
-    try {
-        const { error } = await supabaseClient
-            .from('cursos')
-            .update(curso)
-            .eq('id_curso', cursoId);
-
-        if (error) throw error;
-
-        showAlert('Curso actualizado exitosamente', 'success');
-        closeModal();
-        await loadConsolidarCursos();
-
-    } catch (error) {
-        console.error('Error updating curso:', error);
-        showAlert('Error al actualizar el curso', 'error');
-    }
-}
-
-// === EXPORT TO EXCEL ===
-async function exportHistorial() {
-    try {
-        showAlert('Generando archivo Excel...', 'info');
-
-        // Fetch all historial data
-        const { data: historial } = await supabaseClient
-            .from('historial_cursos')
-            .select('*')
-            .order('fecha_inicio', { ascending: false });
-
-        if (!historial || historial.length === 0) {
-            showAlert('No hay datos para exportar', 'warning');
-            return;
-        }
-
-        // Fetch related data
-        const colaboradorIds = [...new Set(historial.map(h => h.colaborador_id).filter(Boolean))];
-        const cursoIds = [...new Set(historial.map(h => h.curso_id).filter(Boolean))];
-
-        const { data: colaboradores } = await supabaseClient.from('colaboradores').select('*').in('id_colab', colaboradorIds);
-        const { data: cursos } = await supabaseClient.from('cursos').select('*').in('id_curso', cursoIds);
-        const { data: departamentos } = await supabaseClient.from('departamento').select('*');
-        const { data: puestos } = await supabaseClient.from('puestos').select('*');
-
-        // Create maps
-        const colabMap = {};
-        colaboradores?.forEach(c => colabMap[c.id_colab] = c);
-
-        const cursoMap = {};
-        cursos?.forEach(c => cursoMap[c.id_curso] = c.nombre_curso);
-
-        const depMap = {};
-        departamentos?.forEach(d => depMap[d.id_dep] = d.nombre_dep);
-
-        const puestoMap = {};
-        puestos?.forEach(p => puestoMap[p.id_puesto] = p.nombre_puesto);
-
-        // Format data for Excel
-        const excelData = historial.map(item => {
-            const colab = colabMap[item.colaborador_id] || {};
-            return {
-                'Colaborador': colab.nombre_colab || 'N/A',
-                'Asignación': colab.asignacion_act || 'N/A',
-                'Departamento': depMap[colab.dep_id] || 'N/A',
-                'Puesto': puestoMap[colab.puesto_id] || 'N/A',
-                'Curso': cursoMap[item.curso_id] || 'N/A',
-                'Fecha Inicio': item.fecha_inicio || 'N/A',
-                'Fecha Final': item.fecha_final || 'En curso',
-                'Duración (hrs)': item.duracion_horas || 'N/A',
-                'Estado': item.estado || 'N/A'
-            };
-        });
-
-        // Create workbook
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(excelData);
-
-        // Set column widths
-        ws['!cols'] = [
-            { wch: 30 }, // Colaborador
-            { wch: 20 }, // Asignación
-            { wch: 25 }, // Departamento
-            { wch: 25 }, // Puesto
-            { wch: 40 }, // Curso
-            { wch: 12 }, // Fecha Inicio
-            { wch: 12 }, // Fecha Final
-            { wch: 12 }, // Duración
-            { wch: 15 }  // Estado
-        ];
-
-        XLSX.utils.book_append_sheet(wb, ws, 'Historial');
-
-        // Generate filename with current date
-        const today = new Date().toISOString().split('T')[0];
-        const filename = `historial_capacitaciones_${today}.xlsx`;
-
-        // Download file
-        XLSX.writeFile(wb, filename);
-
-        showAlert('Archivo Excel generado exitosamente', 'success');
-
-    } catch (error) {
-        console.error('Error exporting to Excel:', error);
-        showAlert('Error al exportar a Excel: ' + error.message, 'error');
-    }
-}
-
-// Setup export button listener
-document.getElementById('exportHistorialButton')?.addEventListener('click', exportHistorial);
-

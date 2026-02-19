@@ -6,9 +6,9 @@ let currentColaboradorId = null;
 let currentHistorialData = [];
 let historialMetadata = {
     colaborador: null,
-    cursoMap: {},
-    depMap: {},
-    puestoMap: {}
+    cursoMap: {}, // Mapa para busqueda rapida de nombres de curso por ID
+    depMap: {},   // Mapa para departamentos
+    puestoMap: {} // Mapa para puestos
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Inicializa los componentes de la página de historial
 async function initHistorial() {
     const searchInput = document.getElementById('colaboradorSearchInput');
     const hiddenIdInput = document.getElementById('selectedColaboradorId');
@@ -52,7 +53,7 @@ async function initHistorial() {
         showAlert('Error al cargar lista de colaboradores', 'error');
     }
 
-    // Funciones Helper
+    // Funciones Auxiliares
     function filterColaboradores(term) {
         if (!term) return allColaboradores;
         return allColaboradores.filter(c =>
@@ -60,6 +61,7 @@ async function initHistorial() {
         );
     }
 
+    // Renderiza los resultados de la búsqueda de colaboradores
     function renderResults(results) {
         resultsContainer.innerHTML = '';
         if (results.length === 0) {
@@ -78,6 +80,7 @@ async function initHistorial() {
         resultsContainer.style.display = 'block';
     }
 
+    // Maneja la selección de un colaborador de la lista de búsqueda
     function selectColaborador(colab) {
         currentColaboradorId = colab.id_colab;
         searchInput.value = colab.nombre_colab;
@@ -91,6 +94,7 @@ async function initHistorial() {
         loadHistorialPorColaborador(1);
     }
 
+    // Limpia la selección actual y reinicia la búsqueda
     function clearSelection() {
         currentColaboradorId = null;
         searchInput.value = '';
@@ -105,7 +109,7 @@ async function initHistorial() {
         searchInput.focus();
     }
 
-    // Event Listeners
+    // Escuchas de eventos
     const showAllColaboradores = () => {
         const results = filterColaboradores('');
         renderResults(results);
@@ -130,12 +134,12 @@ async function initHistorial() {
     searchInput.addEventListener('click', showAllColaboradores);
 
     document.addEventListener('click', (e) => {
-        // Colaborador search
+        // Búsqueda de colaborador
         if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
             resultsContainer.style.display = 'none';
         }
 
-        // Curso search (in modal)
+        // Búsqueda de curso (en modal)
         const cursoInput = document.getElementById('cursoSearchInput');
         const cursoResults = document.getElementById('cursoSearchResults');
         if (cursoInput && cursoResults) {
@@ -158,20 +162,13 @@ async function initHistorial() {
     });
 }
 
+// Carga el historial de capacitaciones para un colaborador específico
 async function loadHistorialPorColaborador(page = 1, forceRefresh = false) {
     if (!currentColaboradorId) return;
 
     const container = document.getElementById('historialListContainer');
     const tbody = document.getElementById('historialTableBody');
     const loading = document.getElementById('historialLoading');
-
-    // Only fetch if forceRefresh is true or we have empty data (new request)
-    // Checking currentHistorialData.length === 0 might be problematic if user has no history, 
-    // so maybe check a flag or just rely on calling this function when switching collaborator.
-    // However, when switching collaborator, we should call with forceRefresh = true.
-
-    // Simplification: We will always fetch when this function is called directly (switching collaborator or add/edit/delete).
-    // The search input will call renderHistorialTable directly.
 
     container.style.display = 'none';
     loading.style.display = 'block';
@@ -188,10 +185,7 @@ async function loadHistorialPorColaborador(page = 1, forceRefresh = false) {
         if (error) throw error;
         currentHistorialData = historialRes || [];
 
-        // 2. Obtener datos relacionados (Colaborador info, Cursos, Puesto)
-        // Optimization: Fetch only if needed or just fetch every time to be safe?
-        // Fetching every time is safer for consistency and not too heavy for single record views.
-
+        // 2. Obtener datos relacionados (Información del colaborado, Cursos, Puestos)
         const { data: colaborador } = await supabaseClient
             .from('colaboradores')
             .select('*')
@@ -212,7 +206,7 @@ async function loadHistorialPorColaborador(page = 1, forceRefresh = false) {
             cursos = cursosRes || [];
         }
 
-        // Update Metadata
+        // Actualizar Metadatos
         historialMetadata.colaborador = colaborador;
 
         historialMetadata.depMap = {};
@@ -236,6 +230,7 @@ async function loadHistorialPorColaborador(page = 1, forceRefresh = false) {
     }
 }
 
+// Renderiza la tabla de historial con los datos cargados
 function renderHistorialTable(page = 1) {
     const tbody = document.getElementById('historialTableBody');
     const pagination = document.getElementById('paginationHistorial');
@@ -246,7 +241,7 @@ function renderHistorialTable(page = 1) {
 
     let filteredHistorial = currentHistorialData;
 
-    // Filter
+    // Filtrar
     if (searchTerm) {
         filteredHistorial = filteredHistorial.filter(item => {
             const cursoNombre = historialMetadata.cursoMap[item.curso_id]?.toLowerCase() || '';
@@ -265,13 +260,13 @@ function renderHistorialTable(page = 1) {
         return;
     }
 
-    // Pagination
+    // Paginación
     const limit = PAGINATION.historial.limit;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     const paginatedHistorial = filteredHistorial.slice(startIndex, endIndex);
 
-    // Render Rows
+    // Renderizar Filas
     tbody.innerHTML = paginatedHistorial.map(item => {
         return `
         <tr>
@@ -300,11 +295,12 @@ function renderHistorialTable(page = 1) {
         </tr>
     `}).join('');
 
-    renderPaginationControls(filteredHistorial.length, page, limit, 'paginationHistorial', 'renderHistorialTable'); // Changed callback to renderHistorialTable
+    renderPaginationControls(filteredHistorial.length, page, limit, 'paginationHistorial', 'renderHistorialTable'); // Callback cambiado a renderHistorialTable
 }
 
-// === CRUD Operations ===
+// === Operaciones CRUD ===
 
+// Abre el modal para registrar una nueva capacitación
 async function openAddHistorialModal(colaboradorId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -373,7 +369,7 @@ async function openAddHistorialModal(colaboradorId) {
             </form>
         `;
 
-        // Setup course search
+        // Configurar búsqueda de cursos
         setupCursoSearch(cursos || []);
 
         confirmBtn.onclick = async () => {
@@ -387,7 +383,7 @@ async function openAddHistorialModal(colaboradorId) {
                 return;
             }
 
-            // Hide error if validation passes
+            // Ocultar error si la validación pasa
             errorDiv.style.display = 'none';
             await saveHistorial();
         };
@@ -400,6 +396,7 @@ async function openAddHistorialModal(colaboradorId) {
     }
 }
 
+// Configura la lógica de búsqueda de cursos dentro del modal
 function setupCursoSearch(cursos) {
     const searchInput = document.getElementById('cursoSearchInput');
     const hiddenInput = document.getElementById('selectedCursoId');
@@ -408,7 +405,7 @@ function setupCursoSearch(cursos) {
     const doSearch = (term) => {
         const filtered = term ? cursos.filter(c =>
             c.nombre_curso.toLowerCase().includes(term)
-        ) : cursos; // Show all if empty
+        ) : cursos; // Mostrar todos si está vacío
         renderCursoResults(filtered, searchInput, hiddenInput, resultsContainer);
     };
 
@@ -421,7 +418,7 @@ function setupCursoSearch(cursos) {
         doSearch(searchInput.value.toLowerCase());
     });
 
-    // Also trigger on click in case it's already focused but closed
+    // También activar al hacer clic en caso de que ya tenga el foco pero esté cerrado
     searchInput.addEventListener('click', () => {
         if (resultsContainer.style.display === 'none') {
             doSearch(searchInput.value.toLowerCase());
@@ -429,6 +426,7 @@ function setupCursoSearch(cursos) {
     });
 }
 
+// Renderiza los resultados de la búsqueda de cursos
 function renderCursoResults(results, searchInput, hiddenInput, resultsContainer) {
     resultsContainer.innerHTML = '';
     if (results.length === 0) {
@@ -451,6 +449,7 @@ function renderCursoResults(results, searchInput, hiddenInput, resultsContainer)
     resultsContainer.style.display = 'block';
 }
 
+// Guarda el registro de historial en la base de datos
 async function saveHistorial() {
     const form = document.getElementById('addHistorialForm');
     const formData = new FormData(form);
@@ -489,6 +488,7 @@ async function saveHistorial() {
     }
 }
 
+// Abre el modal para editar un registro existente
 async function editHistorial(historialId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -573,6 +573,7 @@ async function editHistorial(historialId) {
     }
 }
 
+// Actualiza el registro de historial en la base de datos
 async function updateHistorial() {
     const form = document.getElementById('editHistorialForm');
     const formData = new FormData(form);
@@ -605,6 +606,7 @@ async function updateHistorial() {
     }
 }
 
+// Inicia el proceso de eliminación mostrando confirmación
 async function deleteHistorial(historialId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -613,7 +615,7 @@ async function deleteHistorial(historialId) {
     modalTitle.textContent = 'Confirmar Eliminación';
 
     try {
-        // Get the record details for display
+        // Obtener detalles del registro para mostrar
         const { data: record } = await supabaseClient
             .from('historial_cursos')
             .select('*, cursos(nombre_curso)')
@@ -652,6 +654,7 @@ async function deleteHistorial(historialId) {
     }
 }
 
+// Confirma y ejecuta la eliminación del registro
 async function confirmDeleteHistorial(historialId) {
     try {
         const { error } = await supabaseClient
@@ -665,7 +668,7 @@ async function confirmDeleteHistorial(historialId) {
         closeModal();
         await loadHistorialPorColaborador(PAGINATION.historial.page);
 
-        // Reset confirm button to default state
+        // Restablecer el botón de confirmación al estado predeterminado
         const confirmBtn = document.getElementById('confirmModal');
         confirmBtn.textContent = 'Guardar';
         confirmBtn.className = 'btn btn-primary';

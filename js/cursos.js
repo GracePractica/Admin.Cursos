@@ -38,7 +38,7 @@ async function loadCursos(page = 1) {
     if (!tbody) return;
 
     try {
-        // Check for URL filter parameter
+        // Comprobar si hay parámetro de filtro en la URL
         const urlParams = new URLSearchParams(window.location.search);
         const filter = urlParams.get('filter');
 
@@ -47,16 +47,16 @@ async function loadCursos(page = 1) {
             .select('*')
             .order('id_curso');
 
-        // Get all courses first for filtering
+        // Obtener todos los cursos primero para permitir filtrado local
         const { data: allCursos, error } = await query;
         if (error) throw error;
 
         let cursos = allCursos || [];
         let filterMessage = '';
 
-        // Apply filters based on URL parameter
+        // Aplicar filtros según el parámetro de la URL
         if (filter === 'duplicados') {
-            // Find duplicate courses using Levenshtein distance
+            // Buscar cursos duplicados 
             const duplicates = [];
             for (let i = 0; i < cursos.length; i++) {
                 for (let j = i + 1; j < cursos.length; j++) {
@@ -81,9 +81,9 @@ async function loadCursos(page = 1) {
             filterMessage = `Mostrando ${cursos.length} cursos sin estado definido`;
         }
 
-        // Display filter message if filter is active
+        // Mostrar mensaje del filtro si hay un filtro activo
         if (filterMessage) {
-            // Remove any existing filter alerts first
+            // Eliminar primero cualquier alerta de filtro existente
             const existingAlerts = tbody.parentElement.parentElement.querySelectorAll('.filter-alert');
             existingAlerts.forEach(alert => alert.remove());
 
@@ -108,7 +108,7 @@ async function loadCursos(page = 1) {
         const searchTerm = document.getElementById('searchCurso')?.value.toLowerCase();
         const estadoFilter = document.getElementById('filterEstado')?.value;
 
-        // Apply status filter from dropdown if not overridden by URL filter
+        // Aplicar filtro de estado desde el desplegable si no está sobrescrito por el filtro de la URL
         if (estadoFilter && !filter) {
             cursos = cursos.filter(c => c.estado === estadoFilter);
         }
@@ -161,26 +161,6 @@ async function loadCursos(page = 1) {
     }
 }
 
-async function toggleCursoEstado(cursoId, isActive) {
-    try {
-        const nuevoEstado = isActive ? 'activo' : 'inactivo';
-
-        const { error } = await supabaseClient
-            .from('cursos')
-            .update({ estado: nuevoEstado })
-            .eq('id_curso', cursoId);
-
-        if (error) throw error;
-
-        showAlert(`Curso ${isActive ? 'activado' : 'desactivado'} exitosamente`, 'success');
-        // await loadStats(); // loadStats usage needs verification if it works without dashboard
-
-    } catch (error) {
-        console.error('Error actualizando estado del curso:', error);
-        showAlert('Error al actualizar el estado', 'error');
-    }
-}
-
 async function openAddCursoModal() {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -222,6 +202,7 @@ async function openAddCursoModal() {
 }
 
 async function getNextCursoId() {
+    // Obtener siguiente ID disponible y guardar el nuevo curso en la tabla
     try {
         const { data, error } = await supabaseClient
             .from('cursos')
@@ -256,7 +237,7 @@ async function saveCurso() {
             ultima_fecha: formData.get('ultima_fecha') || null,
             estado: formData.get('estado')
         };
-        // Solo insertar el curso
+        // Insertar solo el registro del curso
         const { error: errorCurso } = await supabaseClient
             .from('cursos')
             .insert([curso]);
@@ -273,103 +254,15 @@ async function saveCurso() {
     }
 }
 
-async function editPuestoCurso(puestoCursoId) {
-    const modalBody = document.getElementById('modalBody');
-    const modalTitle = document.getElementById('modalTitle');
-
-    modalTitle.textContent = 'Editar Curso';
-
-    try {
-        const { data: puestoCurso } = await supabaseClient
-            .from('puesto_curso')
-            .select('*')
-            .eq('id_puesto_curso', puestoCursoId)
-            .single();
-
-        const { data: curso } = await supabaseClient
-            .from('cursos')
-            .select('nombre_curso')
-            .eq('id_curso', puestoCurso.curso_id)
-            .single();
-
-        const { data: puesto } = await supabaseClient
-            .from('puestos')
-            .select('nombre_puesto')
-            .eq('id_puesto', puestoCurso.puesto_id)
-            .single();
-
-        modalBody.innerHTML = `
-            <form id="editPuestoCursoForm">
-                <input type="hidden" name="id_puesto_curso" value="${puestoCurso.id_puesto_curso}">
-                
-                <div class="form-group">
-                    <p><strong>Curso:</strong> ${curso?.nombre_curso || 'N/A'}</p>
-                    <p><strong>Puesto:</strong> ${puesto?.nombre_puesto || 'N/A'}</p>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Clasificación Estratégica *</label>
-                    <select class="form-select" name="clasificacion_estrategica" required>
-                        <option value="Necesario" ${puestoCurso.clasificacion_estrategica === 'Necesario' ? 'selected' : ''}>Necesario</option>
-                        <option value="Complementa" ${puestoCurso.clasificacion_estrategica === 'Complementa' ? 'selected' : ''}>Complementa</option>
-                        <option value="Aporta" ${puestoCurso.clasificacion_estrategica === 'Aporta' ? 'selected' : ''}>Aporta</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Vigencia (años) *</label>
-                    <input type="number" class="form-input" name="vigencia_anio" value="${puestoCurso.vigencia_anio || 1}" min="1" required>
-                </div>
-            </form>
-        `;
-
-        document.getElementById('confirmModal').onclick = async () => {
-            await updatePuestoCurso();
-        };
-
-        openModal();
-
-    } catch (error) {
-        console.error('Error cargando asignación:', error);
-        showAlert('Error al cargar la asignación', 'error');
-    }
-}
-
-async function updatePuestoCurso() {
-    const form = document.getElementById('editPuestoCursoForm');
-    const formData = new FormData(form);
-
-    const puestoCursoId = formData.get('id_puesto_curso');
-    const datos = {
-        clasificacion_estrategica: formData.get('clasificacion_estrategica'),
-        vigencia_anio: parseInt(formData.get('vigencia_anio'))
-    };
-
-    try {
-        const { error } = await supabaseClient
-            .from('puesto_curso')
-            .update(datos)
-            .eq('id_puesto_curso', puestoCursoId);
-
-        if (error) throw error;
-
-        showAlert('Asignación actualizada exitosamente', 'success');
-        closeModal();
-        await loadCursos();
-
-    } catch (error) {
-        console.error('Error actualizando asignación:', error);
-        showAlert('Error al actualizar la asignación', 'error');
-    }
-}
-
 // === EDITAR CURSO ===
+// Inicia la edición de un curso cargando sus datos y abriendo el modal
 function editCurso(cursoId) {
-    console.log('editCurso function called with ID:', cursoId);
+    console.log('editCurso llamado con ID:', cursoId);
     loadCursoData(cursoId);
 }
 
 async function loadCursoData(cursoId) {
+    // Cargar datos del curso desde la base de datos y manejar errores
     try {
         const { data: curso, error } = await supabaseClient
             .from('cursos')
@@ -378,7 +271,7 @@ async function loadCursoData(cursoId) {
             .single();
 
         if (error) {
-            console.error('Database error:', error);
+            console.error('Error en la base de datos:', error);
             showAlert('Error al cargar el curso: ' + error.message, 'error');
             return;
         }
@@ -388,22 +281,22 @@ async function loadCursoData(cursoId) {
             return;
         }
 
-        // Populate modal
         displayEditCursoModal(curso);
 
     } catch (error) {
-        console.error('Exception in loadCursoData:', error);
+        console.error('Excepción en loadCursoData:', error);
         showAlert('Error: ' + error.message, 'error');
     }
 }
 
+// Muestra en el modal el formulario para editar un curso con sus valores
 function displayEditCursoModal(curso) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');
 
     if (!modalBody || !modalTitle) {
-        console.error('Modal elements not found');
+        console.error('Elementos del modal no encontrados');
         return;
     }
 
@@ -441,6 +334,7 @@ function displayEditCursoModal(curso) {
         </form>
     `;
 
+    // Asignar acción de confirmación y abrir modal
     confirmBtn.onclick = updateCurso;
     openModal();
 }
@@ -472,7 +366,7 @@ async function updateCurso() {
         await loadCursos();
 
     } catch (error) {
-        console.error('Error updating course:', error);
+        console.error('Error actualizando curso:', error);
         showAlert('Error al actualizar el curso: ' + error.message, 'error');
     }
 }
@@ -482,53 +376,63 @@ async function deleteCurso(cursoId, cursoNombre) {
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');
 
-    modalTitle.textContent = 'Confirmar Eliminación';
+    // Verificar si tiene registros relacionados antes de mostrar el modal de confirmación
+    try {
+        const { count: countPuestos, error: errorPuestos } = await supabaseClient
+            .from('puesto_curso')
+            .select('*', { count: 'exact', head: true })
+            .eq('curso_id', cursoId);
 
-    modalBody.innerHTML = `
-        <div class="alert alert-warning">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
-            </svg>
-            <div style="flex: 1;">
-                <strong>¿Estás seguro de que deseas eliminar este curso?</strong>
-                <div style="margin-top: 0.5rem;">
-                    <strong>Curso:</strong> ${cursoNombre}
-                </div>
-                <div style="font-size: 0.875rem; margin-top: 0.5rem; color: #dc2626;">
-                    Esta acción no se puede deshacer. Se eliminarán todas las asignaciones y registros relacionados con este curso.
+        if (errorPuestos) throw errorPuestos;
+
+        const { count: countHistorial, error: errorHistorial } = await supabaseClient
+            .from('historial_cursos')
+            .select('*', { count: 'exact', head: true })
+            .eq('curso_id', cursoId);
+
+        if (errorHistorial) throw errorHistorial;
+
+        if (countPuestos > 0 || countHistorial > 0) {
+            showAlert(`No se puede eliminar el curso. Tiene ${countPuestos} asignaciones a puestos y ${countHistorial} registros en historial.`, 'warning');
+            return;
+        }
+
+        modalTitle.textContent = 'Confirmar Eliminación';
+
+        modalBody.innerHTML = `
+            <div class="alert alert-warning">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                <div style="flex: 1;">
+                    <strong>¿Estás seguro de que deseas eliminar este curso?</strong>
+                    <div style="margin-top: 0.5rem;">
+                        <strong>Curso:</strong> ${cursoNombre}
+                    </div>
+                    <div style="font-size: 0.875rem; margin-top: 0.5rem; color: #dc2626;">
+                        Esta acción no se puede deshacer.
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
 
-    confirmBtn.textContent = 'Eliminar';
-    confirmBtn.className = 'btn btn-danger';
-    confirmBtn.onclick = async () => {
-        await confirmDeleteCurso(cursoId);
-    };
+        confirmBtn.textContent = 'Eliminar';
+        confirmBtn.className = 'btn btn-danger';
+        confirmBtn.onclick = async () => {
+            await confirmDeleteCurso(cursoId);
+        };
 
-    openModal();
+        openModal();
+
+    } catch (error) {
+        console.error('Error verificando dependencias del curso:', error);
+        showAlert('Error al verificar dependencias del curso: ' + error.message, 'error');
+    }
 }
 
 async function confirmDeleteCurso(cursoId) {
     try {
-        // First, delete related records in puesto_curso
-        const { error: puestoCursoError } = await supabaseClient
-            .from('puesto_curso')
-            .delete()
-            .eq('curso_id', cursoId);
-
-        if (puestoCursoError) throw puestoCursoError;
-
-        // Then, delete related records in historial_cursos
-        const { error: historialError } = await supabaseClient
-            .from('historial_cursos')
-            .delete()
-            .eq('curso_id', cursoId);
-
-        if (historialError) throw historialError;
-
-        // Finally, delete the course itself
+        // Eliminar el curso en la tabla cursos
         const { error } = await supabaseClient
             .from('cursos')
             .delete()
@@ -540,13 +444,16 @@ async function confirmDeleteCurso(cursoId) {
         closeModal();
         await loadCursos();
 
-        // Reset confirm button to default state
         const confirmBtn = document.getElementById('confirmModal');
         confirmBtn.textContent = 'Guardar';
         confirmBtn.className = 'btn btn-primary';
 
     } catch (error) {
-        console.error('Error deleting course:', error);
-        showAlert('Error al eliminar el curso: ' + error.message, 'error');
+        console.error('Error eliminando curso:', error);
+        if (error.code === '23503') {
+            showAlert('No se puede eliminar el curso porque tiene registros relacionados.', 'error');
+        } else {
+            showAlert('Error al eliminar el curso: ' + error.message, 'error');
+        }
     }
 }

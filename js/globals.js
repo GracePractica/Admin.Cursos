@@ -71,25 +71,25 @@ function closeModal(modalId = 'mainModal') {
         const modalBody = document.getElementById('modalBody');
         if (modalBody) modalBody.innerHTML = '';
 
-        // Reset confirm button state just in case
+        // Restablecer el estado del botón de confirmación por si acaso
         const confirmBtn = document.getElementById('confirmModal');
         if (confirmBtn) {
             confirmBtn.style.display = 'inline-flex';
-            confirmBtn.onclick = null; // Clear previous event handlers
+            confirmBtn.onclick = null; // Limpiar manejadores de eventos anteriores
         }
     }
 }
 
 function setupModalListeners() {
-    // Close button (x)
+    // Botón de cerrar (x)
     document.querySelectorAll('.modal-close').forEach(btn => {
         btn.addEventListener('click', () => closeModal());
     });
 
-    // Cancel button
+    // Botón de cancelar
     document.getElementById('cancelModal')?.addEventListener('click', () => closeModal());
 
-    // Click outside modal
+    // Clic fuera del modal
     window.addEventListener('click', (e) => {
         const modal = document.getElementById('mainModal');
         if (e.target === modal) {
@@ -98,40 +98,40 @@ function setupModalListeners() {
     });
 }
 
-// Initialize global listeners
+// Inicializar escuchas globales
 document.addEventListener('DOMContentLoaded', () => {
     setupModalListeners();
 });
 
-// Helper function to update stat with progress bar
+// Función auxiliar para actualizar estadística con barra de progreso
 function updateStatWithProgress(statName, value, percentage) {
-    // Update the main value
+    // Actualizar el valor principal
     const valueElement = document.getElementById(statName);
     if (valueElement) {
         valueElement.textContent = value;
     }
 
-    // Update percentage
+    // Actualizar porcentaje
     const pctElement = document.getElementById(`${statName}Pct`);
     if (pctElement) {
         pctElement.textContent = `${percentage.toFixed(1)}%`;
     }
 
-    // Update progress bar
+    // Actualizar barra de progreso
     const barElement = document.getElementById(`${statName}Bar`);
     if (barElement) {
-        // Animate progress bar
+        // Animar barra de progreso
         setTimeout(() => {
             barElement.style.width = `${Math.min(100, percentage)}%`;
 
-            // Apply severity class based on percentage
+            // Aplicar clase de severidad basada en el porcentaje
             const severityClass = getSeverityClass(percentage);
             barElement.className = `progress-fill ${severityClass}`;
         }, 100);
     }
 }
 
-// Helper function to determine severity class
+// Función auxiliar para determinar la clase de severidad
 function getSeverityClass(percentage) {
     if (percentage <= 5) return 'severity-excellent';
     if (percentage <= 15) return 'severity-good';
@@ -139,13 +139,13 @@ function getSeverityClass(percentage) {
     return 'severity-critical';
 }
 
-// Levenshtein distance function for string similarity
+// Función de distancia de Levenshtein para similitud de cadenas
 function levenshteinDistance(str1, str2) {
     const len1 = str1.length;
     const len2 = str2.length;
     const matrix = [];
 
-    // Initialize matrix
+    // Inicializar matriz
     for (let i = 0; i <= len1; i++) {
         matrix[i] = [i];
     }
@@ -153,16 +153,16 @@ function levenshteinDistance(str1, str2) {
         matrix[0][j] = j;
     }
 
-    // Fill matrix
+    // Llenar matriz
     for (let i = 1; i <= len1; i++) {
         for (let j = 1; j <= len2; j++) {
             if (str1.charAt(i - 1) === str2.charAt(j - 1)) {
                 matrix[i][j] = matrix[i - 1][j - 1];
             } else {
                 matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1, // substitution
-                    matrix[i][j - 1] + 1,     // insertion
-                    matrix[i - 1][j] + 1      // deletion
+                    matrix[i - 1][j - 1] + 1, // sustitución
+                    matrix[i][j - 1] + 1,     // inserción
+                    matrix[i - 1][j] + 1      // eliminación
                 );
             }
         }
@@ -181,7 +181,7 @@ function calculateSimilarity(str1, str2) {
     return (longer.length - editDistance) / longer.length;
 }
 
-// Helper function to update health score display
+// Función auxiliar para actualizar la visualización del puntaje de salud
 function updateHealthScore(score) {
     const scoreValue = document.getElementById('healthScoreValue');
     const scoreLabel = document.getElementById('healthScoreLabel');
@@ -206,7 +206,7 @@ function updateHealthScore(score) {
     }
 
     if (healthCircle) {
-        // Animate circular progress
+        // Animar progreso circular
         const circumference = 440;
         const offset = circumference - (score / 100) * circumference;
 
@@ -243,7 +243,7 @@ function findPossibleDuplicates(nombres) {
 
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
-    // If it's a simple date string YYYY-MM-DD, split it to avoid timezone issues
+    // Si es una cadena de fecha simple AAAA-MM-DD, dividirla para evitar problemas de zona horaria
     if (dateString.length === 10 && dateString.includes('-')) {
         const [year, month, day] = dateString.split('-');
         return `${day}/${month}/${year}`;
@@ -252,7 +252,8 @@ function formatDate(dateString) {
     return date.toLocaleDateString('es-ES', {
         year: 'numeric',
         month: '2-digit',
-        day: '2-digit'
+        day: '2-digit',
+        timeZone: 'America/Panama'
     });
 }
 
@@ -269,7 +270,7 @@ function renderPaginationControls(totalItems, currentPage, itemsPerPage, contain
     const startItem = (currentPage - 1) * itemsPerPage + 1;
     const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
-    // Adjust onPageChange call to handle both function names and function calls
+    // Ajustar llamada onPageChange para manejar tanto nombres de funciones como llamadas a funciones
     let prevCall, nextCall;
     if (onPageChange.includes('(')) {
         prevCall = onPageChange.replace(')', `, ${currentPage - 1})`);

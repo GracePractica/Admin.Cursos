@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Configura los listeners de la página de colaboradores
+// Añade manejadores para agregar, filtrar y buscar colaboradores
 function setupColaboradoresListeners() {
     document.getElementById('addColaboradorButton')?.addEventListener('click', () => openAddColaboradorModal());
 
@@ -25,13 +27,13 @@ function setupColaboradoresListeners() {
 }
 
 // === COLABORADORES ===
+// Carga y muestra la lista de colaboradores, aplica filtros y paginación
 async function loadColaboradores(page = 1) {
     PAGINATION.colaboradores.page = page;
     const tbody = document.getElementById('colaboradoresTableBody');
     if (!tbody) return;
 
     try {
-        // Check for URL filter parameter
         const urlParams = new URLSearchParams(window.location.search);
         const filter = urlParams.get('filter');
 
@@ -56,15 +58,16 @@ async function loadColaboradores(page = 1) {
         let colaboradores = allColaboradores || [];
         let filterMessage = '';
 
-        // Apply URL filter
+        // Aplicar filtro desde la URL
         if (filter === 'sin_puesto') {
             colaboradores = colaboradores.filter(c => !c.puesto_id || c.puesto_id === null);
             filterMessage = `Mostrando ${colaboradores.length} colaboradores sin puesto asignado`;
         }
 
         // Display filter message if filter is active
+        // Mostrar mensaje de filtro si hay un filtro activo
         if (filterMessage) {
-            // Remove any existing filter alerts first
+            // Eliminar primero cualquier alerta de filtro existente
             const existingAlerts = tbody.parentElement.parentElement.querySelectorAll('.filter-alert');
             existingAlerts.forEach(alert => alert.remove());
 
@@ -144,6 +147,7 @@ async function loadColaboradores(page = 1) {
     }
 }
 
+// Abre el modal para agregar un nuevo colaborador y prepara el formulario
 async function openAddColaboradorModal() {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -207,6 +211,7 @@ async function openAddColaboradorModal() {
     openModal();
 }
 
+// Guarda un nuevo colaborador en la base de datos desde el formulario del modal
 async function saveColaborador() {
     const form = document.getElementById('addColaboradorForm');
     const formData = new FormData(form);
@@ -230,7 +235,6 @@ async function saveColaborador() {
         showAlert('Colaborador agregado exitosamente', 'success');
         closeModal();
         await loadColaboradores();
-        // await loadDataQualityStats(); // Solo si el dashboard está presente, pero colaboradores.js es para la página de colaboradores
 
     } catch (error) {
         console.error('Error guardando colaborador:', error);
@@ -238,6 +242,7 @@ async function saveColaborador() {
     }
 }
 
+// Abre el modal para editar un colaborador existente y carga sus datos
 async function editColaborador(colaboradorId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
@@ -315,6 +320,7 @@ async function editColaborador(colaboradorId) {
     }
 }
 
+// Actualiza los datos del colaborador en la base de datos con el formulario
 async function updateColaborador() {
     const form = document.getElementById('editColaboradorForm');
     const formData = new FormData(form);
@@ -347,6 +353,7 @@ async function updateColaborador() {
     }
 }
 
+// Muestra en un modal el historial de cursos de un colaborador dado
 async function viewColaboradorCursos(colaboradorId) {
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
