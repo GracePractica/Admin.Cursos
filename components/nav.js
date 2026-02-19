@@ -61,6 +61,8 @@ function getNavigationHTML(activePage = 'dashboard') {
                     </a>
                 </nav>
                 <div class="navbar-user">
+                    <span class="user-role" id="userRole"></span>
+
                     <button class="logout-btn" id="logoutBtn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M10 17l5-5-5-5v3H3v4h7v3zm9-12H12v2h7v10h-7v2h7c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/>
@@ -71,14 +73,39 @@ function getNavigationHTML(activePage = 'dashboard') {
 
     `;
 }
+/**
+ * Cargar rol del usuario autenticado
+ */
+async function loadUserRole() {
+    if (!window.supabaseClient) return;
 
+    const { data: { user } } = await window.supabaseClient.auth.getUser();
+    if (!user) return;
+
+    const { data, error } = await window.supabaseClient
+        .from('perfiles')
+        .select('rol')
+        .eq('id', user.id)
+        .single();
+
+    if (error) {
+        console.error('Error obteniendo rol:', error);
+        return;
+    }
+
+    const roleElement = document.getElementById('userRole');
+    if (roleElement) {
+        roleElement.textContent = data.rol;
+    }
+}
 // Initialize navigation on page load
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     const currentPage = document.body.dataset.page || 'dashboard';
     const navContainer = document.getElementById('navigation');
 
     if (navContainer) {
         navContainer.innerHTML = getNavigationHTML(currentPage);
+        loadUserRole();
     }
     // Logout handler
     document.addEventListener('click', async function (e) {

@@ -2,7 +2,6 @@
 // LOGIN - SISTEMA DE CAPACITACIONES
 // ============================================
 
-
 // === INICIALIZACIÓN ===
 document.addEventListener('DOMContentLoaded', () => {
     setupForm();
@@ -28,10 +27,8 @@ function setupTogglePassword() {
 function validateForm(email, password) {
     let valid = true;
 
-    // Limpiar errores anteriores
     clearErrors();
 
-    // Validar email
     if (!email) {
         showFieldError('emailError', 'El correo es obligatorio');
         document.getElementById('email').classList.add('is-error');
@@ -42,7 +39,6 @@ function validateForm(email, password) {
         valid = false;
     }
 
-    // Validar contraseña
     if (!password) {
         showFieldError('passwordError', 'La contraseña es obligatoria');
         document.getElementById('password').classList.add('is-error');
@@ -122,14 +118,42 @@ function setupForm() {
             });
 
             if (error) {
-                // Traducir mensajes comunes de Supabase
                 const msg = translateError(error.message);
                 showAlert(msg);
                 setLoading(false);
                 return;
             }
 
-            // Login exitoso - redirigir al dashboard
+            // ============================================
+            // 🔐 VALIDAR PERFIL Y ROL
+            // ============================================
+
+            const user = data.user;
+
+            if (!user) {
+                showAlert('No se pudo obtener el usuario.');
+                setLoading(false);
+                return;
+            }
+
+            const { data: perfil, error: perfilError } = await window.supabaseClient
+                .from('perfiles')
+                .select('rol')
+                .eq('id', user.id)
+                .single();
+
+            if (perfilError || !perfil) {
+                showAlert('No tienes un rol asignado. Contacta al administrador.');
+                await window.supabaseClient.auth.signOut();
+                setLoading(false);
+                return;
+            }
+
+            // Guardar datos en localStorage
+            localStorage.setItem('userRole', perfil.rol);
+            localStorage.setItem('userId', user.id);
+
+            // Redirigir
             window.location.href = 'dashboard.html';
 
         } catch (err) {

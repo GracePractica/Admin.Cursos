@@ -172,14 +172,15 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 4px 12px #f59e0b4d
 }
 
 .navbar-title {
-    font-size: 1.25rem;
+    font-size: 1.20rem;
     font-weight: 800;
     color: white;
     font-family: var(--font-heading);
+    margin: 6px;
 }
 
 .navbar-nav {
@@ -217,14 +218,23 @@ p {
     width: 18px;
     height: 18px;
 }
-
+.user-role {
+    font-weight: 600;
+    font-size: 11px;
+    color: #f59e0b;;
+   
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: solid 2px #ffffff;
+}
 .navbar-user {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: 10px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-md);
+    margin: 4px;
 }
 
 .navbar-user-name {
