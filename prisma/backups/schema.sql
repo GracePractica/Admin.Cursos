@@ -159,6 +159,18 @@ ALTER TABLE "public"."historial_cursos" ALTER COLUMN "id_historial" ADD GENERATE
 
 
 
+CREATE TABLE IF NOT EXISTS "public"."perfiles" (
+    "id" "uuid" NOT NULL,
+    "nombre" "text",
+    "rol" "text" DEFAULT 'SUPERVISOR'::"text" NOT NULL,
+    "creado_en" timestamp without time zone DEFAULT "now"(),
+    CONSTRAINT "perfiles_rol_check" CHECK (("rol" = ANY (ARRAY['ADMIN'::"text", 'SUPERVISOR'::"text"])))
+);
+
+
+ALTER TABLE "public"."perfiles" OWNER TO "postgres";
+
+
 CREATE TABLE IF NOT EXISTS "public"."puesto_curso" (
     "id_puesto_curso" smallint NOT NULL,
     "clasificacion_estrategica" character varying(11),
@@ -232,6 +244,11 @@ ALTER TABLE ONLY "public"."historial_cursos"
 
 
 
+ALTER TABLE ONLY "public"."perfiles"
+    ADD CONSTRAINT "perfiles_pkey" PRIMARY KEY ("id");
+
+
+
 ALTER TABLE ONLY "public"."puesto_curso"
     ADD CONSTRAINT "puesto_curso_pkey" PRIMARY KEY ("id_puesto_curso");
 
@@ -300,6 +317,18 @@ ALTER TABLE ONLY "public"."historial_cursos"
 ALTER TABLE ONLY "public"."historial_cursos"
     ADD CONSTRAINT "historial_cursos_curso_id_fkey" FOREIGN KEY ("curso_id") REFERENCES "public"."cursos"("id_curso") ON UPDATE CASCADE;
 
+
+
+ALTER TABLE ONLY "public"."perfiles"
+    ADD CONSTRAINT "perfiles_id_fkey" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
+
+
+
+CREATE POLICY "Ver propio perfil" ON "public"."perfiles" FOR SELECT USING (("auth"."uid"() = "id"));
+
+
+
+ALTER TABLE "public"."perfiles" ENABLE ROW LEVEL SECURITY;
 
 
 
@@ -530,6 +559,12 @@ GRANT ALL ON TABLE "public"."historial_cursos" TO "service_role";
 GRANT ALL ON SEQUENCE "public"."historial_cursos_id_historial_seq" TO "anon";
 GRANT ALL ON SEQUENCE "public"."historial_cursos_id_historial_seq" TO "authenticated";
 GRANT ALL ON SEQUENCE "public"."historial_cursos_id_historial_seq" TO "service_role";
+
+
+
+GRANT ALL ON TABLE "public"."perfiles" TO "anon";
+GRANT ALL ON TABLE "public"."perfiles" TO "authenticated";
+GRANT ALL ON TABLE "public"."perfiles" TO "service_role";
 
 
 
