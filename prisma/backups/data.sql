@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict JZvqlukCbTA9diAxnUXUANz7O8fyYiohfZA49vmrCOqRrlB1qwmPpFgoeLGWafE
+-- \restrict wbuAqJfRUcTyZdtaTcvj5t4tYAhQw1l8BwipRxDtzIdWyFhlrxTqGetZ1Tfpla1
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -42,9 +42,9 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
-00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-19 22:42:24.139174+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-19 22:42:24.1734+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-19 23:16:28.995861+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-19 23:16:29.028328+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-19 23:41:08.121567+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-19 23:41:08.148195+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-20 01:09:55.06035+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-20 01:09:55.095381+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-20 01:21:43.016453+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-20 01:21:43.099374+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-20 00:45:34.722231+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-20 00:45:34.796772+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -80,7 +80,8 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 --
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
-1f4223c0-a365-4c58-ae04-7d5fc9922975	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-02-19 23:41:08.12293+00	2026-02-19 23:41:08.12293+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36	186.73.144.223	\N	\N	\N	\N	\N
+81618691-e209-4b5d-8e36-1d3ddf02dc91	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	2026-02-20 01:09:55.060453+00	2026-02-20 01:09:55.060453+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36	190.32.30.178	\N	\N	\N	\N	\N
+ac0123b4-7664-4b14-85db-d58433de2abe	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-02-20 01:21:43.017988+00	2026-02-20 01:21:43.017988+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36	186.73.144.223	\N	\N	\N	\N	\N
 \.
 
 
@@ -89,7 +90,8 @@ COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id"
 --
 
 COPY "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") FROM stdin;
-1f4223c0-a365-4c58-ae04-7d5fc9922975	2026-02-19 23:41:08.148966+00	2026-02-19 23:41:08.148966+00	password	63a0d313-ea05-436a-aa0f-d9f6c888b5bb
+81618691-e209-4b5d-8e36-1d3ddf02dc91	2026-02-20 01:09:55.098791+00	2026-02-20 01:09:55.098791+00	password	a957c5e9-15d6-49a9-af4a-4bdd23273245
+ac0123b4-7664-4b14-85db-d58433de2abe	2026-02-20 01:21:43.103854+00	2026-02-20 01:21:43.103854+00	password	e8d56684-a1bf-4ca4-a8a8-e91caddf652b
 \.
 
 
@@ -146,7 +148,8 @@ COPY "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "rel
 --
 
 COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") FROM stdin;
-00000000-0000-0000-0000-000000000000	78	tzcjht3fc3ws	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-02-19 23:41:08.13732+00	2026-02-19 23:41:08.13732+00	\N	1f4223c0-a365-4c58-ae04-7d5fc9922975
+00000000-0000-0000-0000-000000000000	84	aamqb7oezb2w	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	f	2026-02-20 01:09:55.077409+00	2026-02-20 01:09:55.077409+00	\N	81618691-e209-4b5d-8e36-1d3ddf02dc91
+00000000-0000-0000-0000-000000000000	85	cru66tyu5e6b	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-02-20 01:21:43.067082+00	2026-02-20 01:21:43.067082+00	\N	ac0123b4-7664-4b14-85db-d58433de2abe
 \.
 
 
@@ -386,8 +389,8 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto") FROM stdin;
 500171	SUBJEFE MAQUINAS DRAGA CUCHAR ME 15
 500172	JEFE MAQUINAS ENCARG GRUA FLOT ME 16
 500105	ACEITERO MARINERO DE LANCHAS
-0	Admin
 500176	akfnoiaf
+0	Admin
 \.
 
 
@@ -1756,7 +1759,6 @@ CU_0700	WORD 2019 ESENCIAL	\N	\N	\N	\N
 CU_0701	WORD: ELABORACIÓN DE DOCUMENTOS Y USO DE PLANTILLAS	\N	\N	\N	\N
 CU_0702	WRITING ACCURATE REPORTS ("W.A.R.")	\N	\N	\N	\N
 CU_0001	PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA	2021-10-01	2025-09-08	activo	\N
-CU_0703	Curso nuevo 1	\N	\N	inactivo	\N
 CU_0704	Curso nuevo 2	\N	\N	inactivo	\N
 \.
 
@@ -2396,6 +2398,7 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 635	500117	INCA-MI	20
 636	500125	INCR	21
 644	500176	INCD-PS	\N
+648	0	INCR	\N
 \.
 
 
@@ -13520,6 +13523,7 @@ COPY "public"."historial_cursos" ("id_historial", "fecha_inicio", "fecha_final",
 11114	2023-05-04	2023-05-04	Completado	4	2343223	CU_0702
 11115	2023-05-04	2023-05-04	Completado	4	2779889	CU_0702
 11116	2023-05-04	2023-05-04	Completado	4	2728257	CU_0702
+11120	2026-02-19	2026-02-19	Completado	2	16	CU_0704
 \.
 
 
@@ -20554,6 +20558,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 7014	\N	\N	\N	CU_0044	500026
 7015	\N	\N	\N	CU_0044	500025
 7016	\N	\N	\N	CU_0044	500021
+7017	NECESARIO	0	OK	CU_0704	0
 \.
 
 
@@ -20617,7 +20622,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 78, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 85, true);
 
 
 --
@@ -20631,14 +20636,14 @@ SELECT pg_catalog.setval('"public"."dep_puesto_id_seq"', 1, true);
 -- Name: departamento_puesto_id_dep_puesto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 647, true);
+SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 648, true);
 
 
 --
 -- Name: historial_cursos_id_historial_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11119, true);
+SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11120, true);
 
 
 --
@@ -20652,6 +20657,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500177, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict JZvqlukCbTA9diAxnUXUANz7O8fyYiohfZA49vmrCOqRrlB1qwmPpFgoeLGWafE
+-- \unrestrict wbuAqJfRUcTyZdtaTcvj5t4tYAhQw1l8BwipRxDtzIdWyFhlrxTqGetZ1Tfpla1
 
 RESET ALL;
