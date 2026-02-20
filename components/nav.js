@@ -2,7 +2,7 @@
  * Shared Navigation Component - Horizontal Top Navbar
  * Provides consistent navigation across all pages
  */
-
+let CURRENT_USER_ROLE = null;
 function getNavigationHTML(activePage = 'dashboard') {
     return `
         <header class="top-navbar">
@@ -93,10 +93,15 @@ async function loadUserRole() {
         return;
     }
 
+    CURRENT_USER_ROLE = data.rol; // 👈 GUARDAMOS EL ROL GLOBALMENTE
+
     const roleElement = document.getElementById('userRole');
     if (roleElement) {
         roleElement.textContent = data.rol;
     }
+
+    // 👇 Lanzamos evento para que otras páginas sepan el rol
+    document.dispatchEvent(new Event('roleLoaded'));
 }
 // Initialize navigation on page load
 document.addEventListener('DOMContentLoaded', async function () {

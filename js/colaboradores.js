@@ -1,7 +1,9 @@
 // ============================================
 // LÓGICA DE COLABORADORES
 // ============================================
-
+document.addEventListener('roleLoaded', () => {
+    applyRolePermissions();
+});
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar si estamos en la página de colaboradores
     if (document.getElementById('colaboradoresTableBody')) {
@@ -9,7 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
         setupColaboradoresListeners();
     }
 });
-
+function applyRolePermissions() {
+    if (CURRENT_USER_ROLE === 'SUPERVISOR') {
+        const addButton = document.getElementById('addColaboradorButton');
+        if (addButton) {
+            addButton.style.display = 'none';
+        }
+    }
+}
 // Configura los listeners de la página de colaboradores
 // Añade manejadores para agregar, filtrar y buscar colaboradores
 function setupColaboradoresListeners() {

@@ -1,14 +1,23 @@
 // ============================================
 // LÓGICA DE DEPARTAMENTOS
 // ============================================
-
+document.addEventListener('roleLoaded', () => {
+    applyRolePermissions();
+});
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('departamentosTableBody')) {
         loadDepartamentos();
         setupDepartamentosListeners();
     }
 });
-
+function applyRolePermissions() {
+    if (CURRENT_USER_ROLE === 'SUPERVISOR') {
+        const addButton = document.getElementById('addDepartamentoButton');
+        if (addButton) {
+            addButton.style.display = 'none';
+        }
+    }
+}
 // Configura los listeners de la página de departamentos
 // Añade manejadores para abrir el modal de creación y para buscar
 function setupDepartamentosListeners() {

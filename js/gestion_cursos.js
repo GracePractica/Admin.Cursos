@@ -278,12 +278,17 @@ function renderAsignacionesTable(page = 1) {
                     </span>
                 </td>
                 <td>
-                    <button class="btn btn-small btn-outline" onclick="editCursoAsignacion(${asignacion.id_puesto_curso})">
+                    <button class="btn btn-small btn-outline"
+                        onclick="editCursoAsignacion(${asignacion.id_puesto_curso})">
                         Editar
                     </button>
-                    <button class="btn btn-small btn-danger" onclick="deleteCursoAsignacion(${asignacion.id_puesto_curso})">
-                        Eliminar
-                    </button>
+
+                    ${localStorage.getItem('userRole') === 'admin' ? `
+                        <button class="btn btn-small btn-danger"
+                            onclick="deleteCursoAsignacion(${asignacion.id_puesto_curso})">
+                            Eliminar
+                        </button>
+                    ` : ''}
                 </td>
             </tr>
         `;
@@ -700,6 +705,11 @@ async function updateAsignacion() {
 
 // Inicia el proceso de eliminación de una asignación
 async function deleteCursoAsignacion(assignmentId) {
+    const role = localStorage.getItem('userRole');
+    if (role !== 'admin') {
+        showAlert('No tienes permisos para eliminar', 'error');
+        return;
+    }
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');

@@ -1,14 +1,23 @@
 // ============================================
 // LÓGICA DE CURSOS
 // ============================================
-
+document.addEventListener('roleLoaded', () => {
+    applyRolePermissions();
+});
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('cursosTableBody')) {
         loadCursos();
         setupCursosListeners();
     }
 });
-
+function applyRolePermissions() {
+    if (CURRENT_USER_ROLE === 'SUPERVISOR') {
+        const addButton = document.getElementById('addCursoButton');
+        if (addButton) {
+            addButton.style.display = 'none';
+        }
+    }
+}
 function setupCursosListeners() {
     document.getElementById('addCursoButton')?.addEventListener('click', () => openAddCursoModal());
 
