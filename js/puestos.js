@@ -1,7 +1,9 @@
 // ============================================
 // LÓGICA DE PUESTOS
 // ============================================
-
+document.addEventListener('roleLoaded', () => {
+    applyRolePermissions();
+});
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('puestosTableBody')) {
         loadPuestos();
@@ -9,7 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
         loadDepartamentosFilter('filterDepartamentoPuesto');
     }
 });
-
+function applyRolePermissions() {
+    if (CURRENT_USER_ROLE === 'SUPERVISOR') {
+        const addButton = document.getElementById('addPuestoButton');
+        if (addButton) {
+            addButton.style.display = 'none';
+        }
+    }
+}
 function setupPuestosListeners() {
     document.getElementById('addPuestoButton')?.addEventListener('click', () => openAddPuestoModal());
 
@@ -80,14 +89,32 @@ async function loadPuestos(page = 1) {
             const acciones = puesto.departamento_puesto?.length
                 ? puesto.departamento_puesto.map(dp => `
                     <div>
-                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto}, '${dp.dep_id}')">Editar</button>
-                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto}, '${dp.dep_id}')">Eliminar</button>
+                        <button class="btn btn-small btn-outline"
+                            onclick="editPuesto(${puesto.id_puesto}, '${dp.dep_id}')">
+                            Editar
+                        </button>
+
+                        ${CURRENT_USER_ROLE === 'ADMIN' ? `
+                            <button class="btn btn-small btn-danger"
+                                onclick="deletePuesto(${puesto.id_puesto}, '${dp.dep_id}')">
+                                Eliminar
+                            </button>
+                        ` : ''}
                     </div>
                 `).join('')
                 : `
                     <div>
-                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto})">Editar</button>
-                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto})">Eliminar</button>
+                        <button class="btn btn-small btn-outline"
+                            onclick="editPuesto(${puesto.id_puesto})">
+                            Editar
+                        </button>
+
+                        ${CURRENT_USER_ROLE === 'ADMIN' ? `
+                            <button class="btn btn-small btn-danger"
+                                onclick="deletePuesto(${puesto.id_puesto})">
+                                Eliminar
+                            </button>
+                        ` : ''}
                     </div>
                 `;
 
@@ -350,4 +377,6 @@ async function loadDepartamentosFilter(selectId) {
         console.error('Error cargando departamentos:', error);
         select.innerHTML = '<option value="">Error al cargar</option>';
     }
+
+    
 }
