@@ -203,7 +203,11 @@ async function openAddCursoModal() {
         </form>
     `;
 
-    document.getElementById('confirmModal').onclick = async () => {
+    const confirmBtn = document.getElementById('confirmModal');
+    confirmBtn.textContent = 'Guardar';
+    confirmBtn.className = 'btn btn-primary';
+    confirmBtn.disabled = false;
+    confirmBtn.onclick = async () => {
         await saveCurso();
     };
 
@@ -385,15 +389,8 @@ async function deleteCurso(cursoId, cursoNombre) {
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');
 
-    // Verificar si tiene registros relacionados antes de mostrar el modal de confirmación
+    // Verificar registros en historial_cursos y puesto_curso
     try {
-        const { count: countPuestos, error: errorPuestos } = await supabaseClient
-            .from('puesto_curso')
-            .select('*', { count: 'exact', head: true })
-            .eq('curso_id', cursoId);
-
-        if (errorPuestos) throw errorPuestos;
-
         const { count: countHistorial, error: errorHistorial } = await supabaseClient
             .from('historial_cursos')
             .select('*', { count: 'exact', head: true })
@@ -401,35 +398,198 @@ async function deleteCurso(cursoId, cursoNombre) {
 
         if (errorHistorial) throw errorHistorial;
 
-        if (countPuestos > 0 || countHistorial > 0) {
-            showAlert(`No se puede eliminar el curso. Tiene ${countPuestos} asignaciones a puestos y ${countHistorial} registros en historial.`, 'warning');
-            return;
-        }
+        const { count: countGestion, error: errorGestion } = await supabaseClient
+            .from('puesto_curso')
+            .select('*', { count: 'exact', head: true })
+            .eq('curso_id', cursoId);
 
-        modalTitle.textContent = 'Confirmar Eliminación';
+        if (errorGestion) throw errorGestion;
 
-        modalBody.innerHTML = `
-            <div class="alert alert-warning">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
-                </svg>
-                <div style="flex: 1;">
-                    <strong>¿Estás seguro de que deseas eliminar este curso?</strong>
-                    <div style="margin-top: 0.5rem;">
-                        <strong>Curso:</strong> ${cursoNombre}
-                    </div>
-                    <div style="font-size: 0.875rem; margin-top: 0.5rem; color: #dc2626;">
-                        Esta acción no se puede deshacer.
+        const tieneRegistros = (countHistorial > 0 || countGestion > 0);
+
+        modalTitle.textContent = 'Eliminar Curso';
+
+        if (tieneRegistros) {
+            // Construir resumen de registros
+            const resumenPartes = [];
+            if (countHistorial > 0) resumenPartes.push(`${countHistorial} registro(s) en Historial`);
+            if (countGestion > 0) resumenPartes.push(`${countGestion} asignación(es) en Gestión`);
+            const resumen = resumenPartes.join(' y ');
+
+            modalBody.innerHTML = `
+                <div class="alert alert-warning" style="margin-bottom:1rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    <div style="flex:1;">
+                        <strong>Este curso tiene registros asociados</strong>
+                        <div style="margin-top:0.4rem; font-size:0.9rem;">
+                            <strong>${cursoNombre}</strong> tiene ${resumen}.
+                            Debes transferirlos a otro curso antes de eliminar.
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
 
-        confirmBtn.textContent = 'Eliminar';
-        confirmBtn.className = 'btn btn-danger';
-        confirmBtn.onclick = async () => {
-            await confirmDeleteCurso(cursoId);
-        };
+                <div class="form-group" style="position: relative;">
+                    <label class="form-label">Buscar curso destino para transferir los registros:</label>
+                    <input type="text" id="buscarCursoDestino" class="form-input"
+                        placeholder="Escribe el nombre del curso..."
+                        autocomplete="off">
+                    <div id="resultadosBusquedaCurso" style="
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        right: 0;
+                        z-index: 1000;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 6px;
+                        max-height: 200px;
+                        overflow-y: auto;
+                        margin-top: 2px;
+                        display: none;
+                        background: white;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    "></div>
+                </div>
+
+                <div id="cursoDestinoSeleccionado" style="display:none; margin-top:0.5rem;">
+                    <div class="alert alert-info" style="padding:0.6rem 1rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                        </svg>
+                        <span>Transfiriendo a: <strong id="nombreCursoDestinoLabel"></strong></span>
+                    </div>
+                </div>
+
+                <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid #e5e7eb; font-size:0.85rem; color:#6b7280;">
+                    ⚠️ Se transferirán los registros y luego se eliminará permanentemente el curso <strong>${cursoNombre}</strong>.
+                </div>
+            `;
+
+            // Variable para guardar el curso destino seleccionado
+            let cursoDestinoId = null;
+            let todosCursos = []; // Cache local de cursos
+
+            const inputBusqueda = document.getElementById('buscarCursoDestino');
+            const resultadosDiv = document.getElementById('resultadosBusquedaCurso');
+
+            // Función para renderizar lista de resultados
+            function renderResultadosCursos(lista) {
+                if (!lista || lista.length === 0) {
+                    resultadosDiv.style.display = 'block';
+                    resultadosDiv.innerHTML = '<div style="padding:0.75rem 1rem; color:#6b7280; font-size:0.875rem;">No se encontraron cursos</div>';
+                    return;
+                }
+                resultadosDiv.style.display = 'block';
+                resultadosDiv.innerHTML = lista.map(c => `
+                    <div class="resultado-curso-item" data-id="${c.id_curso}" data-nombre="${c.nombre_curso?.replace(/"/g, '&quot;')}"
+                        style="padding:0.6rem 1rem; cursor:pointer; border-bottom:1px solid #f3f4f6; font-size:0.9rem; transition:background 0.15s;"
+                        onmouseover="this.style.background='#f9fafb'"
+                        onmouseout="this.style.background='white'">
+                        <strong>${c.id_curso}</strong> – ${c.nombre_curso || 'Sin nombre'}
+                    </div>
+                `).join('');
+
+                resultadosDiv.querySelectorAll('.resultado-curso-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        cursoDestinoId = item.dataset.id;
+                        const nombreDestino = item.dataset.nombre;
+                        inputBusqueda.value = nombreDestino;
+                        resultadosDiv.style.display = 'none';
+                        document.getElementById('cursoDestinoSeleccionado').style.display = 'block';
+                        document.getElementById('nombreCursoDestinoLabel').textContent = `${cursoDestinoId} – ${nombreDestino}`;
+                        confirmBtn.disabled = false;
+                    });
+                });
+            }
+
+            // Precargar todos los cursos (excepto el que se va a eliminar)
+            const { data: cursosDisponibles } = await supabaseClient
+                .from('cursos')
+                .select('id_curso, nombre_curso')
+                .neq('id_curso', cursoId)
+                .order('nombre_curso');
+            todosCursos = cursosDisponibles || [];
+
+            // Filtrar localmente al escribir
+            inputBusqueda.addEventListener('input', () => {
+                const termino = inputBusqueda.value.trim().toLowerCase();
+                cursoDestinoId = null;
+                document.getElementById('cursoDestinoSeleccionado').style.display = 'none';
+                confirmBtn.disabled = true;
+
+                const filtrados = termino
+                    ? todosCursos.filter(c => c.nombre_curso?.toLowerCase().includes(termino) || c.id_curso?.toLowerCase().includes(termino))
+                    : todosCursos;
+
+                renderResultadosCursos(filtrados);
+            });
+
+            // Mostrar todos los cursos al hacer foco o clic
+            const mostrarTodos = () => renderResultadosCursos(todosCursos);
+            inputBusqueda.addEventListener('focus', mostrarTodos);
+            inputBusqueda.addEventListener('click', mostrarTodos);
+
+            // Cerrar lista al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (!inputBusqueda.contains(e.target) && !resultadosDiv.contains(e.target)) {
+                    resultadosDiv.style.display = 'none';
+                }
+            });
+
+            // El botón confirmar inicia deshabilitado hasta elegir destino
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Transferir y Eliminar';
+            confirmBtn.className = 'btn btn-danger';
+            confirmBtn.onclick = async () => {
+                if (!cursoDestinoId) {
+                    showAlert('Debes seleccionar un curso destino para transferir los registros.', 'warning');
+                    return;
+                }
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'Procesando...';
+                await transferirYEliminarCurso(cursoId, cursoDestinoId, cursoNombre);
+            };
+
+        } else {
+            // Sin registros → confirmar eliminación directa con aviso
+            modalBody.innerHTML = `
+                <div class="alert alert-info" style="margin-bottom:1rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/>
+                    </svg>
+                    <div style="flex:1;">
+                        <strong>Este curso no tiene registros</strong>
+                        <div style="margin-top:0.3rem; font-size:0.875rem;">
+                            No hay registros de historial ni asignaciones de gestión asociados a este curso.
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-warning">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    <div style="flex:1;">
+                        <strong>¿Confirmas la eliminación de este curso?</strong>
+                        <div style="margin-top:0.5rem;">
+                            <strong>Curso:</strong> ${cursoNombre} (${cursoId})
+                        </div>
+                        <div style="font-size:0.875rem; margin-top:0.5rem; color:#dc2626;">
+                            Esta acción no se puede deshacer.
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Eliminar';
+            confirmBtn.className = 'btn btn-danger';
+            confirmBtn.onclick = async () => {
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'Eliminando...';
+                await confirmDeleteCurso(cursoId);
+            };
+        }
 
         openModal();
 
@@ -439,9 +599,59 @@ async function deleteCurso(cursoId, cursoNombre) {
     }
 }
 
+// Transfiere todos los registros de historial y gestión al curso destino, luego elimina el curso original
+async function transferirYEliminarCurso(cursoOrigenId, cursoDestinoId, cursoNombre) {
+    try {
+        // 1. Transferir registros de historial_cursos
+        const { error: errorHistorial } = await supabaseClient
+            .from('historial_cursos')
+            .update({ curso_id: cursoDestinoId })
+            .eq('curso_id', cursoOrigenId);
+
+        if (errorHistorial) throw new Error('Error al transferir historial: ' + errorHistorial.message);
+
+        // 2. Transferir asignaciones de puesto_curso (gestión)
+        const { error: errorGestion } = await supabaseClient
+            .from('puesto_curso')
+            .update({ curso_id: cursoDestinoId })
+            .eq('curso_id', cursoOrigenId);
+
+        if (errorGestion) throw new Error('Error al transferir gestión: ' + errorGestion.message);
+
+        // 3. Eliminar el curso original
+        const { error: errorDelete } = await supabaseClient
+            .from('cursos')
+            .delete()
+            .eq('id_curso', cursoOrigenId);
+
+        if (errorDelete) throw new Error('Error al eliminar el curso: ' + errorDelete.message);
+
+        showAlert(`Curso "${cursoNombre}" eliminado. Sus registros fueron transferidos exitosamente.`, 'success');
+        closeModal();
+        await loadCursos();
+
+        // Restablecer botón
+        const confirmBtn = document.getElementById('confirmModal');
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Guardar';
+            confirmBtn.className = 'btn btn-primary';
+        }
+
+    } catch (error) {
+        console.error('Error en transferencia y eliminación:', error);
+        showAlert('Error: ' + error.message, 'error');
+        const confirmBtn = document.getElementById('confirmModal');
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Transferir y Eliminar';
+        }
+    }
+}
+
 async function confirmDeleteCurso(cursoId) {
     try {
-        // Eliminar el curso en la tabla cursos
+        // Eliminar el curso en la tabla cursos (sin registros relacionados)
         const { error } = await supabaseClient
             .from('cursos')
             .delete()
@@ -454,15 +664,19 @@ async function confirmDeleteCurso(cursoId) {
         await loadCursos();
 
         const confirmBtn = document.getElementById('confirmModal');
-        confirmBtn.textContent = 'Guardar';
-        confirmBtn.className = 'btn btn-primary';
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Guardar';
+            confirmBtn.className = 'btn btn-primary';
+        }
 
     } catch (error) {
         console.error('Error eliminando curso:', error);
-        if (error.code === '23503') {
-            showAlert('No se puede eliminar el curso porque tiene registros relacionados.', 'error');
-        } else {
-            showAlert('Error al eliminar el curso: ' + error.message, 'error');
+        showAlert('Error al eliminar el curso: ' + error.message, 'error');
+        const confirmBtn = document.getElementById('confirmModal');
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Eliminar';
         }
     }
 }

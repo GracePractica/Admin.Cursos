@@ -467,6 +467,9 @@ async function openAddAsignacionModal(puestoId) {
         // Configurar búsqueda de cursos
         setupCursoSearch(availableCursos || []);
 
+        confirmBtn.textContent = 'Guardar';
+        confirmBtn.className = 'btn btn-primary';
+        confirmBtn.disabled = false;
         confirmBtn.onclick = async () => {
             const selectedId = document.getElementById('selectedCursoId').value;
             const errorDiv = document.getElementById('modalValidationError');
@@ -655,6 +658,9 @@ async function editCursoAsignacion(assignmentId) {
             </form>
         `;
 
+        confirmBtn.textContent = 'Guardar';
+        confirmBtn.className = 'btn btn-primary';
+        confirmBtn.disabled = false;
         confirmBtn.onclick = async () => {
             await updateAsignacion();
         };

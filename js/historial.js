@@ -372,6 +372,9 @@ async function openAddHistorialModal(colaboradorId) {
         // Configurar búsqueda de cursos
         setupCursoSearch(cursos || []);
 
+        confirmBtn.textContent = 'Guardar';
+        confirmBtn.className = 'btn btn-primary';
+        confirmBtn.disabled = false;
         confirmBtn.onclick = async () => {
             const selectedId = document.getElementById('selectedCursoId').value;
             const errorDiv = document.getElementById('modalValidationError');
