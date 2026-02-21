@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict YM84QE1kTCtfYa3DuBBflA3PLTteYTH6mYRt19dno3qUlqpFdPR4eHQDwEQZHcy
+-- \restrict Wd9PWKRI7yaHoFHkePcVC34NeVRNLGdvKLA3PuVQx9hHcq1bTr170oSwkOfnWkU
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -42,9 +42,9 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-20 01:24:52.071915+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-20 01:24:52.09646+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-20 01:30:12.023262+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-20 01:30:12.026141+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-21 02:51:57.276626+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-21 02:51:57.291079+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-21 02:53:27.532531+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-21 02:53:27.537267+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-21 02:53:46.695372+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-21 02:53:46.700437+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-21 02:54:17.663692+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-21 02:54:17.66665+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -20624,7 +20624,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 91, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 95, true);
 
 
 --
@@ -20666,6 +20666,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500177, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict YM84QE1kTCtfYa3DuBBflA3PLTteYTH6mYRt19dno3qUlqpFdPR4eHQDwEQZHcy
+-- \unrestrict Wd9PWKRI7yaHoFHkePcVC34NeVRNLGdvKLA3PuVQx9hHcq1bTr170oSwkOfnWkU
 
 RESET ALL;
