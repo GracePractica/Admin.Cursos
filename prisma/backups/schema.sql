@@ -52,11 +52,52 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
 
 
+CREATE OR REPLACE FUNCTION "public"."es_admin"() RETURNS boolean
+    LANGUAGE "sql" SECURITY DEFINER
+    SET "search_path" TO 'public'
+    AS $$
+  select exists (
+    select 1
+    from perfiles
+    where id = auth.uid()
+      and rol = 'ADMIN'
+  );
+$$;
+
+
+ALTER FUNCTION "public"."es_admin"() OWNER TO "postgres";
+
+
 CREATE OR REPLACE FUNCTION "public"."registrar_log"() RETURNS "trigger"
     LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$
+    AS $_$
+DECLARE
+    pk_column text;
+    registro_id text;
 BEGIN
+    -- Obtener el nombre de la primary key dinámicamente
+    SELECT a.attname
+    INTO pk_column
+    FROM pg_index i
+    JOIN pg_attribute a 
+        ON a.attrelid = i.indrelid
+        AND a.attnum = ANY(i.indkey)
+    WHERE i.indrelid = TG_RELID
+    AND i.indisprimary
+    LIMIT 1;
 
+    -- Obtener el valor del ID dinámicamente
+    IF TG_OP = 'DELETE' THEN
+        EXECUTE format('SELECT ($1).%I::text', pk_column)
+        INTO registro_id
+        USING OLD;
+    ELSE
+        EXECUTE format('SELECT ($1).%I::text', pk_column)
+        INTO registro_id
+        USING NEW;
+    END IF;
+
+    -- Insertar en log
     INSERT INTO log (
         user_id,
         tabla_afectada,
@@ -69,14 +110,14 @@ BEGIN
         auth.uid(),
         TG_TABLE_NAME,
         TG_OP,
-        COALESCE(NEW.id::text, OLD.id::text),
+        registro_id,
         to_jsonb(OLD),
         to_jsonb(NEW)
     );
 
-    RETURN NEW;
+    RETURN COALESCE(NEW, OLD);
 END;
-$$;
+$_$;
 
 
 ALTER FUNCTION "public"."registrar_log"() OWNER TO "postgres";
@@ -195,7 +236,7 @@ CREATE TABLE IF NOT EXISTS "public"."log" (
     "tabla_afectada" "text" NOT NULL,
     "accion" "text" NOT NULL,
     "registro_id" "text" NOT NULL,
-    "datos_anteriores" "jsonb" NOT NULL,
+    "datos_anteriores" "jsonb",
     "datos_nuevos" "jsonb" NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL
 );
@@ -426,9 +467,7 @@ ALTER TABLE ONLY "public"."perfiles"
 
 
 
-CREATE POLICY "Admin puede ver todos" ON "public"."perfiles" FOR SELECT USING ((EXISTS ( SELECT 1
-   FROM "public"."perfiles" "perfiles_1"
-  WHERE (("perfiles_1"."id" = "auth"."uid"()) AND ("perfiles_1"."rol" = 'ADMIN'::"text")))));
+CREATE POLICY "Admin puede ver todos los perfiles" ON "public"."perfiles" FOR SELECT USING (("public"."es_admin"() OR ("id" = "auth"."uid"())));
 
 
 
@@ -601,6 +640,12 @@ GRANT USAGE ON SCHEMA "public" TO "service_role";
 
 
 
+
+
+
+GRANT ALL ON FUNCTION "public"."es_admin"() TO "anon";
+GRANT ALL ON FUNCTION "public"."es_admin"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."es_admin"() TO "service_role";
 
 
 

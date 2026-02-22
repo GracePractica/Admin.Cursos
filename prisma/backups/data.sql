@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict Wd9PWKRI7yaHoFHkePcVC34NeVRNLGdvKLA3PuVQx9hHcq1bTr170oSwkOfnWkU
+-- \restrict JQmA6RObXRkPJpqxpRLr0fzWhTSxLbKnShTjJIokDTLL2UPbv7fQpgrNKUHsKTL
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -42,9 +42,9 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-21 02:53:27.532531+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-21 02:53:27.537267+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-21 02:53:46.695372+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-21 02:53:46.700437+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-21 02:54:17.663692+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-21 02:54:17.66665+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-22 09:22:41.283394+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-22 09:22:41.321893+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-22 09:36:44.357131+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-22 09:36:44.387591+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -80,6 +80,7 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 --
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
+cb1a0f6b-4e60-441b-a550-d4e3ed49ea70	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-02-22 09:36:44.358117+00	2026-02-22 09:36:44.358117+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 OPR/127.0.0.0	186.72.109.210	\N	\N	\N	\N	\N
 \.
 
 
@@ -88,6 +89,7 @@ COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id"
 --
 
 COPY "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") FROM stdin;
+cb1a0f6b-4e60-441b-a550-d4e3ed49ea70	2026-02-22 09:36:44.390291+00	2026-02-22 09:36:44.390291+00	password	55191973-3077-4a0e-883a-04e8a517ce18
 \.
 
 
@@ -144,6 +146,7 @@ COPY "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "rel
 --
 
 COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") FROM stdin;
+00000000-0000-0000-0000-000000000000	99	byh5q6svweyr	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-02-22 09:36:44.36772+00	2026-02-22 09:36:44.36772+00	\N	cb1a0f6b-4e60-441b-a550-d4e3ed49ea70
 \.
 
 
@@ -223,7 +226,6 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto") FROM stdin;
 500010	LDR REP DE INST Y EQ NAUTICO
 500011	LDR MEC DE MAQUIN NAUTICAS
 500012	CAP DE BOTE GRUA
-500013	AGENTE DE COMPRAS
 500014	OFICIN DE REGISTROS DE TIEMPO
 500015	OFICINISTA
 500016	ACEITERO PLANTA FLOTANTE
@@ -344,6 +346,7 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto") FROM stdin;
 500132	CAP DE BOTE GRÚA
 500133	CPTZ, OP DE LANCHAS A MOTOR
 500134	SUPV, INGENIERO CIVIL
+500013	AGENTE DE COMPRAS
 500135	GRTE DE DRAGADO, GRÚAS Y REMOL
 500136	VP DE INFRAEST E INGENIERÍA
 500137	SUP OF DE PRO Y EN C/CLIEN NAV
@@ -369,7 +372,6 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto") FROM stdin;
 500157	SUPV INGEN INTERDISCIPLINARIO NM 12
 500158	TEC EN ING INTERDISCIPLINARIO NM 07
 500159	TEC EN ING INTERDISCIPLINARIO NM 08
-500160	ASIST DE TRAB AUTOMATIZADOS NM 05
 500161	ASISTENTE DE ADMINISTRACION DE COMBUSTIBLE NM 05
 500162	AYUDANTE GENERAL TRABAJADORES DE COLOCACION ESP MG 02
 500163	CPTZ GRAL ELECTRICISTA MS 13
@@ -385,6 +387,7 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto") FROM stdin;
 500105	ACEITERO MARINERO DE LANCHAS
 500176	akfnoiaf
 0	Admin
+500160	ASIST DE TRAB AUTOMATIZADOS NM 05
 \.
 
 
@@ -1051,7 +1054,6 @@ COPY "public"."curso_grupo" ("id_grupo", "grupo_nombre") FROM stdin;
 --
 
 COPY "public"."cursos" ("id_curso", "nombre_curso", "primera_fecha", "ultima_fecha", "estado", "grupo_curso") FROM stdin;
-CU_0004	PROTECCIÓN DEL MEDIO AMBIENTE	\N	\N	\N	\N
 CU_0005	15 REGLAS DE ORO EN ÉTICA Y VALORES	\N	\N	\N	10
 CU_0006	ANÁLISIS DE CAUSA RAÍZ	\N	\N	\N	\N
 CU_0007	PLANIFICACIÓN DEL TRABAJO	2025-03-26	2025-03-26	\N	\N
@@ -1147,6 +1149,7 @@ CU_0097	SEGURIDAD OCUPACIONAL BASADA EN EL COMPORTAMIENTO	\N	\N	\N	\N
 CU_0098	SENTANDO LAS BASES PARA UN TRABAJO SEGURO	\N	\N	\N	11
 CU_0099	LO MEJOR DEL TRABAJO EN EQUIPO	\N	\N	\N	\N
 CU_0011	CÓMO ADMINISTRAR EL TRABAJO	2022-01-03	2025-07-09	activo	\N
+CU_0004	PROTECCIÓN DEL MEDIO AMBIENTE	\N	\N	activo	\N
 CU_0003	PRIMEROS AUXILIOS, RCP Y DEA	\N	\N	activo	1
 CU_0002	MANEJO DEFENSIVO	\N	\N	activo	\N
 CU_0100	MANEJO Y FILTRO DE LA INFORMACIÓN ORGANIZACIONAL	\N	\N	\N	\N
@@ -2393,6 +2396,7 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 636	500125	INCR	21
 644	500176	INCD-PS	\N
 648	0	INCR	\N
+656	500160	INCA-MM	\N
 \.
 
 
@@ -12498,7 +12502,6 @@ COPY "public"."historial_cursos" ("id_historial", "fecha_inicio", "fecha_final",
 10095	2023-12-01	2023-12-01	Completado	3	2343797	CU_0627
 10096	2023-12-01	2023-12-01	Completado	3	2729873	CU_0627
 10097	2023-12-01	2023-12-01	Completado	3	2753120	CU_0627
-10098	2025-09-10	2025-09-11	Completado	16	2341107	CU_0628
 10099	2025-04-21	2025-04-21	Completado	4	2246554	CU_0629
 10100	2024-08-12	2024-08-12	Completado	4	2321203	CU_0629
 10101	2024-08-12	2024-08-12	Completado	4	2293030	CU_0629
@@ -13518,6 +13521,7 @@ COPY "public"."historial_cursos" ("id_historial", "fecha_inicio", "fecha_final",
 11115	2023-05-04	2023-05-04	Completado	4	2779889	CU_0702
 11116	2023-05-04	2023-05-04	Completado	4	2728257	CU_0702
 11120	2026-02-19	2026-02-19	Completado	2	16	CU_0704
+10098	2025-09-10	2025-09-11	En Proceso	16	2341107	CU_0628
 \.
 
 
@@ -13526,6 +13530,17 @@ COPY "public"."historial_cursos" ("id_historial", "fecha_inicio", "fecha_final",
 --
 
 COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_id", "datos_anteriores", "datos_nuevos", "created_at") FROM stdin;
+1	1be4f0d5-58a2-484f-925a-8d2623579c45	historial_cursos	UPDATE	10098	{"estado": "Completado", "curso_id": "CU_0628", "fecha_final": "2025-09-11", "fecha_inicio": "2025-09-10", "id_historial": 10098, "colaborador_id": 2341107, "duracion_horas": 16}	{"estado": "En Proceso", "curso_id": "CU_0628", "fecha_final": "2025-09-11", "fecha_inicio": "2025-09-10", "id_historial": 10098, "colaborador_id": 2341107, "duracion_horas": 16}	2026-02-22 09:52:42.943786+00
+2	1be4f0d5-58a2-484f-925a-8d2623579c45	cursos	UPDATE	CU_0004	{"estado": null, "id_curso": "CU_0004", "grupo_curso": null, "nombre_curso": "PROTECCIÓN DEL MEDIO AMBIENTE", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "id_curso": "CU_0004", "grupo_curso": null, "nombre_curso": "PROTECCIÓN DEL MEDIO AMBIENTE", "ultima_fecha": null, "primera_fecha": null}	2026-02-22 09:54:01.171778+00
+3	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500013	{"id_puesto": 500013, "nombre_puesto": "AGENTE DE COMPRAS"}	{"id_puesto": 500013, "nombre_puesto": "AGENTE DE COMPRAS"}	2026-02-22 09:55:10.653228+00
+6	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:55:34.101695+00
+8	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:55:36.991691+00
+10	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:55:38.924861+00
+11	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:55:39.111706+00
+14	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:55:39.346192+00
+16	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:56:12.050638+00
+18	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:57:57.802839+00
+19	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	INSERT	656	\N	{"dep_id": "INCA-MM", "colab_id": null, "puesto_id": 500160, "id_dep_puesto": 656}	2026-02-22 09:57:58.088313+00
 \.
 
 
@@ -20624,7 +20639,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 95, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 99, true);
 
 
 --
@@ -20638,7 +20653,7 @@ SELECT pg_catalog.setval('"public"."dep_puesto_id_seq"', 1, true);
 -- Name: departamento_puesto_id_dep_puesto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 648, true);
+SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 656, true);
 
 
 --
@@ -20652,7 +20667,7 @@ SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11120, 
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 1, false);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 19, true);
 
 
 --
@@ -20666,6 +20681,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500177, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict Wd9PWKRI7yaHoFHkePcVC34NeVRNLGdvKLA3PuVQx9hHcq1bTr170oSwkOfnWkU
+-- \unrestrict JQmA6RObXRkPJpqxpRLr0fzWhTSxLbKnShTjJIokDTLL2UPbv7fQpgrNKUHsKTL
 
 RESET ALL;
