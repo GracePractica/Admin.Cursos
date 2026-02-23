@@ -5,6 +5,7 @@
 let currentSection = 'dashboard';
 let currentFilters = {
     departamento: '',
+    asignacion: '',
     puesto: '',
     clasificacion: '',
     estado: '',

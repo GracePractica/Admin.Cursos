@@ -218,15 +218,18 @@ p {
     width: 18px;
     height: 18px;
 }
+
 .user-role {
     font-weight: 600;
     font-size: 11px;
-    color: #f59e0b;;
-   
+    color: #f59e0b;
+    ;
+
     padding: 5px 10px;
     border-radius: 20px;
     border: solid 2px #ffffff;
 }
+
 .navbar-user {
     display: flex;
     align-items: center;
@@ -1143,6 +1146,64 @@ tbody td:last-child {
     right: 0;
     background: var(--surface-color);
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* === COLABORADORES PAGE TABLE STYLES === */
+body[data-page="colaboradores"] .data-table {
+    min-width: 850px;
+    table-layout: auto;
+}
+
+body[data-page="colaboradores"] .data-table th:nth-child(1),
+body[data-page="colaboradores"] .data-table td:nth-child(1) {
+    width: 60px;
+    text-align: center;
+}
+
+/* ID */
+
+body[data-page="colaboradores"] .data-table th:nth-child(2),
+body[data-page="colaboradores"] .data-table td:nth-child(2) {
+    width: 220px;
+    white-space: nowrap;
+}
+
+/* Nombre */
+
+body[data-page="colaboradores"] .data-table th:nth-child(3),
+body[data-page="colaboradores"] .data-table td:nth-child(3) {
+    width: 180px;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Asignación - Ajustada para no ocupar todo el espacio */
+
+body[data-page="colaboradores"] .data-table th:nth-child(4),
+body[data-page="colaboradores"] .data-table td:nth-child(4) {
+    width: 200px;
+    white-space: nowrap;
+}
+
+/* Puesto */
+
+body[data-page="colaboradores"] .data-table .actions-column,
+body[data-page="colaboradores"] .data-table th:last-child,
+body[data-page="colaboradores"] .data-table td:last-child {
+    width: 340px;
+    min-width: 340px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Acciones - espacio para 3 botones */
+
+body[data-page="colaboradores"] .data-table td:last-child .btn-small {
+    margin: 2px 3px;
+    display: inline-flex;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.55rem;
 }
 
 thead th.actions-column {

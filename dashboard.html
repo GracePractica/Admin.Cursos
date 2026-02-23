@@ -24,7 +24,7 @@
             <header class="main-header">
                 <h1 class="page-title">Dashboard</h1>
                 <div class="header-actions">
-    
+
                     <!-- BOTÓN HISTORIAL -->
                     <button class="btn btn-outline" onclick="window.location.href='historial_log.html'">
                         📋 Historial
@@ -33,7 +33,8 @@
                     <!-- BOTÓN ACTUALIZAR -->
                     <button class="btn btn-secondary" onclick="location.reload()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                            <path
+                                d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
                         </svg>
                         Actualizar
                     </button>
@@ -149,6 +150,34 @@
                         </div>
                         <div class="stat-action">
                             <span>Click para revisar →</span>
+                        </div>
+                    </a>
+
+                    <!-- Colaboradores sin Puesto -->
+                    <a href="colaboradores.html?filter=sin_puesto" class="stat-card stat-card-link">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value" id="colabSinPuesto">0</div>
+                                <div class="stat-label">Colaboradores sin Puesto</div>
+                            </div>
+                            <div class="stat-icon stat-icon-blue">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-percentage">
+                                <span class="stat-percentage-label">Porcentaje</span>
+                                <span class="stat-percentage-value" id="colabSinPuestoPct">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="colabSinPuestoBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-action">
+                            <span>Click para asignar puesto →</span>
                         </div>
                     </a>
                 </div>

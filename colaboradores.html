@@ -34,14 +34,23 @@
             <section class="content-section">
                 <div class="filters-card">
                     <div class="filter-group">
-                        <label for="filterDepartamentoColab">Filtrar por Departamento:</label>
-                        <select id="filterDepartamentoColab" class="form-select">
+                        <label for="filterAsignacionColab">Filtrar por Asignación:</label>
+                        <select id="filterAsignacionColab" class="form-select">
+                            <option value="">Todas las asignaciones</option>
+                            <option value="Asignacion Regular">Asignación Regular</option>
+                            <option value="Asignacion Interina">Asignación Interina</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterDepColab">Filtrar por Departamento ID:</label>
+                        <select id="filterDepColab" class="form-select">
                             <option value="">Todos los departamentos</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label for="searchColab">Buscar:</label>
-                        <input type="text" id="searchColab" class="form-input" placeholder="Buscar por nombre...">
+                        <input type="text" id="searchColab" class="form-input"
+                            placeholder="Buscar por nombre o puesto...">
                     </div>
                 </div>
 
@@ -59,14 +68,12 @@
                                         <th>Asignación</th>
                                         <th>Departamento</th>
                                         <th>Puesto</th>
-                                        <th>Supervisor Activo</th>
-                                        <th>Supervisor Regular</th>
                                         <th class="actions-column">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="colaboradoresTableBody">
                                     <tr>
-                                        <td colspan="8" class="table-loading">
+                                        <td colspan="6" class="table-loading">
                                             <div class="spinner-large"></div>
                                             <p>Cargando colaboradores...</p>
                                         </td>

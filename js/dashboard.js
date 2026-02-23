@@ -54,9 +54,16 @@ async function loadDataQualityStats() {
         const inactivosPct = totalCursos > 0 ? (cursosInactivos / totalCursos) * 100 : 0;
         updateStatWithProgress('cursosInactivos', cursosInactivos, inactivosPct);
 
+        // 5. Colaboradores sin puesto asignado
+        const { data: allColaboradores } = await supabaseClient.from('colaboradores').select('id_colab, puesto_id').neq('id_colab', 0);
+        const totalColabs = allColaboradores?.length || 0;
+        const colabSinPuesto = allColaboradores?.filter(c => !c.puesto_id).length || 0;
+        const sinPuestoPct = totalColabs > 0 ? (colabSinPuesto / totalColabs) * 100 : 0;
+        updateStatWithProgress('colabSinPuesto', colabSinPuesto, sinPuestoPct);
+
         // Calcular puntuación de salud general:
         // 100% menos el promedio de los porcentajes de problemas detectados
-        const avgProblems = (duplicadosPct + sinEstadoPct + inactivosPct) / 3;
+        const avgProblems = (duplicadosPct + sinEstadoPct + inactivosPct + sinPuestoPct) / 4;
         const healthScore = Math.max(0, 100 - avgProblems);
 
         // Actualizar indicador visual de salud en el dashboard
