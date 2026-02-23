@@ -232,7 +232,7 @@ ALTER TABLE "public"."historial_cursos" ALTER COLUMN "id_historial" ADD GENERATE
 
 CREATE TABLE IF NOT EXISTS "public"."log" (
     "id_log" bigint NOT NULL,
-    "user_id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "user_id" "uuid" NOT NULL,
     "tabla_afectada" "text" NOT NULL,
     "accion" "text" NOT NULL,
     "registro_id" "text" NOT NULL,
@@ -422,6 +422,11 @@ ALTER TABLE ONLY "public"."cursos"
 
 
 
+ALTER TABLE ONLY "public"."log"
+    ADD CONSTRAINT "fk_log_perfiles" FOREIGN KEY ("user_id") REFERENCES "public"."perfiles"("id");
+
+
+
 ALTER TABLE ONLY "public"."colaboradores"
     ADD CONSTRAINT "fk_puesto_id" FOREIGN KEY ("puesto_id") REFERENCES "public"."puestos"("id_puesto");
 
@@ -472,6 +477,14 @@ CREATE POLICY "Admin puede ver todos los perfiles" ON "public"."perfiles" FOR SE
 
 
 CREATE POLICY "Ver propio perfil" ON "public"."perfiles" FOR SELECT USING (("auth"."uid"() = "id"));
+
+
+
+CREATE POLICY "allow read log" ON "public"."log" FOR SELECT TO "authenticated" USING (true);
+
+
+
+CREATE POLICY "allow read perfiles" ON "public"."perfiles" FOR SELECT TO "authenticated" USING (true);
 
 
 
