@@ -706,6 +706,10 @@ async function updateAsignacion() {
 
 // Inicia el proceso de eliminación de una asignación
 async function deleteCursoAsignacion(assignmentId) {
+        if (CURRENT_USER_ROLE === 'SUPERVISOR') {
+        showAlert('No tiene permisos para eliminar asignaciones de cursos', 'error');
+        return;
+    }
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');

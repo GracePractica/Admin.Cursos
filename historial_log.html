@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Acciones</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="historial-log">
+
+<div class="dashboard">
+    <div id="navigation"></div>
+
+    <main class="main-content">
+
+        <header class="main-header">
+            <h1 class="page-title">Historial de Acciones</h1>
+        </header>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Tabla</th>
+                            <th>Acción</th>
+                            <th>ID Registro</th>
+                            <th>Fecha</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logTableBody">
+                        <tr>
+                            <td colspan="6" class="table-loading">
+                                Cargando historial...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/historial_log.js"></script>
+<script src="components/authGuard.js"></script>
+<script src="components/nav.js"></script>
+
+</body>
+</html>

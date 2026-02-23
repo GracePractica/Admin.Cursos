@@ -385,6 +385,10 @@ async function updateCurso() {
 }
 
 async function deleteCurso(cursoId, cursoNombre) {
+    if (CURRENT_USER_ROLE === 'SUPERVISOR') {
+        showAlert('No tiene permisos para eliminar cursos', 'error');
+        return;
+    }
     const modalBody = document.getElementById('modalBody');
     const modalTitle = document.getElementById('modalTitle');
     const confirmBtn = document.getElementById('confirmModal');

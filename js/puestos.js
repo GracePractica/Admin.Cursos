@@ -290,32 +290,57 @@ async function updatePuesto() {
         showAlert('Error al actualizar el puesto', 'error');
     }
 }
-async function deletePuesto(puestoId) {
-    if (!confirm('¿Está seguro de eliminar este puesto? Esta acción no se puede deshacer.')) {
+
+async function deletePuesto(puestoId, depId = null) {
+        // 🔒 Bloqueo por rol
+    if (CURRENT_USER_ROLE === 'SUPERVISOR') {
+        showAlert('No tiene permisos para eliminar puestos', 'error');
         return;
     }
+    if (depId) {
+        if (!confirm('¿Está seguro de eliminar este departamento del puesto?')) {
+            return;
+        }
 
-    try {
-        // Primero eliminamos las relaciones en la tabla intermedia
-        await supabaseClient
-            .from('departamento_puesto')
-            .delete()
-            .eq('puesto_id', puestoId);
+        try {
+            await supabaseClient
+                .from('departamento_puesto')
+                .delete()
+                .eq('puesto_id', puestoId)
+                .eq('dep_id', depId);
 
-        // Luego eliminamos el puesto
-        const { error } = await supabaseClient
-            .from('puestos')
-            .delete()
-            .eq('id_puesto', puestoId);
+            showAlert('Departamento eliminado del puesto exitosamente', 'success');
+            await loadPuestos();
 
-        if (error) throw error;
+        } catch (error) {
+            console.error('Error eliminando departamento del puesto:', error);
+            showAlert('Error al eliminar el departamento del puesto', 'error');
+        }
+    } else {
+        if (!confirm('¿Está seguro de eliminar este puesto completo? Esta acción no se puede deshacer.')) {
+            return;
+        }
 
-        showAlert('Puesto eliminado exitosamente', 'success');
-        await loadPuestos();
+        try {
+            await supabaseClient
+                .from('departamento_puesto')
+                .delete()
+                .eq('puesto_id', puestoId);
 
-    } catch (error) {
-        console.error('Error eliminando puesto:', error);
-        showAlert('Error al eliminar. Puede que tenga datos relacionados.', 'error');
+            const { error } = await supabaseClient
+                .from('puestos')
+                .delete()
+                .eq('id_puesto', puestoId);
+
+            if (error) throw error;
+
+            showAlert('Puesto eliminado exitosamente', 'success');
+            await loadPuestos();
+
+        } catch (error) {
+            console.error('Error eliminando puesto:', error);
+            showAlert('Error al eliminar el puesto', 'error');
+        }
     }
 }
 // === FILTRO DE DEPARTAMENTOS POR ID ===
