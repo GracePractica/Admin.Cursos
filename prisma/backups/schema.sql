@@ -237,7 +237,7 @@ CREATE TABLE IF NOT EXISTS "public"."log" (
     "accion" "text" NOT NULL,
     "registro_id" "text" NOT NULL,
     "datos_anteriores" "jsonb",
-    "datos_nuevos" "jsonb" NOT NULL,
+    "datos_nuevos" "jsonb",
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL
 );
 
