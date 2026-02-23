@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict JKKBxMYy5bqcPAJDccE04caLLf9dZ3aS5TggzTzTUNyBp7iNvDSa7YbwNIBjPOS
+-- \restrict ci6WtWkNmfAB7WD5Kgo3NQf2PlVzaekRqH0c5sanNAdAixmr7b7bQbvDL1fx5E6
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -42,10 +42,10 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-23 05:02:38.808374+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-23 05:02:38.829343+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-23 05:55:37.685566+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-23 05:55:37.724093+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	8ce075b3-0c7e-426f-b745-d5aea5390bb3	authenticated	authenticated	supervisor3@gmail.com	$2a$10$sTnD1g2m4XI3Bx9yrXzdGeoDnsDHngPZhIMJspnOH1NVx6FhvhNOa	2026-02-23 05:58:53.330609+00	\N		\N		\N			\N	2026-02-23 06:20:55.610446+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:53.326068+00	2026-02-23 15:47:55.558652+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-23 17:23:16.785208+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-23 17:23:16.84343+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-23 16:06:56.911717+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-23 19:27:52.588749+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	f846e8de-213b-46fb-8d20-a217e3f45b2a	authenticated	authenticated	supervisor2@gmail.com	$2a$10$gjT8xeRlqUTNNWVJwyY/jOpC.27/IBPegvCAA8R3vhkEmr/IUeJtG	2026-02-23 05:58:22.347918+00	\N		\N		\N			\N	2026-02-23 06:13:44.427324+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:22.327418+00	2026-02-23 06:13:44.458878+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	8ce075b3-0c7e-426f-b745-d5aea5390bb3	authenticated	authenticated	supervisor3@gmail.com	$2a$10$sTnD1g2m4XI3Bx9yrXzdGeoDnsDHngPZhIMJspnOH1NVx6FhvhNOa	2026-02-23 05:58:53.330609+00	\N		\N		\N			\N	2026-02-23 06:20:55.610446+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:53.326068+00	2026-02-23 06:20:55.625145+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -82,7 +82,8 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 --
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
-54bfd42b-abd3-4fa6-b4f8-f5a08b59af49	8ce075b3-0c7e-426f-b745-d5aea5390bb3	2026-02-23 06:20:55.611241+00	2026-02-23 06:20:55.611241+00	\N	aal1	\N	\N	Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Mobile Safari/537.36	186.73.144.223	\N	\N	\N	\N	\N
+b1ea0047-553c-4315-9084-112d6b851be6	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-02-23 17:23:16.788242+00	2026-02-23 17:23:16.788242+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 OPR/127.0.0.0	186.72.109.210	\N	\N	\N	\N	\N
+a31fd683-f261-4bda-9d7d-85837cd301fb	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-02-23 16:06:56.91246+00	2026-02-23 19:27:52.603985+00	\N	aal1	\N	2026-02-23 19:27:52.603171	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36	190.32.30.178	\N	\N	\N	\N	\N
 \.
 
 
@@ -91,7 +92,8 @@ COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id"
 --
 
 COPY "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") FROM stdin;
-54bfd42b-abd3-4fa6-b4f8-f5a08b59af49	2026-02-23 06:20:55.628401+00	2026-02-23 06:20:55.628401+00	password	6c886d0c-173c-43b0-b048-9222d7a333c6
+a31fd683-f261-4bda-9d7d-85837cd301fb	2026-02-23 16:06:56.96723+00	2026-02-23 16:06:56.96723+00	password	3bb982f9-1abc-44da-a20c-9f1104b54d86
+b1ea0047-553c-4315-9084-112d6b851be6	2026-02-23 17:23:16.847708+00	2026-02-23 17:23:16.847708+00	password	e9d60198-9097-44a2-8a6e-ca6cb6351f8b
 \.
 
 
@@ -148,7 +150,10 @@ COPY "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "rel
 --
 
 COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") FROM stdin;
-00000000-0000-0000-0000-000000000000	114	hfrohxxovywd	8ce075b3-0c7e-426f-b745-d5aea5390bb3	f	2026-02-23 06:20:55.619283+00	2026-02-23 06:20:55.619283+00	\N	54bfd42b-abd3-4fa6-b4f8-f5a08b59af49
+00000000-0000-0000-0000-000000000000	120	jpvndz6dnjp2	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-02-23 16:06:56.942885+00	2026-02-23 17:05:22.537976+00	\N	a31fd683-f261-4bda-9d7d-85837cd301fb
+00000000-0000-0000-0000-000000000000	122	mpogarodegmp	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-02-23 17:23:16.826658+00	2026-02-23 17:23:16.826658+00	\N	b1ea0047-553c-4315-9084-112d6b851be6
+00000000-0000-0000-0000-000000000000	121	7mv44jj74dsg	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-02-23 17:05:22.55437+00	2026-02-23 19:27:52.541108+00	jpvndz6dnjp2	a31fd683-f261-4bda-9d7d-85837cd301fb
+00000000-0000-0000-0000-000000000000	123	hgag2nuol7vw	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-02-23 19:27:52.571741+00	2026-02-23 19:27:52.571741+00	7mv44jj74dsg	a31fd683-f261-4bda-9d7d-85837cd301fb
 \.
 
 
@@ -13589,6 +13594,39 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 79	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	INSERT	664	\N	{"dep_id": "INCR", "colab_id": null, "puesto_id": 500184, "id_dep_puesto": 664}	2026-02-23 05:39:08.898293+00
 80	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	DELETE	664	{"dep_id": "INCR", "colab_id": null, "puesto_id": 500184, "id_dep_puesto": 664}	\N	2026-02-23 05:41:43.9726+00
 81	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	DELETE	500184	{"id_puesto": 500184, "nombre_puesto": "aaaaaaaaaaaaaaaaaae"}	\N	2026-02-23 05:42:00.611891+00
+84	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	200	\N	{"dep_id": null, "id_colab": 200, "puesto_id": 0, "nombre_colab": "Colaborador nuevo", "asignacion_act": "Asignacion Interina", "supervisor_act_id": 16, "supervisor_reg_id": 16}	2026-02-23 15:00:01.568586+00
+85	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	200	{"dep_id": null, "id_colab": 200, "puesto_id": 0, "nombre_colab": "Colaborador nuevo", "asignacion_act": "Asignacion Interina", "supervisor_act_id": 16, "supervisor_reg_id": 16}	{"dep_id": null, "id_colab": 200, "puesto_id": 500183, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2813980, "supervisor_reg_id": 16}	2026-02-23 15:00:27.061867+00
+86	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	200	{"dep_id": null, "id_colab": 200, "puesto_id": 500183, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2813980, "supervisor_reg_id": 16}	\N	2026-02-23 15:00:58.378095+00
+87	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	200	\N	{"dep_id": "INC", "id_colab": 200, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	2026-02-23 15:24:26.224591+00
+88	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	200	{"dep_id": "INC", "id_colab": 200, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	{"dep_id": "INCA-MI", "id_colab": 200, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	2026-02-23 15:25:33.297355+00
+89	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	200	{"dep_id": "INCA-MI", "id_colab": 200, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	\N	2026-02-23 15:25:53.831497+00
+90	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1212	\N	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	2026-02-23 15:38:10.048194+00
+91	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	\N	2026-02-23 15:41:40.209648+00
+92	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1212	\N	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	2026-02-23 16:18:09.48226+00
+93	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	\N	2026-02-23 16:38:07.198451+00
+94	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1212	\N	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	2026-02-23 16:40:12.160494+00
+95	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "", "supervisor_act_id": 1212, "supervisor_reg_id": 0}	2026-02-23 16:48:05.026493+00
+96	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1313	\N	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 1212, "supervisor_reg_id": 1212}	2026-02-23 16:51:51.029701+00
+97	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "", "supervisor_act_id": 1212, "supervisor_reg_id": 0}	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	2026-02-23 16:52:33.010424+00
+98	44c828c1-057b-41d8-ae97-ce82e7a9a02a	historial_cursos	INSERT	11121	\N	{"estado": "Completado", "curso_id": "CU_0163", "fecha_final": "2026-02-23", "fecha_inicio": "2026-02-23", "id_historial": 11121, "colaborador_id": 1212, "duracion_horas": 1}	2026-02-23 16:53:05.291184+00
+99	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1313	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 1212, "supervisor_reg_id": 1212}	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": 1212}	2026-02-23 16:53:27.400337+00
+100	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1313	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": 1212}	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	2026-02-23 16:53:27.54737+00
+101	44c828c1-057b-41d8-ae97-ce82e7a9a02a	historial_cursos	DELETE	11121	{"estado": "Completado", "curso_id": "CU_0163", "fecha_final": "2026-02-23", "fecha_inicio": "2026-02-23", "id_historial": 11121, "colaborador_id": 1212, "duracion_horas": 1}	\N	2026-02-23 16:53:27.693448+00
+102	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador nuevo", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	\N	2026-02-23 16:53:27.825346+00
+103	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1313	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": null, "supervisor_reg_id": null}	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 0, "supervisor_reg_id": 0}	2026-02-23 16:55:24.25422+00
+104	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1212	\N	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 1313, "supervisor_reg_id": 0}	2026-02-23 16:55:53.76238+00
+105	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 1313, "supervisor_reg_id": 0}	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	2026-02-23 16:56:56.996239+00
+106	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1313	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 0, "supervisor_reg_id": 0}	\N	2026-02-23 16:56:57.516067+00
+107	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	\N	2026-02-23 16:58:42.045295+00
+108	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1212	\N	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 0, "supervisor_reg_id": 0}	2026-02-23 17:44:40.415745+00
+109	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1313	\N	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 1212, "supervisor_reg_id": 0}	2026-02-23 17:45:15.220598+00
+110	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1313	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 1212, "supervisor_reg_id": 0}	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 16, "supervisor_reg_id": 0}	2026-02-23 17:45:58.405425+00
+111	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 0, "supervisor_reg_id": 0}	\N	2026-02-23 17:45:59.007706+00
+112	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	1212	\N	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "", "supervisor_act_id": 1313, "supervisor_reg_id": 1313}	2026-02-23 17:46:47.596649+00
+113	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "", "supervisor_act_id": 1313, "supervisor_reg_id": 1313}	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 1313}	2026-02-23 17:47:20.912264+00
+114	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 1313}	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	2026-02-23 17:47:21.079598+00
+115	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1313	{"dep_id": null, "id_colab": 1313, "puesto_id": null, "nombre_colab": "Colaborador 2", "asignacion_act": "", "supervisor_act_id": 16, "supervisor_reg_id": 0}	\N	2026-02-23 17:47:21.343684+00
+116	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	DELETE	1212	{"dep_id": null, "id_colab": 1212, "puesto_id": null, "nombre_colab": "Colaborador 1", "asignacion_act": "", "supervisor_act_id": 0, "supervisor_reg_id": 0}	\N	2026-02-23 17:47:53.928385+00
 \.
 
 
@@ -20677,7 +20715,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 114, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 123, true);
 
 
 --
@@ -20698,14 +20736,14 @@ SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 664
 -- Name: historial_cursos_id_historial_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11120, true);
+SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11121, true);
 
 
 --
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 83, true);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 116, true);
 
 
 --
@@ -20719,6 +20757,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500184, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict JKKBxMYy5bqcPAJDccE04caLLf9dZ3aS5TggzTzTUNyBp7iNvDSa7YbwNIBjPOS
+-- \unrestrict ci6WtWkNmfAB7WD5Kgo3NQf2PlVzaekRqH0c5sanNAdAixmr7b7bQbvDL1fx5E6
 
 RESET ALL;
