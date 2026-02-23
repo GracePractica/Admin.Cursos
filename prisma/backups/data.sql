@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict JQmA6RObXRkPJpqxpRLr0fzWhTSxLbKnShTjJIokDTLL2UPbv7fQpgrNKUHsKTL
+-- \restrict paeHCJ5R4cKVIfIdSgbm0jYUgrSLSDK282hnIA9sHt2zyfzJBGmqPOlrlxgwdLw
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -42,9 +42,9 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-23 04:28:15.761554+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-23 04:28:15.832496+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-23 04:41:04.956947+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-23 04:41:04.979223+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	1dc2131e-b0e5-46d8-a133-c9ccc00bbe2c	authenticated	authenticated	prueba@gmail.com	$2a$10$fU.5S1Wr5wLJzLxp6dnkFu5uf5mBDEzhlSMb2yAlfsnFb8Ndg2U52	2026-02-11 23:10:31.579762+00	\N		\N		\N			\N	2026-02-21 02:54:17.663692+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-11 23:10:31.566051+00	2026-02-21 02:54:17.66665+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-22 09:22:41.283394+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-22 09:22:41.321893+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-22 09:36:44.357131+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-22 09:36:44.387591+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -80,7 +80,8 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 --
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
-cb1a0f6b-4e60-441b-a550-d4e3ed49ea70	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-02-22 09:36:44.358117+00	2026-02-22 09:36:44.358117+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 OPR/127.0.0.0	186.72.109.210	\N	\N	\N	\N	\N
+cb1a0f6b-4e60-441b-a550-d4e3ed49ea70	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-02-22 09:36:44.358117+00	2026-02-22 17:13:13.641447+00	\N	aal1	\N	2026-02-22 17:13:13.64073	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 OPR/127.0.0.0	186.72.109.210	\N	\N	\N	\N	\N
+a325da5a-37ec-41cd-974b-a66102687efe	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-02-23 04:41:04.959706+00	2026-02-23 04:41:04.959706+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36	186.73.144.223	\N	\N	\N	\N	\N
 \.
 
 
@@ -90,6 +91,7 @@ cb1a0f6b-4e60-441b-a550-d4e3ed49ea70	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-0
 
 COPY "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") FROM stdin;
 cb1a0f6b-4e60-441b-a550-d4e3ed49ea70	2026-02-22 09:36:44.390291+00	2026-02-22 09:36:44.390291+00	password	55191973-3077-4a0e-883a-04e8a517ce18
+a325da5a-37ec-41cd-974b-a66102687efe	2026-02-23 04:41:04.980659+00	2026-02-23 04:41:04.980659+00	password	de5b146c-1879-4457-8bf6-0cda114586f7
 \.
 
 
@@ -146,7 +148,10 @@ COPY "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "rel
 --
 
 COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") FROM stdin;
-00000000-0000-0000-0000-000000000000	99	byh5q6svweyr	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-02-22 09:36:44.36772+00	2026-02-22 09:36:44.36772+00	\N	cb1a0f6b-4e60-441b-a550-d4e3ed49ea70
+00000000-0000-0000-0000-000000000000	99	byh5q6svweyr	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-02-22 09:36:44.36772+00	2026-02-22 13:08:17.1308+00	\N	cb1a0f6b-4e60-441b-a550-d4e3ed49ea70
+00000000-0000-0000-0000-000000000000	100	ljihnslv4olg	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-02-22 13:08:17.159628+00	2026-02-22 17:13:13.574725+00	byh5q6svweyr	cb1a0f6b-4e60-441b-a550-d4e3ed49ea70
+00000000-0000-0000-0000-000000000000	101	delgikcwt56t	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-02-22 17:13:13.605495+00	2026-02-22 17:13:13.605495+00	ljihnslv4olg	cb1a0f6b-4e60-441b-a550-d4e3ed49ea70
+00000000-0000-0000-0000-000000000000	105	y5finxbkbhxv	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-02-23 04:41:04.975103+00	2026-02-23 04:41:04.975103+00	\N	a325da5a-37ec-41cd-974b-a66102687efe
 \.
 
 
@@ -385,9 +390,8 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto") FROM stdin;
 500171	SUBJEFE MAQUINAS DRAGA CUCHAR ME 15
 500172	JEFE MAQUINAS ENCARG GRUA FLOT ME 16
 500105	ACEITERO MARINERO DE LANCHAS
-500176	akfnoiaf
-0	Admin
 500160	ASIST DE TRAB AUTOMATIZADOS NM 05
+0	Admin
 \.
 
 
@@ -2394,9 +2398,9 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 634	500150	INCA-EM	19
 635	500117	INCA-MI	20
 636	500125	INCR	21
-644	500176	INCD-PS	\N
 648	0	INCR	\N
 656	500160	INCA-MM	\N
+657	0	INCA	\N
 \.
 
 
@@ -13541,6 +13545,19 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 16	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:56:12.050638+00
 18	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500160	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	{"id_puesto": 500160, "nombre_puesto": "ASIST DE TRAB AUTOMATIZADOS NM 05"}	2026-02-22 09:57:57.802839+00
 19	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	INSERT	656	\N	{"dep_id": "INCA-MM", "colab_id": null, "puesto_id": 500160, "id_dep_puesto": 656}	2026-02-22 09:57:58.088313+00
+20	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	UPDATE	0	{"id_puesto": 0, "nombre_puesto": "Admin"}	{"id_puesto": 0, "nombre_puesto": "Admin"}	2026-02-23 03:35:01.384855+00
+22	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	INSERT	657	\N	{"dep_id": "INCA", "colab_id": null, "puesto_id": 0, "id_dep_puesto": 657}	2026-02-23 03:35:01.851084+00
+23	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	INSERT	500178	\N	{"id_puesto": 500178, "nombre_puesto": "aaaaadjd"}	2026-02-23 03:36:36.60881+00
+24	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	INSERT	658	\N	{"dep_id": "INCD-GR", "colab_id": null, "puesto_id": 500178, "id_dep_puesto": 658}	2026-02-23 03:36:36.774719+00
+50	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	DELETE	658	{"dep_id": "INCD-GR", "colab_id": null, "puesto_id": 500178, "id_dep_puesto": 658}	\N	2026-02-23 04:22:49.422064+00
+51	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	DELETE	500178	{"id_puesto": 500178, "nombre_puesto": "aaaaadjd"}	\N	2026-02-23 04:36:45.531571+00
+52	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	INSERT	500179	\N	{"id_puesto": 500179, "nombre_puesto": "aaaaagftre"}	2026-02-23 04:36:58.587823+00
+53	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	UPDATE	500179	{"id_puesto": 500179, "nombre_puesto": "aaaaagftre"}	{"id_puesto": 500179, "nombre_puesto": "aaaaagftre"}	2026-02-23 04:37:06.473324+00
+54	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	INSERT	659	\N	{"dep_id": "INCD", "colab_id": null, "puesto_id": 500179, "id_dep_puesto": 659}	2026-02-23 04:37:06.893071+00
+55	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	DELETE	659	{"dep_id": "INCD", "colab_id": null, "puesto_id": 500179, "id_dep_puesto": 659}	\N	2026-02-23 04:37:12.155197+00
+56	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	DELETE	500179	{"id_puesto": 500179, "nombre_puesto": "aaaaagftre"}	\N	2026-02-23 04:37:12.303635+00
+57	44c828c1-057b-41d8-ae97-ce82e7a9a02a	departamento_puesto	DELETE	644	{"dep_id": "INCD-PS", "colab_id": null, "puesto_id": 500176, "id_dep_puesto": 644}	\N	2026-02-23 04:37:23.388795+00
+58	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	DELETE	500176	{"id_puesto": 500176, "nombre_puesto": "akfnoiaf"}	\N	2026-02-23 04:37:23.591851+00
 \.
 
 
@@ -20639,7 +20656,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 99, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 105, true);
 
 
 --
@@ -20653,7 +20670,7 @@ SELECT pg_catalog.setval('"public"."dep_puesto_id_seq"', 1, true);
 -- Name: departamento_puesto_id_dep_puesto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 656, true);
+SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 659, true);
 
 
 --
@@ -20667,20 +20684,20 @@ SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11120, 
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 19, true);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 58, true);
 
 
 --
 -- Name: puestos_id_puesto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500177, true);
+SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500179, true);
 
 
 --
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict JQmA6RObXRkPJpqxpRLr0fzWhTSxLbKnShTjJIokDTLL2UPbv7fQpgrNKUHsKTL
+-- \unrestrict paeHCJ5R4cKVIfIdSgbm0jYUgrSLSDK282hnIA9sHt2zyfzJBGmqPOlrlxgwdLw
 
 RESET ALL;
