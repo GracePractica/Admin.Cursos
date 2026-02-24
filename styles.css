@@ -964,14 +964,14 @@ body[data-page="gestion"] .data-table td:last-child {
 /* === CURSOS PAGE TABLE STYLES === */
 body[data-page="cursos"] .data-table th:nth-child(1),
 body[data-page="cursos"] .data-table td:nth-child(1) {
-    width: 15%;
+    width: 12%;
 }
 
 /* ID */
 
 body[data-page="cursos"] .data-table th:nth-child(2),
 body[data-page="cursos"] .data-table td:nth-child(2) {
-    width: 30%;
+    width: 25%;
     white-space: normal;
 }
 
@@ -987,23 +987,32 @@ body[data-page="cursos"] .data-table td:nth-child(3) {
 
 body[data-page="cursos"] .data-table th:nth-child(4),
 body[data-page="cursos"] .data-table td:nth-child(4) {
-    width: 15%;
+    width: 13%;
 }
 
 /* Primera Fecha */
 
 body[data-page="cursos"] .data-table th:nth-child(5),
 body[data-page="cursos"] .data-table td:nth-child(5) {
-    width: 15%;
+    width: 13%;
 }
 
 /* Última Fecha */
+
+body[data-page="cursos"] .data-table th:nth-child(6),
+body[data-page="cursos"] .data-table td:nth-child(6) {
+    width: 12%;
+}
+
+/* Origen */
 
 body[data-page="cursos"] .data-table th:last-child,
 body[data-page="cursos"] .data-table td:last-child {
     width: 15%;
     text-align: center;
 }
+
+/* Acciones */
 
 /* === PUESTOS PAGE TABLE STYLES === */
 body[data-page="puestos"] .data-table th:nth-child(1),

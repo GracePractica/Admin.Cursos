@@ -130,7 +130,7 @@ async function loadCursos(page = 1) {
         }
 
         if (!cursos || cursos.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron cursos con este filtro</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">No se encontraron cursos con este filtro</td></tr>';
             renderPaginationControls(0, 1, PAGINATION.cursos.limit, 'paginationCursos', 'loadCursos');
             return;
         }
@@ -149,6 +149,7 @@ async function loadCursos(page = 1) {
                         ${curso.estado || 'N/A'}
                     </span>
                 </td>
+                <td>${curso.origen || 'N/A'}</td>
                 <td>${curso.primera_fecha ? new Date(curso.primera_fecha).toLocaleDateString() : 'N/A'}</td>
                 <td>${curso.ultima_fecha ? new Date(curso.ultima_fecha).toLocaleDateString() : 'N/A'}</td>
                 <td>
@@ -166,7 +167,7 @@ async function loadCursos(page = 1) {
 
     } catch (error) {
         console.error('Error cargando cursos:', error);
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center">Error al cargar cursos</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Error al cargar cursos</td></tr>';
     }
 }
 
