@@ -104,6 +104,57 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModalListeners();
 });
 
+// === TOM SELECT HELPERS ===
+window.tomSelectInstances = window.tomSelectInstances || {};
+
+function initTomSelect(selectSelector, options = {}, initialValues = []) {
+    const el = document.querySelector(selectSelector);
+    if (!el) return null;
+
+    const key = selectSelector;
+    // destruir instancia previa si existe
+    if (window.tomSelectInstances[key]) {
+        try { window.tomSelectInstances[key].destroy(); } catch (e) { /* ignore */ }
+        delete window.tomSelectInstances[key];
+    }
+
+    if (!window.TomSelect) return null;
+
+    const defaultOpts = Object.assign({
+        plugins: ['remove_button'],
+        create: false,
+        maxItems: null,
+        persist: false,
+        allowEmptyOption: true
+    }, options || {});
+
+    const instance = new TomSelect(selectSelector, defaultOpts);
+    window.tomSelectInstances[key] = instance;
+
+    if (initialValues && initialValues.length) {
+        try { instance.setValue(initialValues); } catch (e) { /* ignore */ }
+    }
+
+    return instance;
+}
+
+function getTomSelectValue(selectSelector) {
+    const inst = window.tomSelectInstances[selectSelector];
+    if (inst) return inst.getValue();
+    const el = document.querySelector(selectSelector);
+    if (!el) return [];
+    return Array.from(el.selectedOptions).map(opt => opt.value);
+}
+
+function destroyTomSelect(selectSelector) {
+    const inst = window.tomSelectInstances[selectSelector];
+    if (inst) {
+        try { inst.destroy(); } catch (e) { /* ignore */ }
+        delete window.tomSelectInstances[selectSelector];
+    }
+}
+
+
 // Función auxiliar para actualizar estadística con barra de progreso
 function updateStatWithProgress(statName, value, percentage) {
     // Actualizar el valor principal

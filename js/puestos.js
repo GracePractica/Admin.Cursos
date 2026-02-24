@@ -135,13 +135,19 @@ async function openAddPuestoModal() {
             
             <div class="form-group">
                 <label class="form-label">Departamento (ID) *</label>
-                <select class="form-select" name="dep_id" required>
+                <select id="depSelect" class="form-select" name="dep_id" multiple required>
                     <option value="">Seleccionar departamento</option>
                     ${departamentos?.map(dep => `<option value="${dep.id_dep}">${dep.id_dep}</option>`).join('') || ''}
                 </select>
             </div>
         </form>
     `;
+
+    // Inicializar Tom Select para el selector del modal (global helper)
+    try {
+        destroyTomSelect('#depSelect');
+    } catch (e) { /* ignore */ }
+    try { initTomSelect('#depSelect'); } catch (e) { /* ignore */ }
 
     document.getElementById('confirmModal').onclick = async () => {
         await savePuesto();
@@ -167,14 +173,12 @@ async function savePuesto() {
         // Obtenemos el ID del nuevo puesto
         const puestoId = newPuesto.id_puesto;
 
-        // Obtenemos todos los departamentos seleccionados
-        const depIds = formData.getAll('dep_id').filter(id => id !== "");
+        // Obtenemos todos los departamentos seleccionados (Tom Select helper si existe)
+        const selected = (typeof getTomSelectValue === 'function') ? getTomSelectValue('#depSelect') : formData.getAll('dep_id');
+        const depIds = Array.isArray(selected) ? selected.filter(id => id !== "") : [selected].filter(Boolean);
 
         // Insertamos las relaciones en departamento_puesto
-        const relaciones = depIds.map(depId => ({
-            puesto_id: puestoId,
-            dep_id: depId
-        }));
+        const relaciones = depIds.map(depId => ({ puesto_id: puestoId, dep_id: depId }));
 
         const { error: depError } = await supabaseClient
             .from('departamento_puesto')
@@ -227,13 +231,20 @@ async function editPuesto(puestoId, depId = null) {
                 
                 <div class="form-group">
                     <label class="form-label">Departamento (ID) *</label>
-                    <select class="form-select" name="dep_id" required>
+                    <select id="depSelect" class="form-select" name="dep_id" multiple required>
                         <option value="">Seleccionar departamento</option>
                         ${departamentos?.map(dep => `<option value="${dep.id_dep}" ${dep.id_dep === depActual ? 'selected' : ''}>${dep.id_dep}</option>`).join('') || ''}
                     </select>
                 </div>
             </form>
         `;
+
+        // Inicializar Tom Select y establecer valores seleccionados
+        try { destroyTomSelect('#depSelect'); } catch (e) { /* ignore */ }
+        try {
+            const initial = (puesto.departamento_puesto || []).map(d => String(d.dep_id));
+            initTomSelect('#depSelect', {}, initial);
+        } catch (e) { /* ignore */ }
 
         document.getElementById('confirmModal').onclick = async () => {
             await updatePuesto();
@@ -252,7 +263,9 @@ async function updatePuesto() {
     const formData = new FormData(form);
 
     const puestoId = formData.get('id_puesto');
-    const depIds = formData.getAll('dep_id'); // 🔑 aquí definimos depIds correctamente
+    // Obtener deps seleccionados desde Tom Select si existe
+    const selected = (typeof getTomSelectValue === 'function') ? getTomSelectValue('#depSelect') : formData.getAll('dep_id');
+    const depIds = Array.isArray(selected) ? selected.filter(id => id !== "") : [selected].filter(Boolean);
 
     try {
         // Actualizamos el nombre del puesto
@@ -263,23 +276,36 @@ async function updatePuesto() {
 
         if (puestoError) throw puestoError;
 
-        // Eliminamos relaciones viejas
-        await supabaseClient
+        // Actualizamos solo las diferencias en departamento_puesto
+        const { data: actuales } = await supabaseClient
             .from('departamento_puesto')
-            .delete()
+            .select('dep_id')
             .eq('puesto_id', puestoId);
 
-        // Insertamos nuevas relaciones
-        const relaciones = depIds.map(depId => ({
-            puesto_id: puestoId,
-            dep_id: depId
-        }));
+        const depsActuales = (actuales || []).map(r => String(r.dep_id));
+        const selectedDeps = depIds.map(d => String(d));
 
-        const { error: depError } = await supabaseClient
-            .from('departamento_puesto')
-            .insert(relaciones);
+        // Calcular diferencias
+        const paraInsertar = selectedDeps.filter(d => !depsActuales.includes(d));
+        const paraEliminar = depsActuales.filter(d => !selectedDeps.includes(d));
 
-        if (depError) throw depError;
+        // Insertar nuevas relaciones
+        if (paraInsertar.length > 0) {
+            const { error: insertError } = await supabaseClient
+                .from('departamento_puesto')
+                .insert(paraInsertar.map(dep => ({ puesto_id: puestoId, dep_id: dep }))); 
+            if (insertError) throw insertError;
+        }
+
+        // Eliminar solo las relaciones quitadas
+        if (paraEliminar.length > 0) {
+            const { error: delError } = await supabaseClient
+                .from('departamento_puesto')
+                .delete()
+                .eq('puesto_id', puestoId)
+                .in('dep_id', paraEliminar);
+            if (delError) throw delError;
+        }
 
         showAlert('Puesto actualizado exitosamente', 'success');
         closeModal();
