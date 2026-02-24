@@ -156,7 +156,8 @@ CREATE TABLE IF NOT EXISTS "public"."cursos" (
     "primera_fecha" "date",
     "ultima_fecha" "date",
     "estado" "text",
-    "grupo_curso" integer
+    "grupo_curso" integer,
+    "origen" "text"
 );
 
 
