@@ -134,7 +134,8 @@ CREATE TABLE IF NOT EXISTS "public"."colaboradores" (
     "supervisor_act_id" bigint,
     "supervisor_reg_id" bigint,
     "dep_id" character varying(10),
-    "puesto_id" bigint
+    "puesto_id" bigint,
+    "is_active" boolean DEFAULT true NOT NULL
 );
 
 
@@ -157,7 +158,8 @@ CREATE TABLE IF NOT EXISTS "public"."cursos" (
     "ultima_fecha" "date",
     "estado" "text",
     "grupo_curso" integer,
-    "origen" "text"
+    "origen" "text",
+    "is_active" boolean DEFAULT true NOT NULL
 );
 
 
@@ -177,7 +179,8 @@ ALTER SEQUENCE "public"."dep_puesto_id_seq" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."departamento" (
     "id_dep" character varying(10) NOT NULL,
-    "nombre_dep" character varying(25)
+    "nombre_dep" character varying(25),
+    "is_active" boolean DEFAULT true NOT NULL
 );
 
 
@@ -213,7 +216,8 @@ CREATE TABLE IF NOT EXISTS "public"."historial_cursos" (
     "estado" "text",
     "duracion_horas" real,
     "colaborador_id" bigint NOT NULL,
-    "curso_id" character varying NOT NULL
+    "curso_id" character varying NOT NULL,
+    "is_active" boolean DEFAULT true NOT NULL
 );
 
 
@@ -262,6 +266,7 @@ CREATE TABLE IF NOT EXISTS "public"."perfiles" (
     "nombre" "text",
     "rol" "text" DEFAULT 'SUPERVISOR'::"text" NOT NULL,
     "creado_en" timestamp without time zone DEFAULT "now"(),
+    "is_active" boolean DEFAULT true NOT NULL,
     CONSTRAINT "perfiles_rol_check" CHECK (("rol" = ANY (ARRAY['ADMIN'::"text", 'SUPERVISOR'::"text"])))
 );
 
@@ -284,7 +289,8 @@ ALTER TABLE "public"."puesto_curso" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."puestos" (
     "id_puesto" integer NOT NULL,
-    "nombre_puesto" "text"
+    "nombre_puesto" "text",
+    "is_active" boolean DEFAULT true NOT NULL
 );
 
 
