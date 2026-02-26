@@ -931,7 +931,7 @@ body[data-page="gestion"] .data-table td:first-child,
 body[data-page="gestion"] .data-table th:first-child {
     white-space: normal;
     word-wrap: break-word;
-    width: 40%;
+    width: 35%;
 }
 
 body[data-page="gestion"] .data-table th:nth-child(2),
@@ -950,11 +950,18 @@ body[data-page="gestion"] .data-table td:nth-child(3) {
 
 body[data-page="gestion"] .data-table th:nth-child(4),
 body[data-page="gestion"] .data-table td:nth-child(4) {
-    width: 15%;
+    width: 10%;
 }
 
 /* Estado */
 
+body[data-page="gestion"] .data-table th:last-child(5),
+body[data-page="gestion"] .data-table td:last-child(5) {
+    width: 20%;
+    text-align: center;
+}
+
+/* Origen */
 body[data-page="gestion"] .data-table th:last-child,
 body[data-page="gestion"] .data-table td:last-child {
     width: 20%;

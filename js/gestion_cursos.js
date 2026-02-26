@@ -247,7 +247,7 @@ function renderAsignacionesTable(page = 1) {
 
     // 3. Manejar Estado Vacío
     if (filteredData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron cursos asignados</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No se encontraron cursos asignados</td></tr>';
         renderPaginationControls(0, 1, PAGINATION_GESTION.cursosAsignados.limit, 'paginationCursosGestion', 'renderAsignacionesTable');
         return;
     }
@@ -277,6 +277,7 @@ function renderAsignacionesTable(page = 1) {
                         ${asignacion.estado || 'N/A'}
                     </span>
                 </td>
+                <td>${curso.origen || 'Desconocido'}</td>
                 <td>
                     <button class="btn btn-small btn-outline" onclick="editCursoAsignacion(${asignacion.id_puesto_curso})">
                         Editar
