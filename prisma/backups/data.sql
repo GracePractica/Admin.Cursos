@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict 9bEjXFxW1pczQNRihqoxEjEUOzhqX2d8EefJfCuw9c8fzOzeikAbIEeIayOcltg
+-- \restrict mfBqXMYz7F3DPtcbNFrxP0cAbQvwiQSzSx1v0XqxawjumA5qnhaLv30D10bMg1U
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -50,8 +50,8 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-26 22:14:56.39511+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-26 22:14:56.434911+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-26 22:15:30.00572+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-26 22:15:30.008908+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-02-26 22:55:50.672272+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-02-26 22:55:50.751135+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	f846e8de-213b-46fb-8d20-a217e3f45b2a	authenticated	authenticated	supervisor2@gmail.com	$2a$10$gjT8xeRlqUTNNWVJwyY/jOpC.27/IBPegvCAA8R3vhkEmr/IUeJtG	2026-02-23 05:58:22.347918+00	\N		\N		\N			\N	2026-02-26 16:11:52.693173+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:22.327418+00	2026-02-26 16:11:52.69616+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	8ce075b3-0c7e-426f-b745-d5aea5390bb3	authenticated	authenticated	supervisor3@gmail.com	$2a$10$sTnD1g2m4XI3Bx9yrXzdGeoDnsDHngPZhIMJspnOH1NVx6FhvhNOa	2026-02-23 05:58:53.330609+00	\N		\N		\N			\N	2026-02-26 16:12:11.382248+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:53.326068+00	2026-02-26 16:12:11.384443+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
@@ -1033,6 +1033,7 @@ COPY "public"."colaboradores" ("id_colab", "nombre_colab", "asignacion_act", "su
 20	RENTERIA LARA, ROMAN ENRIQUE	Asignacion Regular	0	0	INCA-MI	500117	t
 21	PATTERSON HEYGEL, CARLOS GUILLERMO	Asignacion Regular	0	0	INCR	500125	t
 0	SIN SUPERVISOR	Asignacion Regular	0	0	INC	0	t
+987654321	Axel Saenz	Asignacion Regular	2333422	2243911	INCD-RE	500183	t
 \.
 
 
@@ -13637,6 +13638,10 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 124	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	667	{"dep_id": "INCA-MM", "colab_id": null, "puesto_id": 500183, "id_dep_puesto": 667}	\N	2026-02-26 22:03:22.671878+00
 125	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	666	{"dep_id": "INCA-EM", "colab_id": null, "puesto_id": 500183, "id_dep_puesto": 666}	\N	2026-02-26 22:03:27.166215+00
 126	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500183	{"id_puesto": 500183, "is_active": true, "nombre_puesto": "aaaaaaaaaaaaa"}	{"id_puesto": 500183, "is_active": false, "nombre_puesto": "aaaaaaaaaaaaa"}	2026-02-26 22:03:41.742384+00
+127	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	UPDATE	500183	{"id_puesto": 500183, "is_active": false, "nombre_puesto": "aaaaaaaaaaaaa"}	{"id_puesto": 500183, "is_active": false, "nombre_puesto": "aaaaaaaaaaaaa"}	2026-02-26 22:58:29.520244+00
+128	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	INSERT	987654321	\N	{"dep_id": "INCD-RE", "id_colab": 987654321, "is_active": true, "puesto_id": 500183, "nombre_colab": "Axel Saenz", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2333422, "supervisor_reg_id": 2243911}	2026-02-26 22:59:58.432+00
+129	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	987654321	{"dep_id": "INCD-RE", "id_colab": 987654321, "is_active": true, "puesto_id": 500183, "nombre_colab": "Axel Saenz", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2333422, "supervisor_reg_id": 2243911}	{"dep_id": "INCD-RE", "id_colab": 987654321, "is_active": false, "puesto_id": 500183, "nombre_colab": "Axel Saenz", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2333422, "supervisor_reg_id": 2243911}	2026-02-26 23:01:37.556578+00
+130	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	987654321	{"dep_id": "INCD-RE", "id_colab": 987654321, "is_active": false, "puesto_id": 500183, "nombre_colab": "Axel Saenz", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2333422, "supervisor_reg_id": 2243911}	{"dep_id": "INCD-RE", "id_colab": 987654321, "is_active": true, "puesto_id": 500183, "nombre_colab": "Axel Saenz", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2333422, "supervisor_reg_id": 2243911}	2026-02-26 23:02:24.968911+00
 \.
 
 
@@ -20725,7 +20730,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 145, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 146, true);
 
 
 --
@@ -20753,7 +20758,7 @@ SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11121, 
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 126, true);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 130, true);
 
 
 --
@@ -20767,6 +20772,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500184, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict 9bEjXFxW1pczQNRihqoxEjEUOzhqX2d8EefJfCuw9c8fzOzeikAbIEeIayOcltg
+-- \unrestrict mfBqXMYz7F3DPtcbNFrxP0cAbQvwiQSzSx1v0XqxawjumA5qnhaLv30D10bMg1U
 
 RESET ALL;
