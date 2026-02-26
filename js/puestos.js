@@ -19,6 +19,32 @@ function applyRolePermissions() {
         }
     }
 }
+
+// Restaura un puesto eliminado (solo ADMIN)
+async function restorePuesto(puestoId) {
+    if (CURRENT_USER_ROLE !== 'ADMIN') {
+        showAlert('No tiene permisos para restaurar puestos', 'error');
+        return;
+    }
+
+    try {
+        const confirmRestore = confirm('¿Desea restaurar este puesto?');
+        if (!confirmRestore) return;
+
+        const { error } = await supabaseClient
+            .from('puestos')
+            .update({ is_active: true })
+            .eq('id_puesto', puestoId);
+
+        if (error) throw error;
+
+        showAlert('Puesto restaurado correctamente', 'success');
+        await loadPuestos();
+    } catch (error) {
+        console.error('Error restaurando puesto:', error);
+        showAlert('Error al restaurar el puesto: ' + (error.message || error), 'error');
+    }
+}
 function setupPuestosListeners() {
     document.getElementById('addPuestoButton')?.addEventListener('click', () => openAddPuestoModal());
 
@@ -47,13 +73,14 @@ async function loadPuestos(page = 1) {
             .select(`
                 id_puesto,
                 nombre_puesto,
+                is_active,
                 departamento_puesto (
                     dep_id
                 )
             `); // Muestra puestos inactivos (eliminados lógicamente) para ADMIN
         }
         else
-            query = supabaseClient.from('puestos').select(`id_puesto,nombre_puesto,departamento_puesto (dep_id)`).neq('is_active', false); // Excluir puestos inactivos (eliminados lógicamente) para SUPERVISOR
+            query = supabaseClient.from('puestos').select(`id_puesto,nombre_puesto,is_active,departamento_puesto (dep_id)`).neq('is_active', false); // Excluir puestos inactivos (eliminados lógicamente) para SUPERVISOR
 
         // 🔑 Filtro por departamento seleccionado
         if (currentFilters.departamento) {
@@ -92,19 +119,27 @@ async function loadPuestos(page = 1) {
                 : 'N/A';
 
             // Renderizamos acciones por cada departamento (sin mostrar el ID en el botón)
-            const acciones = puesto.departamento_puesto?.length
-                ? puesto.departamento_puesto.map(dp => `
-                    <div>
-                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto}, '${dp.dep_id}')">Editar</button>
-                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto}, '${dp.dep_id}')">Eliminar</button>
-                    </div>
-                `).join('')
-                : `
-                    <div>
-                        <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto})">Editar</button>
-                        <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto})">Eliminar</button>
-                    </div>
-                `;
+            let acciones = '';
+            if (puesto.is_active === false) {
+                // Si está eliminado lógicamente, permitir restaurar solo a ADMIN
+                acciones = (CURRENT_USER_ROLE === 'ADMIN')
+                    ? `<div><button class="btn btn-small btn-success" onclick="restorePuesto(${puesto.id_puesto})">♻️ Restaurar</button></div>`
+                    : `<div><span style="color:#6b7280; font-style:italic;">Eliminado</span></div>`;
+            } else {
+                acciones = puesto.departamento_puesto?.length
+                    ? puesto.departamento_puesto.map(dp => `
+                        <div>
+                            <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto}, '${dp.dep_id}')">Editar</button>
+                            <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto}, '${dp.dep_id}')">Eliminar</button>
+                        </div>
+                    `).join('')
+                    : `
+                        <div>
+                            <button class="btn btn-small btn-outline" onclick="editPuesto(${puesto.id_puesto})">Editar</button>
+                            <button class="btn btn-small btn-danger" onclick="deletePuesto(${puesto.id_puesto})">Eliminar</button>
+                        </div>
+                    `;
+            }
 
             return `
                 <tr>

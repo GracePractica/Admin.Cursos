@@ -73,9 +73,13 @@ async function loadDepartamentos(page = 1) {
             <tr>
                 <td><strong>${dep.id_dep}</strong></td>
                 <td>
-                    <button class="btn btn-small btn-outline" onclick="editDepartamento('${dep.id_dep}')">
-                        Editar
-                    </button>
+                    ${dep.is_active === false ? (
+                        (CURRENT_USER_ROLE === 'ADMIN')
+                        ? '<button class="btn btn-small btn-success" onclick="restoreDepartamento(\'' + dep.id_dep + '\')">♻️ Restaurar</button>'
+                        : '<span style="color:#6b7280; font-style:italic;">Eliminado</span>'
+                    ) : (
+                        '<button class="btn btn-small btn-outline" onclick="editDepartamento(\'' + dep.id_dep + '\')">Editar</button>'
+                    )}
                 </td>
             </tr>
         `).join('');
@@ -85,6 +89,32 @@ async function loadDepartamentos(page = 1) {
     } catch (error) {
         console.error('Error cargando departamentos:', error);
         tbody.innerHTML = '<tr><td colspan="2" class="text-center">Error al cargar departamentos</td></tr>';
+    }
+}
+
+// Restaura un departamento eliminado (solo ADMIN)
+async function restoreDepartamento(departamentoId) {
+    if (CURRENT_USER_ROLE !== 'ADMIN') {
+        showAlert('No tiene permisos para restaurar departamentos', 'error');
+        return;
+    }
+
+    try {
+        const confirmRestore = confirm('¿Desea restaurar este departamento?');
+        if (!confirmRestore) return;
+
+        const { error } = await supabaseClient
+            .from('departamento')
+            .update({ is_active: true })
+            .eq('id_dep', departamentoId);
+
+        if (error) throw error;
+
+        showAlert('Departamento restaurado correctamente', 'success');
+        await loadDepartamentos();
+    } catch (error) {
+        console.error('Error restaurando departamento:', error);
+        showAlert('Error al restaurar el departamento: ' + (error.message || error), 'error');
     }
 }
 

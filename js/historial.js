@@ -285,12 +285,14 @@ function renderHistorialTable(page = 1) {
                 </span>
             </td>
             <td>
-                <button class="btn btn-small btn-outline" onclick="editHistorial(${item.id_historial})">
-                    Editar
-                </button>
-                <button class="btn btn-small btn-danger" onclick="deleteHistorial(${item.id_historial})">
-                    Eliminar
-                </button>
+                ${item.is_active === false ? (
+                    (CURRENT_USER_ROLE === 'ADMIN')
+                    ? '<button class="btn btn-small btn-success" onclick="restoreHistorial(' + item.id_historial + ')">♻️ Restaurar</button>'
+                    : '<span style="color:#6b7280; font-style:italic;">Eliminado</span>'
+                ) : (
+                    '<button class="btn btn-small btn-outline" onclick="editHistorial(' + item.id_historial + ')">Editar</button>' +
+                    '<button class="btn btn-small btn-danger" onclick="deleteHistorial(' + item.id_historial + ')">Eliminar</button>'
+                )}
             </td>
         </tr>
     `}).join('');
@@ -679,6 +681,32 @@ async function confirmDeleteHistorial(historialId) {
     } catch (error) {
         console.error('Error deleting historial:', error);
         showAlert('Error al eliminar el registro', 'error');
+    }
+}
+
+// Restaura un registro de historial eliminado (solo ADMIN)
+async function restoreHistorial(historialId) {
+    if (CURRENT_USER_ROLE !== 'ADMIN') {
+        showAlert('No tiene permisos para restaurar registros', 'error');
+        return;
+    }
+
+    try {
+        const confirmRestore = confirm('¿Desea restaurar este registro de capacitación?');
+        if (!confirmRestore) return;
+
+        const { error } = await supabaseClient
+            .from('historial_cursos')
+            .update({ is_active: true })
+            .eq('id_historial', historialId);
+
+        if (error) throw error;
+
+        showAlert('Registro restaurado correctamente', 'success');
+        await loadHistorialPorColaborador(PAGINATION.historial.page);
+    } catch (error) {
+        console.error('Error restaurando historial:', error);
+        showAlert('Error al restaurar el registro: ' + (error.message || error), 'error');
     }
 }
 

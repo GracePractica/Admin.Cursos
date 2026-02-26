@@ -249,15 +249,15 @@ async function loadColaboradores(page = 1) {
                 <td>${colab.dep_id ?? '<span style="color:#6b7280;">-</span>'}</td>
                 <td style="white-space: normal; word-break: break-word; min-width: 120px;">${puestoMap[colab.puesto_id] || '<span style="color: #dc2626; font-weight: 600;">Sin Puesto</span>'}</td>
                 <td style="white-space: nowrap;">
-                    <button class="btn btn-small btn-outline" onclick="viewColaboradorSupervisores(${colab.id_colab})" title="Ver Supervisores">
-                        👤 Supervisores
-                    </button>
-                    <button class="btn btn-small btn-outline" onclick="editColaborador(${colab.id_colab})" title="Editar">
-                        ✏️ Editar
-                    </button>
-                    <button class="btn btn-small" style="background:#dc2626;color:#fff;border-color:#dc2626;" onclick="deleteColaborador(${colab.id_colab}, '${colab.nombre_colab.replace(/'/g, '\\&#39;')}')" title="Eliminar">
-                        🗑️ Eliminar
-                    </button>
+                    ${colab.is_active === false ? (
+                        (CURRENT_USER_ROLE === 'ADMIN')
+                        ? '<button class="btn btn-small btn-success" onclick="restoreColaborador(' + colab.id_colab + ')" title="Restaurar">♻️ Restaurar</button>'
+                        : '<span style="color:#6b7280; font-style:italic;">Eliminado</span>'
+                    ) : (
+                        '<button class="btn btn-small btn-outline" onclick="viewColaboradorSupervisores(' + colab.id_colab + ')" title="Ver Supervisores">👤 Supervisores</button>' +
+                        '<button class="btn btn-small btn-outline" onclick="editColaborador(' + colab.id_colab + ')" title="Editar">✏️ Editar</button>' +
+                        '<button class="btn btn-small" style="background:#dc2626;color:#fff;border-color:#dc2626;" onclick="deleteColaborador(' + colab.id_colab + ', \'' + colab.nombre_colab.replace(/'/g, '\\&#39;') + '\')" title="Eliminar">🗑️ Eliminar</button>'
+                    )}
                 </td>
             </tr>
         `).join('');
@@ -786,6 +786,32 @@ async function deleteColaborador(colaboradorId, nombre) {
             confirmBtn.style = '';
         }
     };
+}
+
+// Restaura un colaborador eliminado (solo ADMIN)
+async function restoreColaborador(colaboradorId) {
+    if (CURRENT_USER_ROLE !== 'ADMIN') {
+        showAlert('No tiene permisos para restaurar colaboradores', 'error');
+        return;
+    }
+
+    try {
+        const confirmRestore = confirm('¿Desea restaurar este colaborador?');
+        if (!confirmRestore) return;
+
+        const { error } = await supabaseClient
+            .from('colaboradores')
+            .update({ is_active: true })
+            .eq('id_colab', colaboradorId);
+
+        if (error) throw error;
+
+        showAlert('Colaborador restaurado correctamente', 'success');
+        await loadColaboradores();
+    } catch (error) {
+        console.error('Error restaurando colaborador:', error);
+        showAlert('Error al restaurar el colaborador: ' + (error.message || error), 'error');
+    }
 }
 
 // Muestra en un modal el historial de cursos de un colaborador dado

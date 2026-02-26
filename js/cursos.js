@@ -18,6 +18,32 @@ function applyRolePermissions() {
         }
     }
 }
+
+// Restaura un curso eliminado (solo ADMIN)
+async function restoreCurso(cursoId) {
+    if (CURRENT_USER_ROLE !== 'ADMIN') {
+        showAlert('No tiene permisos para restaurar cursos', 'error');
+        return;
+    }
+
+    try {
+        const confirmRestore = confirm('¿Desea restaurar este curso?');
+        if (!confirmRestore) return;
+
+        const { error } = await supabaseClient
+            .from('cursos')
+            .update({ is_active: true })
+            .eq('id_curso', cursoId);
+
+        if (error) throw error;
+
+        showAlert('Curso restaurado correctamente', 'success');
+        await loadCursos();
+    } catch (error) {
+        console.error('Error restaurando curso:', error);
+        showAlert('Error al restaurar el curso: ' + (error.message || error), 'error');
+    }
+}
 function setupCursosListeners() {
     document.getElementById('addCursoButton')?.addEventListener('click', () => openAddCursoModal());
 
@@ -156,12 +182,14 @@ async function loadCursos(page = 1) {
                 <td>${curso.primera_fecha ? new Date(curso.primera_fecha).toLocaleDateString() : 'N/A'}</td>
                 <td>${curso.ultima_fecha ? new Date(curso.ultima_fecha).toLocaleDateString() : 'N/A'}</td>
                 <td>
-                    <button class="btn btn-small btn-outline" onclick="editCurso('${curso.id_curso}')">
-                        Editar
-                    </button>
-                    <button class="btn btn-small btn-danger" onclick="deleteCurso('${curso.id_curso}', '${curso.nombre_curso?.replace(/'/g, "\\'")}')">
-                        Eliminar
-                    </button>
+                    ${curso.is_active === false ? (
+                        (CURRENT_USER_ROLE === 'ADMIN')
+                        ? '<button class="btn btn-small btn-success" onclick="restoreCurso(\'' + curso.id_curso + '\')">♻️ Restaurar</button>'
+                        : '<span style="color:#6b7280; font-style:italic;">Eliminado</span>'
+                    ) : (
+                        '<button class="btn btn-small btn-outline" onclick="editCurso(\'' + curso.id_curso + '\')">Editar</button>' +
+                        '<button class="btn btn-small btn-danger" onclick="deleteCurso(\'' + curso.id_curso + '\', \'' + (curso.nombre_curso?.replace(/'/g, "\\'")) + '\')">Eliminar</button>'
+                    )}
                 </td>
             </tr>
         `).join('');
