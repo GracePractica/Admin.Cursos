@@ -51,10 +51,13 @@ async function loadCursos(page = 1) {
         const urlParams = new URLSearchParams(window.location.search);
         const filter = urlParams.get('filter');
 
-        let query = supabaseClient
-            .from('cursos')
-            .select('*')
-            .order('id_curso');
+        let query = '';
+
+        if(CURRENT_USER_ROLE === 'ADMIN') {
+            query = supabaseClient.from('cursos').select('*').order('id_curso'); // Muestra cursos inactivos (eliminados lógicamente) para ADMIN
+        }
+        else
+            query = supabaseClient.from('cursos').select('*').order('id_curso').neq('is_active', false); // Excluir cursos inactivos (eliminados lógicamente)
 
         // Obtener todos los cursos primero para permitir filtrado local
         const { data: allCursos, error } = await query;
@@ -626,7 +629,7 @@ async function transferirYEliminarCurso(cursoOrigenId, cursoDestinoId, cursoNomb
         // 3. Eliminar el curso original
         const { error: errorDelete } = await supabaseClient
             .from('cursos')
-            .delete()
+            .update({is_active: false}) // Eliminación lógica
             .eq('id_curso', cursoOrigenId);
 
         if (errorDelete) throw new Error('Error al eliminar el curso: ' + errorDelete.message);
@@ -659,7 +662,7 @@ async function confirmDeleteCurso(cursoId) {
         // Eliminar el curso en la tabla cursos (sin registros relacionados)
         const { error } = await supabaseClient
             .from('cursos')
-            .delete()
+            .update({is_active: false})
             .eq('id_curso', cursoId);
 
         if (error) throw error;

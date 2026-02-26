@@ -19,55 +19,98 @@ async function loadDashboardData() {
 
 async function loadDataQualityStats() {
     try {
-        // 1. Obtener todos los cursos (solo IDs) para calcular totales
-        const { data: allCursos } = await supabaseClient.from('cursos').select('id_curso');
-        const totalCursos = allCursos?.length || 0;
-
-        // 2. Buscar posibles duplicados 
-        //    Comparamos nombres y contamos IDs únicos que parecen duplicados
-        const { data: cursosForDuplicates } = await supabaseClient.from('cursos').select('id_curso, nombre_curso');
-        let duplicados = 0;
-        if (cursosForDuplicates) {
-            const duplicateIds = new Set();
-            for (let i = 0; i < cursosForDuplicates.length; i++) {
-                for (let j = i + 1; j < cursosForDuplicates.length; j++) {
-                    const similarity = 1 - (levenshteinDistance(cursosForDuplicates[i].nombre_curso || '', cursosForDuplicates[j].nombre_curso || '') / Math.max(cursosForDuplicates[i].nombre_curso?.length || 0, cursosForDuplicates[j].nombre_curso?.length || 0));
-                    if (similarity > 0.8) {
-                        duplicateIds.add(cursosForDuplicates[i].id_curso);
-                        duplicateIds.add(cursosForDuplicates[j].id_curso);
-                    }
-                }
+        // CACHÉ: evitar recalcular frecuentemente en sesiones lentas
+        const CACHE_KEY = 'dq_stats_v1';
+        const CACHE_TTL = 1000 * 60 * 5; // 5 minutos
+        try {
+            const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+            if (cached && (Date.now() - cached.ts) < CACHE_TTL) {
+                // Aplicar valores cacheados
+                updateStatWithProgress('cursosDuplicados', cached.duplicados, cached.duplicadosPct);
+                updateStatWithProgress('cursosSinEstado', cached.sinEstado, cached.sinEstadoPct);
+                updateStatWithProgress('cursosInactivos', cached.inactivos, cached.inactivosPct);
+                updateStatWithProgress('colabSinPuesto', cached.colabSinPuesto, cached.colabSinPuestoPct);
+                updateHealthScore(cached.healthScore);
+                return;
             }
-            duplicados = duplicateIds.size;
+        } catch (err) {
+            console.warn('No se pudo leer cache:', err);
         }
-        const duplicadosPct = totalCursos > 0 ? (duplicados / totalCursos) * 100 : 0;
+
+        // 1) Obtener conteos donde sea posible usando head:true (solo devuelve count)
+        const [{ count: totalCursos }, { count: totalColabs }] = await Promise.all([
+            supabaseClient.from('cursos').select('*', { head: true, count: 'exact' }),
+            supabaseClient.from('colaboradores').select('*', { head: true, count: 'exact' }).neq('id_colab', 0)
+        ]);
+
+        const totalCursosNum = totalCursos || 0;
+        const totalColabsNum = totalColabs || 0;
+
+        // 2) Traer solo las columnas necesarias (nombre y estado) en una sola consulta
+        const { data: cursosSmall, error: cursosErr } = await supabaseClient
+            .from('cursos')
+            .select('nombre_curso, estado');
+        if (cursosErr) throw cursosErr;
+
+        // Normalizar nombres y contar apariciones en O(n)
+        function normalizeName(s) {
+            if (!s) return '';
+            // quitar acentos, convertir a minúsculas y colapsar espacios
+            try {
+                return s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().replace(/\s+/g, ' ').trim();
+            } catch (e) {
+                return (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+            }
+        }
+
+        const nameCounts = Object.create(null);
+        let sinEstado = 0;
+        let inactivos = 0;
+        (cursosSmall || []).forEach(c => {
+            const n = normalizeName(c.nombre_curso);
+            if (n) nameCounts[n] = (nameCounts[n] || 0) + 1;
+
+            if (!c.estado || c.estado === null || c.estado === '') sinEstado++;
+            if (c.estado === 'inactivo') inactivos++;
+        });
+
+        // duplicados: sumar todos los registros que pertenecen a nombres con count>1
+        let duplicados = 0;
+        Object.values(nameCounts).forEach(cnt => { if (cnt > 1) duplicados += cnt; });
+
+        const duplicadosPct = totalCursosNum > 0 ? (duplicados / totalCursosNum) * 100 : 0;
+        const sinEstadoPct = totalCursosNum > 0 ? (sinEstado / totalCursosNum) * 100 : 0;
+        const inactivosPct = totalCursosNum > 0 ? (inactivos / totalCursosNum) * 100 : 0;
+
+        // 3) Colaboradores sin puesto (usar conteo por head para evitar traer filas grandes)
+        const { count: colabSinPuestoCount } = await supabaseClient
+            .from('colaboradores')
+            .select('*', { head: true, count: 'exact' })
+            .is('puesto_id', null)
+            .neq('id_colab', 0);
+
+        const colabSinPuesto = colabSinPuestoCount || 0;
+        const sinPuestoPct = totalColabsNum > 0 ? (colabSinPuesto / totalColabsNum) * 100 : 0;
+
+        // Actualizar UI
         updateStatWithProgress('cursosDuplicados', duplicados, duplicadosPct);
-
-        // 3. Cursos sin estado definido
-        const { data: cursosWithState } = await supabaseClient.from('cursos').select('id_curso, estado');
-        const cursosSinEstado = cursosWithState?.filter(c => !c.estado || c.estado === null || c.estado === '').length || 0;
-        const sinEstadoPct = totalCursos > 0 ? (cursosSinEstado / totalCursos) * 100 : 0;
-        updateStatWithProgress('cursosSinEstado', cursosSinEstado, sinEstadoPct);
-
-        // 4. Cursos marcados como inactivos
-        const cursosInactivos = cursosWithState?.filter(c => c.estado === 'inactivo').length || 0;
-        const inactivosPct = totalCursos > 0 ? (cursosInactivos / totalCursos) * 100 : 0;
-        updateStatWithProgress('cursosInactivos', cursosInactivos, inactivosPct);
-
-        // 5. Colaboradores sin puesto asignado
-        const { data: allColaboradores } = await supabaseClient.from('colaboradores').select('id_colab, puesto_id').neq('id_colab', 0);
-        const totalColabs = allColaboradores?.length || 0;
-        const colabSinPuesto = allColaboradores?.filter(c => !c.puesto_id).length || 0;
-        const sinPuestoPct = totalColabs > 0 ? (colabSinPuesto / totalColabs) * 100 : 0;
+        updateStatWithProgress('cursosSinEstado', sinEstado, sinEstadoPct);
+        updateStatWithProgress('cursosInactivos', inactivos, inactivosPct);
         updateStatWithProgress('colabSinPuesto', colabSinPuesto, sinPuestoPct);
 
-        // Calcular puntuación de salud general:
-        // 100% menos el promedio de los porcentajes de problemas detectados
         const avgProblems = (duplicadosPct + sinEstadoPct + inactivosPct + sinPuestoPct) / 4;
         const healthScore = Math.max(0, 100 - avgProblems);
-
-        // Actualizar indicador visual de salud en el dashboard
         updateHealthScore(healthScore);
+
+        // Guardar en cache
+        try {
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+                ts: Date.now(), duplicados, duplicadosPct, sinEstado, sinEstadoPct,
+                inactivos, inactivosPct, colabSinPuesto, sinPuestoPct, healthScore
+            }));
+        } catch (err) {
+            console.warn('No se pudo guardar cache:', err);
+        }
 
     } catch (error) {
         console.error('Error cargando estadísticas de calidad:', error);

@@ -37,7 +37,13 @@ async function loadDepartamentos(page = 1) {
 
     try {
         // Consultar la tabla de departamentos y obtener término de búsqueda
-        let query = supabaseClient.from('departamento').select('*');
+        let query = '';
+
+        if(CURRENT_USER_ROLE === 'ADMIN') {
+            query = supabaseClient.from('departamento').select('*').order('id_dep'); // Muestra departamentos inactivos (eliminados lógicamente) para ADMIN
+        }
+        else            
+            query = supabaseClient.from('departamento').select('*').order('id_dep').neq('is_active', false); // Excluir departamentos inactivos (eliminados lógicamente)
         const searchTerm = document.getElementById('searchDepartamento')?.value.toLowerCase();
 
         const { data: allDepartamentos, error } = await query.order('id_dep');

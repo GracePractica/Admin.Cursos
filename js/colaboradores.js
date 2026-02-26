@@ -143,10 +143,14 @@ async function loadColaboradores(page = 1) {
     if (!tbody) return;
 
     try {
+        let query = '';
+        if(CURRENT_USER_ROLE === 'ADMIN') {
+            query = supabaseClient.from('colaboradores').select('*, puestos(nombre_puesto)').neq('id_colab', 0); // Muestra colaboradores inactivos (eliminados lógicamente)
+        }
+        else
+            query = supabaseClient.from('colaboradores').select('*, puestos(nombre_puesto)').neq('id_colab', 0).neq('is_active', false); // Excluir colaboradores inactivos (eliminados lógicamente)
         const urlParams = new URLSearchParams(window.location.search);
         const filter = urlParams.get('filter');
-
-        let query = supabaseClient.from('colaboradores').select('*, puestos(nombre_puesto)').neq('id_colab', 0);
 
         if (currentFilters.asignacion) {
             query = query.eq('asignacion_act', currentFilters.asignacion);
@@ -764,7 +768,7 @@ async function deleteColaborador(colaboradorId, nombre) {
             // 4. Eliminar el colaborador
             const { error } = await supabaseClient
                 .from('colaboradores')
-                .delete()
+                .update({ is_active: false })
                 .eq('id_colab', colaboradorId);
 
             if (error) throw error;

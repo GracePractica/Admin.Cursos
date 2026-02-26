@@ -39,7 +39,10 @@ async function loadPuestos(page = 1) {
     if (!tbody) return;
 
     try {
-        let query = supabaseClient
+        let query = '';
+
+        if(CURRENT_USER_ROLE === 'ADMIN') {
+            query = supabaseClient
             .from('puestos')
             .select(`
                 id_puesto,
@@ -47,7 +50,10 @@ async function loadPuestos(page = 1) {
                 departamento_puesto (
                     dep_id
                 )
-            `);
+            `); // Muestra puestos inactivos (eliminados lógicamente) para ADMIN
+        }
+        else
+            query = supabaseClient.from('puestos').select(`id_puesto,nombre_puesto,departamento_puesto (dep_id)`).neq('is_active', false); // Excluir puestos inactivos (eliminados lógicamente) para SUPERVISOR
 
         // 🔑 Filtro por departamento seleccionado
         if (currentFilters.departamento) {
@@ -292,11 +298,6 @@ async function updatePuesto() {
 }
 
 async function deletePuesto(puestoId, depId = null) {
-        // 🔒 Bloqueo por rol
-    if (CURRENT_USER_ROLE === 'SUPERVISOR') {
-        showAlert('No tiene permisos para eliminar puestos', 'error');
-        return;
-    }
     if (depId) {
         if (!confirm('¿Está seguro de eliminar este departamento del puesto?')) {
             return;
@@ -329,7 +330,7 @@ async function deletePuesto(puestoId, depId = null) {
 
             const { error } = await supabaseClient
                 .from('puestos')
-                .delete()
+                .update({is_active: false})
                 .eq('id_puesto', puestoId);
 
             if (error) throw error;

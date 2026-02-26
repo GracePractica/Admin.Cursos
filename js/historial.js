@@ -662,7 +662,7 @@ async function confirmDeleteHistorial(historialId) {
     try {
         const { error } = await supabaseClient
             .from('historial_cursos')
-            .delete()
+            .update({is_active: false})
             .eq('id_historial', historialId);
 
         if (error) throw error;
