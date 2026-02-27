@@ -67,6 +67,27 @@ function setupCursosListeners() {
 }
 
 // === CURSOS ===
+// Helper: normaliza nombres para comparación/sorting
+function normalizeName(s) {
+    if (!s) return '';
+    try {
+        return s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().replace(/\s+/g, ' ').trim();
+    } catch (e) {
+        return (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+}
+
+// Ordenar cursos de modo que los nombres similares queden juntos
+function sortCoursesBySimilarity(cursos) {
+    return cursos.sort((a, b) => {
+        const na = normalizeName(a.nombre_curso || '');
+        const nb = normalizeName(b.nombre_curso || '');
+        if (na < nb) return -1;
+        if (na > nb) return 1;
+        return 0;
+    });
+}
+
 async function loadCursos(page = 1) {
     PAGINATION.cursos.page = page;
     const tbody = document.getElementById('cursosTableBody');
@@ -94,22 +115,11 @@ async function loadCursos(page = 1) {
 
         // Aplicar filtros según el parámetro de la URL
         if (filter === 'duplicados') {
-            // Buscar cursos duplicados 
-            const duplicates = [];
-            for (let i = 0; i < cursos.length; i++) {
-                for (let j = i + 1; j < cursos.length; j++) {
-                    const similarity = 1 - (levenshteinDistance(cursos[i].nombre_curso || '', cursos[j].nombre_curso || '') / Math.max(cursos[i].nombre_curso?.length || 0, cursos[j].nombre_curso?.length || 0));
-                    if (similarity > 0.8) {
-                        if (!duplicates.find(d => d.id_curso === cursos[i].id_curso)) {
-                            duplicates.push(cursos[i]);
-                        }
-                        if (!duplicates.find(d => d.id_curso === cursos[j].id_curso)) {
-                            duplicates.push(cursos[j]);
-                        }
-                    }
-                }
-            }
-            cursos = duplicates;
+            // Usar función optimizada para detectar duplicados (con pre-filtro de bigrams)
+            const duplicateIds = getCourseDuplicateIds(cursos);
+            // Ordenar cursos para que los similares queden contiguos
+            cursos = sortCoursesBySimilarity(cursos);
+            cursos = cursos.filter(c => duplicateIds.has(c.id_curso)); 
             filterMessage = `Mostrando ${cursos.length} posibles cursos duplicados (similitud > 80%)`;
         } else if (filter === 'inactivos') {
             cursos = cursos.filter(c => c.estado === 'inactivo');

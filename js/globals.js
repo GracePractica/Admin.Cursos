@@ -242,6 +242,80 @@ function findPossibleDuplicates(nombres) {
     return duplicateCount;
 }
 
+// Helper: Extrae trigrams de una cadena para pre-filtrado rápido
+function getTrigrams(str) {
+    if (!str || str.length < 2) return new Set();
+    const normalized = str.toLowerCase().replace(/\s+/g, '');
+    const trigrams = new Set();
+    for (let i = 0; i <= normalized.length - 2; i++) {
+        trigrams.add(normalized.substring(i, i + 2));
+    }
+    return trigrams;
+}
+
+// Helper: Calcula similitud de Jaccard (quick overlap check)
+function jaccardSimilarity(set1, set2) {
+    let intersection = 0;
+    for (let item of set1) {
+        if (set2.has(item)) intersection++;
+    }
+    const union = set1.size + set2.size - intersection;
+    return union === 0 ? 0 : intersection / union;
+}
+
+// Función optimizada para obtener IDs de cursos duplicados usando Levenshtein + bucketing
+// Retorna un Set con IDs de todos los cursos que tienen duplicados potenciales
+// Primero filtra candidatos por similitud de bigrams, luego verifica con Levenshtein
+function getCourseDuplicateIds(cursos) {
+    if (!cursos || cursos.length === 0) return new Set();
+    
+    const duplicates = new Set();
+    
+    // Pre-computar bigrams para cada curso
+    const cursosBigrams = cursos.map(c => ({
+        ...c,
+        bigrams: getTrigrams(c.nombre_curso || '')
+    }));
+    
+    // Comparar solo candidatos con suficiente similitud de bigrams
+    for (let i = 0; i < cursosBigrams.length; i++) {
+        for (let j = i + 1; j < cursosBigrams.length; j++) {
+            const curso1 = cursosBigrams[i];
+            const curso2 = cursosBigrams[j];
+            
+            // Pre-filtro: similitud de bigrams debe ser > 0.3 para considerar Levenshtein
+            const bigramSim = jaccardSimilarity(curso1.bigrams, curso2.bigrams);
+            if (bigramSim < 0.3) continue;
+            
+            // Validar con Levenshtein solo si paso el pre-filtro
+            const maxLen = Math.max(
+                curso1.nombre_curso?.length || 0,
+                curso2.nombre_curso?.length || 0
+            );
+            if (maxLen === 0) continue;
+            
+            const distance = levenshteinDistance(
+                curso1.nombre_curso || '',
+                curso2.nombre_curso || ''
+            );
+            const similarity = 1 - (distance / maxLen);
+            
+            if (similarity > 0.8) {
+                duplicates.add(curso1.id_curso);
+                duplicates.add(curso2.id_curso);
+            }
+        }
+    }
+    
+    return duplicates;
+}
+
+// Función optimizada para contar duplicados en cursos
+// Retorna el número total de cursos que tienen duplicados
+function getCourseDuplicatesCount(cursos) {
+    return getCourseDuplicateIds(cursos).size;
+}
+
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
     // Si es una cadena de fecha simple AAAA-MM-DD, dividirla para evitar problemas de zona horaria
