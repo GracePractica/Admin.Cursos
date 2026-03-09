@@ -242,6 +242,14 @@ async function openAddCursoModal() {
                     <option value="inactivo">Inactivo</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label class="form-label">Origen</label>
+                <select class="form-select" name="origen">
+                    <option value="Matriz">Matriz</option>
+                    <option value="Historial">Historial</option>
+                </select>
+            </div>
         </form>
     `;
 
@@ -290,7 +298,8 @@ async function saveCurso() {
             nombre_curso: formData.get('nombre_curso'),
             primera_fecha: formData.get('primera_fecha') || null,
             ultima_fecha: formData.get('ultima_fecha') || null,
-            estado: formData.get('estado')
+            estado: formData.get('estado'),
+            origen: formData.get('origen')
         };
         // Insertar solo el registro del curso
         const { error: errorCurso } = await supabaseClient
@@ -386,6 +395,14 @@ function displayEditCursoModal(curso) {
                     <option value="inactivo" ${curso.estado === 'inactivo' ? 'selected' : ''}>Inactivo</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label class="form-label">Origen</label>
+                <select class="form-select" name="origen">
+                    <option value="Matriz" ${curso.origen === 'Matriz' ? 'selected' : ''}>Matriz</option>
+                    <option value="Historial" ${curso.origen === 'Historial' ? 'selected' : ''}>Historial</option>
+                </select>
+            </div>
         </form>
     `;
 
@@ -405,7 +422,8 @@ async function updateCurso() {
         nombre_curso: formData.get('nombre_curso'),
         primera_fecha: formData.get('primera_fecha') || null,
         ultima_fecha: formData.get('ultima_fecha') || null,
-        estado: formData.get('estado')
+        estado: formData.get('estado'),
+        origen: formData.get('origen')
     };
 
     try {
@@ -426,6 +444,7 @@ async function updateCurso() {
     }
 }
 
+//Eliminar cursos
 async function deleteCurso(cursoId, cursoNombre) {
     if (CURRENT_USER_ROLE === 'SUPERVISOR') {
         showAlert('No tiene permisos para eliminar cursos', 'error');
