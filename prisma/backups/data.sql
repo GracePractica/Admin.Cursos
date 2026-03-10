@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict V1SuZh4P9tYQNkuDXIBgC34x9Irh1DAOEUBDudZhaF46glEEkfdcZV32OeUhrvc
+-- \restrict vQf9f7cEMYLqc1ZItWop900Slekx6V4lnrM4s6McZoZMVYbVEOt6ZihfY0tuq9B
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -50,8 +50,8 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
-00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-03-09 12:25:15.64014+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-03-09 12:25:15.73558+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-03-09 14:05:21.125361+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-03-09 14:05:21.161753+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-03-09 12:25:15.64014+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-03-09 15:33:43.983636+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-03-09 15:47:37.006637+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-03-09 15:47:37.060742+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	f846e8de-213b-46fb-8d20-a217e3f45b2a	authenticated	authenticated	supervisor2@gmail.com	$2a$10$gjT8xeRlqUTNNWVJwyY/jOpC.27/IBPegvCAA8R3vhkEmr/IUeJtG	2026-02-23 05:58:22.347918+00	\N		\N		\N			\N	2026-02-26 16:11:52.693173+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:22.327418+00	2026-02-26 16:11:52.69616+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	8ce075b3-0c7e-426f-b745-d5aea5390bb3	authenticated	authenticated	supervisor3@gmail.com	$2a$10$sTnD1g2m4XI3Bx9yrXzdGeoDnsDHngPZhIMJspnOH1NVx6FhvhNOa	2026-02-23 05:58:53.330609+00	\N		\N		\N			\N	2026-02-26 16:12:11.382248+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:53.326068+00	2026-02-26 16:12:11.384443+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
@@ -90,10 +90,11 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 --
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
-58b28407-14d0-4d80-8028-d51e15ae6e7b	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-09 12:25:15.642021+00	2026-03-09 12:25:15.642021+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
-ca9888f7-092c-48d4-b5ac-afee1a8cb9c0	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-03-09 12:49:16.386414+00	2026-03-09 12:49:16.386414+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+58b28407-14d0-4d80-8028-d51e15ae6e7b	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-09 12:25:15.642021+00	2026-03-09 15:33:44.002091+00	\N	aal1	\N	2026-03-09 15:33:44.001422	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.251	\N	\N	\N	\N	\N
+db58018f-db55-44ad-ab7b-115635813cc5	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-03-09 15:47:37.006728+00	2026-03-09 15:47:37.006728+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.214.193.67	\N	\N	\N	\N	\N
 a00da95c-128c-4294-922d-03192910a4f6	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-03-09 12:53:40.271577+00	2026-03-09 12:53:40.271577+00	\N	aal1	\N	\N	Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.2 Mobile/15E148 Safari/604.1	172.225.167.3	\N	\N	\N	\N	\N
 fbb8ed2a-0946-45e1-a937-f3bee92ab148	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-03-09 14:05:21.126091+00	2026-03-09 14:05:21.126091+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 OPR/127.0.0.0	186.75.8.202	\N	\N	\N	\N	\N
+ca9888f7-092c-48d4-b5ac-afee1a8cb9c0	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-03-09 12:49:16.386414+00	2026-03-09 14:21:59.127724+00	\N	aal1	\N	2026-03-09 14:21:59.127635	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 \.
 
 
@@ -106,6 +107,7 @@ COPY "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authent
 ca9888f7-092c-48d4-b5ac-afee1a8cb9c0	2026-03-09 12:49:16.446921+00	2026-03-09 12:49:16.446921+00	password	289607a4-a43c-46b1-9a51-be78af74c714
 a00da95c-128c-4294-922d-03192910a4f6	2026-03-09 12:53:40.394369+00	2026-03-09 12:53:40.394369+00	password	a5df2460-af33-4202-9646-8cd4d5b91ff5
 fbb8ed2a-0946-45e1-a937-f3bee92ab148	2026-03-09 14:05:21.162979+00	2026-03-09 14:05:21.162979+00	password	74e8781e-611e-40f4-b086-d0371668dff3
+db58018f-db55-44ad-ab7b-115635813cc5	2026-03-09 15:47:37.064474+00	2026-03-09 15:47:37.064474+00	password	bfb94520-0ba8-4619-92d5-faa077363a5c
 \.
 
 
@@ -162,10 +164,14 @@ COPY "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "rel
 --
 
 COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") FROM stdin;
-00000000-0000-0000-0000-000000000000	158	tcqyykagxnpi	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-03-09 12:25:15.691123+00	2026-03-09 12:25:15.691123+00	\N	58b28407-14d0-4d80-8028-d51e15ae6e7b
-00000000-0000-0000-0000-000000000000	159	vb5bqaqg436r	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-03-09 12:49:16.427694+00	2026-03-09 12:49:16.427694+00	\N	ca9888f7-092c-48d4-b5ac-afee1a8cb9c0
 00000000-0000-0000-0000-000000000000	160	n5yvvd2xnqhm	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-03-09 12:53:40.358264+00	2026-03-09 12:53:40.358264+00	\N	a00da95c-128c-4294-922d-03192910a4f6
 00000000-0000-0000-0000-000000000000	161	qqzl2e4dpszd	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-03-09 14:05:21.143219+00	2026-03-09 14:05:21.143219+00	\N	fbb8ed2a-0946-45e1-a937-f3bee92ab148
+00000000-0000-0000-0000-000000000000	158	tcqyykagxnpi	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-09 12:25:15.691123+00	2026-03-09 14:21:40.104677+00	\N	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	159	vb5bqaqg436r	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-03-09 12:49:16.427694+00	2026-03-09 14:21:59.123846+00	\N	ca9888f7-092c-48d4-b5ac-afee1a8cb9c0
+00000000-0000-0000-0000-000000000000	163	je5r7bm2jlnd	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-03-09 14:21:59.124876+00	2026-03-09 14:21:59.124876+00	vb5bqaqg436r	ca9888f7-092c-48d4-b5ac-afee1a8cb9c0
+00000000-0000-0000-0000-000000000000	162	evcmvpd7acwv	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-09 14:21:40.114567+00	2026-03-09 15:33:43.95843+00	tcqyykagxnpi	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	164	a6qzb3ghuuu3	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-03-09 15:33:43.975335+00	2026-03-09 15:33:43.975335+00	evcmvpd7acwv	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	165	x7jnbeuferlt	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-03-09 15:47:37.043063+00	2026-03-09 15:47:37.043063+00	\N	db58018f-db55-44ad-ab7b-115635813cc5
 \.
 
 
@@ -1078,8 +1084,8 @@ CU_0002	MANEJO DEFENSIVO	\N	\N	activo	\N	Matriz	t
 CU_0089	CTAN	\N	\N	\N	\N	Matriz	t
 CU_0202	APRENDE A RESUMIR	\N	\N	\N	\N	Historial	t
 CU_0647	SMART CITIES	\N	\N	\N	\N	Historial	t
-CU_0704	Curso nuevo 2	\N	\N	inactivo	\N	\N	t
 CU_0001	PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA	2021-10-01	2025-09-08	activo	\N	Matriz	t
+CU_0704	Curso nuevo 2	\N	\N	inactivo	\N	\N	t
 CU_0003	PRIMEROS AUXILIOS, RCP Y DEA	\N	\N	activo	1	Matriz	t
 CU_0004	PROTECCIÓN DEL MEDIO AMBIENTE	\N	\N	activo	\N	Matriz	t
 CU_0005	15 REGLAS DE ORO EN ÉTICA Y VALORES	\N	\N	\N	10	Matriz	t
@@ -13662,6 +13668,8 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 141	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	510	{"dep_id": "INCR", "colab_id": 2803313, "puesto_id": 500031, "id_dep_puesto": 510}	\N	2026-03-09 12:37:36.288075+00
 142	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	527	{"dep_id": "INCR", "colab_id": 2812711, "puesto_id": 500031, "id_dep_puesto": 527}	\N	2026-03-09 12:37:36.288075+00
 143	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	INSERT	668	\N	{"dep_id": "INCA", "colab_id": null, "puesto_id": 500031, "id_dep_puesto": 668}	2026-03-09 12:37:36.531347+00
+144	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0001	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	{"estado": "activo", "origen": "Historial", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	2026-03-09 14:05:51.323805+00
+145	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0001	{"estado": "activo", "origen": "Historial", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	2026-03-09 14:06:27.316764+00
 \.
 
 
@@ -20749,7 +20757,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 161, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 165, true);
 
 
 --
@@ -20777,7 +20785,7 @@ SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11121, 
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 143, true);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 145, true);
 
 
 --
@@ -20791,6 +20799,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500184, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict V1SuZh4P9tYQNkuDXIBgC34x9Irh1DAOEUBDudZhaF46glEEkfdcZV32OeUhrvc
+-- \unrestrict vQf9f7cEMYLqc1ZItWop900Slekx6V4lnrM4s6McZoZMVYbVEOt6ZihfY0tuq9B
 
 RESET ALL;
