@@ -20,7 +20,7 @@ async function loadDashboardData() {
 async function loadDataQualityStats() {
     try {
         // CACHÉ: evitar recalcular frecuentemente en sesiones lentas
-        const CACHE_KEY = 'dq_stats_v1';
+        const CACHE_KEY = 'dq_stats_v2'; // v2: Versión que respeta filtro is_active según rol
         const CACHE_TTL = 1000 * 60 * 5; // 5 minutos
         
         // Intentar cargar desde cache primero
@@ -41,15 +41,24 @@ async function loadDataQualityStats() {
         }
 
         // Si el cache expiró, hacer peticiones en paralelo
+        // Aplicar el mismo filtro de is_active que en cursos.js según el rol del usuario
+        let cursosQuery = supabaseClient.from('cursos').select('*', { head: true, count: 'exact' });
+        let cursosSmallQuery = supabaseClient.from('cursos').select('id_curso, nombre_curso, estado');
+        
+        if (CURRENT_USER_ROLE !== 'ADMIN') {
+            cursosQuery = cursosQuery.neq('is_active', false);
+            cursosSmallQuery = cursosSmallQuery.neq('is_active', false);
+        }
+
         const [
             { count: totalCursos },
             { count: totalColabs },
             { data: cursosSmall, error: cursosErr },
             { count: colabSinPuestoCount }
         ] = await Promise.all([
-            supabaseClient.from('cursos').select('*', { head: true, count: 'exact' }),
+            cursosQuery,
             supabaseClient.from('colaboradores').select('*', { head: true, count: 'exact' }).neq('id_colab', 0),
-            supabaseClient.from('cursos').select('id_curso, nombre_curso, estado'),
+            cursosSmallQuery,
             supabaseClient.from('colaboradores')
                 .select('*', { head: true, count: 'exact' })
                 .is('puesto_id', null)
