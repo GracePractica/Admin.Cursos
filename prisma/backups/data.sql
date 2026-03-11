@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict qKauIxNZW5DuRowxQFcqwJmiO1FcmkDOJbbDfu3tWLA6mNiN7UbyToJPFrVdSXa
+-- \restrict xkzCpafAGXNdjSu8gN4MIfKvyOzjU9JFfEhEg4d2TqCKf3oMNV1rfxRify10gBX
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -50,10 +50,10 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 --
 
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-03-01 01:07:34.146428+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-03-07 18:27:46.720529+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-02-26 22:15:30.00572+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-02-26 22:15:30.008908+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	f846e8de-213b-46fb-8d20-a217e3f45b2a	authenticated	authenticated	supervisor2@gmail.com	$2a$10$gjT8xeRlqUTNNWVJwyY/jOpC.27/IBPegvCAA8R3vhkEmr/IUeJtG	2026-02-23 05:58:22.347918+00	\N		\N		\N			\N	2026-02-26 16:11:52.693173+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:22.327418+00	2026-02-26 16:11:52.69616+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	8ce075b3-0c7e-426f-b745-d5aea5390bb3	authenticated	authenticated	supervisor3@gmail.com	$2a$10$sTnD1g2m4XI3Bx9yrXzdGeoDnsDHngPZhIMJspnOH1NVx6FhvhNOa	2026-02-23 05:58:53.330609+00	\N		\N		\N			\N	2026-02-26 16:12:11.382248+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:53.326068+00	2026-02-26 16:12:11.384443+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-03-10 18:10:32.430398+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-03-10 19:26:27.069415+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-03-11 00:28:02.069275+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-03-11 00:28:02.142762+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -90,6 +90,10 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 --
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
+a86de578-f0f7-4e7f-af37-45791a64a169	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-10 18:08:05.162971+00	2026-03-10 18:08:05.162971+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+e60b6abe-ecab-4ac1-9219-48944c86b92a	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-10 18:10:32.430504+00	2026-03-10 18:10:32.430504+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+58b28407-14d0-4d80-8028-d51e15ae6e7b	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-09 12:25:15.642021+00	2026-03-10 19:26:27.083053+00	\N	aal1	\N	2026-03-10 19:26:27.08222	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+0e072a8a-20d5-4532-8e3a-edc099454e0a	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-03-11 00:28:02.070423+00	2026-03-11 00:28:02.070423+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 OPR/127.0.0.0	186.75.8.202	\N	\N	\N	\N	\N
 \.
 
 
@@ -98,6 +102,10 @@ COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id"
 --
 
 COPY "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") FROM stdin;
+58b28407-14d0-4d80-8028-d51e15ae6e7b	2026-03-09 12:25:15.744214+00	2026-03-09 12:25:15.744214+00	password	dfb00032-bdc4-42b0-8f32-8a96a489e56c
+a86de578-f0f7-4e7f-af37-45791a64a169	2026-03-10 18:08:05.264859+00	2026-03-10 18:08:05.264859+00	password	2ced9920-0d06-406d-b39d-470e2c2e1cb4
+e60b6abe-ecab-4ac1-9219-48944c86b92a	2026-03-10 18:10:32.434799+00	2026-03-10 18:10:32.434799+00	password	ac458db0-a73c-4f3d-880e-23d0399af293
+0e072a8a-20d5-4532-8e3a-edc099454e0a	2026-03-11 00:28:02.146637+00	2026-03-11 00:28:02.146637+00	password	14f9ec57-c26c-4089-858b-320a14ff2b89
 \.
 
 
@@ -154,6 +162,15 @@ COPY "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "rel
 --
 
 COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") FROM stdin;
+00000000-0000-0000-0000-000000000000	167	fbdoqeqfajbp	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-03-10 18:08:05.214844+00	2026-03-10 18:08:05.214844+00	\N	a86de578-f0f7-4e7f-af37-45791a64a169
+00000000-0000-0000-0000-000000000000	168	aupw6xscyokp	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-03-10 18:10:32.432856+00	2026-03-10 18:10:32.432856+00	\N	e60b6abe-ecab-4ac1-9219-48944c86b92a
+00000000-0000-0000-0000-000000000000	166	kbilhjci6mje	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-10 16:01:45.584385+00	2026-03-10 18:20:24.851128+00	a6qzb3ghuuu3	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	169	nfqov3x3rxef	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-10 18:20:24.859742+00	2026-03-10 19:26:27.044349+00	kbilhjci6mje	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	171	d7daxsrwqhzw	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-03-10 19:26:27.057711+00	2026-03-10 19:26:27.057711+00	nfqov3x3rxef	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	172	ida3uknqmcia	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-03-11 00:28:02.120988+00	2026-03-11 00:28:02.120988+00	\N	0e072a8a-20d5-4532-8e3a-edc099454e0a
+00000000-0000-0000-0000-000000000000	158	tcqyykagxnpi	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-09 12:25:15.691123+00	2026-03-09 14:21:40.104677+00	\N	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	162	evcmvpd7acwv	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-09 14:21:40.114567+00	2026-03-09 15:33:43.95843+00	tcqyykagxnpi	58b28407-14d0-4d80-8028-d51e15ae6e7b
+00000000-0000-0000-0000-000000000000	164	a6qzb3ghuuu3	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-09 15:33:43.975335+00	2026-03-10 16:01:45.551299+00	evcmvpd7acwv	58b28407-14d0-4d80-8028-d51e15ae6e7b
 \.
 
 
@@ -249,7 +266,6 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto", "is_active") FROM stdin;
 500028	CPTZ REP DE INST Y EQ NAUTICO	t
 500029	AISLADOR	t
 500030	TRABAJ EN ELECTRICIDAD	t
-500031	ASIS DE GESTION ADMINISTRATIVA	t
 500032	APAREJADOR LIDER	t
 500033	CONDUCTOR DE VEHICULO	t
 500034	OPER DE EQUIPO DE PERFORACION	t
@@ -354,6 +370,7 @@ COPY "public"."puestos" ("id_puesto", "nombre_puesto", "is_active") FROM stdin;
 500134	SUPV, INGENIERO CIVIL	t
 500013	AGENTE DE COMPRAS	t
 500016	ACEITERO PLANTA FLOTANTE	t
+500031	ASIS DE GESTION ADMINISTRATIVA	t
 500135	GRTE DE DRAGADO, GRÚAS Y REMOL	t
 500136	VP DE INFRAEST E INGENIERÍA	t
 500137	SUP OF DE PRO Y EN C/CLIEN NAV	t
@@ -608,7 +625,6 @@ COPY "public"."colaboradores" ("id_colab", "nombre_colab", "asignacion_act", "su
 2359791	STOUTE LOPEZ, NORBERTO	Asignacion Interina	2222701	0	INCD-HI	500027	t
 2361892	PEREZ CORTEZ, JAIME JAVIER	Asignacion Interina	2757800	0	INCR	500049	t
 2361906	PITTI ESPINOSA, JOEL	Asignacion Interina	2823578	2823578	INCA-RC	500097	t
-2710951	AÑINO FLORES, AGUSTIN	Asignacion Regular	2752867	0	INCA	500071	t
 2714191	MORENO VASQUEZ, RICARDO OSKAR	Asignacion Regular	2209110	2209110	INCD-PS	500034	t
 2714469	GONZALEZ FOSSATTI, AMARU JULIAN	Asignacion Interina	2279801	2279801	INCD-RE	500074	t
 2714795	RIVERA MORENO, VICTOR MANUEL	Asignacion Regular	2279801	2279801	INCD-RE	500019	t
@@ -856,7 +872,6 @@ COPY "public"."colaboradores" ("id_colab", "nombre_colab", "asignacion_act", "su
 2789591	BATISTA TAYLOR, JOSNI BENJAMIN	Asignacion Regular	2275732	0	INCD-GR	500021	t
 2789949	URANE CHAVEZ, JASON XAVIER	Asignacion Interina	2331322	0	INCD-ME	500047	t
 2790343	SANCHEZ ARAUZ, ANTHONY AMETH	Asignacion Regular	2272288	0	INCD-HI	500106	t
-2792184	AVILA CEDEÑO, JOSE MIGUEL	Asignacion Interina	2752867	2273667	INCA	500031	t
 2792524	FILOS ESPINO, NATANAEL ANTONIO	Asignacion Regular	2321238	2321238	INCA-EM	500025	t
 2793024	PINO GOVEA, ROLANDO HIPOLITO	Asignacion Interina	1878115	0	INCA-LA	500017	t
 2793041	OSORIO CHANIS, EDWIN ENRIQUE	Asignacion Interina	2321238	2321238	INCA-EM	500003	t
@@ -1034,6 +1049,8 @@ COPY "public"."colaboradores" ("id_colab", "nombre_colab", "asignacion_act", "su
 21	PATTERSON HEYGEL, CARLOS GUILLERMO	Asignacion Regular	0	0	INCR	500125	t
 0	SIN SUPERVISOR	Asignacion Regular	0	0	INC	0	t
 987654321	Axel Saenz	Asignacion Regular	2333422	2243911	INCD-RE	500183	t
+2710951	AÑINO FLORES, AGUSTIN	Asignacion Regular	2757800	0	INCA	500071	t
+2792184	AVILA CEDEÑO, JOSE MIGUEL	Asignacion Interina	2757800	2747812	INCA	500031	t
 \.
 
 
@@ -1062,15 +1079,16 @@ COPY "public"."curso_grupo" ("id_grupo", "grupo_nombre") FROM stdin;
 --
 
 COPY "public"."cursos" ("id_curso", "nombre_curso", "primera_fecha", "ultima_fecha", "estado", "grupo_curso", "origen", "is_active") FROM stdin;
+CU_0086	ACP COLLISION PREVENTION REGULATIONS & COLREGS/72	\N	\N	activo	3	Matriz	t
 CU_0002	MANEJO DEFENSIVO	\N	\N	activo	\N	Matriz	t
 CU_0089	CTAN	\N	\N	\N	\N	Matriz	t
 CU_0202	APRENDE A RESUMIR	\N	\N	\N	\N	Historial	t
 CU_0647	SMART CITIES	\N	\N	\N	\N	Historial	t
-CU_0704	Curso nuevo 2	\N	\N	inactivo	\N	\N	t
+CU_0005	15 REGLAS DE ORO EN ÉTICA Y VALORES	\N	\N	activo	10	Matriz	t
 CU_0001	PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA	2021-10-01	2025-09-08	activo	\N	Matriz	t
+CU_0704	Curso nuevo 2	\N	\N	inactivo	\N	\N	t
 CU_0003	PRIMEROS AUXILIOS, RCP Y DEA	\N	\N	activo	1	Matriz	t
 CU_0004	PROTECCIÓN DEL MEDIO AMBIENTE	\N	\N	activo	\N	Matriz	t
-CU_0005	15 REGLAS DE ORO EN ÉTICA Y VALORES	\N	\N	\N	10	Matriz	t
 CU_0006	ANÁLISIS DE CAUSA RAÍZ	\N	\N	\N	\N	Matriz	t
 CU_0007	PLANIFICACIÓN DEL TRABAJO	2025-03-26	2025-03-26	\N	\N	Matriz	t
 CU_0008	ANÁLISIS DE MERCADO	\N	\N	\N	\N	Matriz	t
@@ -1151,7 +1169,6 @@ CU_0082	INTRODUCCION AL CODIGO DE DE PROTECCION MARITIMA ISPS CODE	2025-06-17	20
 CU_0083	NAUTICAL CHARTS	\N	\N	\N	4	Matriz	t
 CU_0084	NAUTICAL CHARTS (CADA 5 AÑOS)	\N	\N	\N	4	Matriz	t
 CU_0085	MARITIME BOUYAGE SYSTEM & IALA	2022-04-08	2024-11-20	\N	4	Matriz	t
-CU_0086	ACP COLLISION PREVENTION REGULATIONS & COLREGS/72	\N	\N	\N	3	Matriz	t
 CU_0087	RESPUESTA A DERRAMES Y PREVENCIÓN DE CONTAMINACIÓN	2021-11-04	2025-09-08	\N	\N	Matriz	t
 CU_0088	EVTMS	2022-03-03	2025-09-08	\N	\N	Matriz	t
 CU_0090	CTAN (CADA 5 AÑOS)	2023-12-05	2025-02-06	\N	\N	Matriz	t
@@ -1788,7 +1805,6 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 20	500041	INCD-GR	2222027
 21	500107	INCD-ME	2222701
 22	500034	INCD-PS	2223627
-23	500031	INCR	2225611
 24	500085	INCD-ME	2225956
 25	500049	INCD	2232138
 26	500074	INCD-RE	2237458
@@ -2020,7 +2036,6 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 252	500045	INCA-MI	2727137
 253	500017	INCA-LA	2727471
 254	500048	INCD-RE	2728257
-255	500031	INCD	2728923
 256	500015	INCR	2729105
 257	500018	INCA-LA	2729873
 258	500018	INCA-LA	2729903
@@ -2130,7 +2145,6 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 362	500110	INCD-GR	2763575
 363	500016	INCD-HI	2763621
 364	500016	INCD-RE	2763877
-365	500031	INCD	2764661
 366	500017	INCA-RC	2765179
 367	500059	INCD-ME	2765462
 368	500016	INCD-HI	2765748
@@ -2226,7 +2240,6 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 458	500021	INCD-GR	2789591
 459	500047	INCD-ME	2789949
 460	500106	INCD-HI	2790343
-461	500031	INCA	2792184
 462	500025	INCA-EM	2792524
 463	500017	INCA-LA	2793024
 464	500003	INCA-EM	2793041
@@ -2275,7 +2288,6 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 507	500002	INCA-MM	2800918
 508	500084	INCD-HI	2801060
 509	500016	INCD-PS	2802635
-510	500031	INCR	2803313
 511	500003	INCA-EM	2803950
 512	500003	INCA-EM	2803968
 513	500003	INCA-EM	2804034
@@ -2292,7 +2304,6 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 524	500059	INCD-HI	2810506
 525	500016	INCD-RE	2811863
 526	500016	INCD-HI	2811936
-527	500031	INCR	2812711
 528	500019	INCD-RE	2812819
 529	500017	INCA-LA	2812851
 530	500017	INCA-RC	2812878
@@ -2403,6 +2414,7 @@ COPY "public"."departamento_puesto" ("id_dep_puesto", "puesto_id", "dep_id", "co
 635	500117	INCA-MI	20
 636	500125	INCR	21
 656	500160	INCA-MM	\N
+668	500031	INCA	\N
 \.
 
 
@@ -13644,6 +13656,21 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 130	44c828c1-057b-41d8-ae97-ce82e7a9a02a	colaboradores	UPDATE	987654321	{"dep_id": "INCD-RE", "id_colab": 987654321, "is_active": false, "puesto_id": 500183, "nombre_colab": "Axel Saenz", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2333422, "supervisor_reg_id": 2243911}	{"dep_id": "INCD-RE", "id_colab": 987654321, "is_active": true, "puesto_id": 500183, "nombre_colab": "Axel Saenz", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2333422, "supervisor_reg_id": 2243911}	2026-02-26 23:02:24.968911+00
 131	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puestos	UPDATE	0	{"id_puesto": 0, "is_active": true, "nombre_puesto": "Admin"}	{"id_puesto": 0, "is_active": false, "nombre_puesto": "Admin"}	2026-02-27 16:14:00.632105+00
 132	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	DELETE	7017	{"estado": "OK", "curso_id": "CU_0704", "puesto_id": 0, "vigencia_anio": 0, "id_puesto_curso": 7017, "clasificacion_estrategica": "NECESARIO"}	\N	2026-02-27 16:14:48.773099+00
+133	1be4f0d5-58a2-484f-925a-8d2623579c45	colaboradores	UPDATE	2710951	{"dep_id": "INCA", "id_colab": 2710951, "is_active": true, "puesto_id": 500071, "nombre_colab": "AÑINO FLORES, AGUSTIN", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2752867, "supervisor_reg_id": 0}	{"dep_id": "INCA", "id_colab": 2710951, "is_active": true, "puesto_id": 500071, "nombre_colab": "AÑINO FLORES, AGUSTIN", "asignacion_act": "Asignacion Regular", "supervisor_act_id": 2757800, "supervisor_reg_id": 0}	2026-03-09 12:32:19.990949+00
+134	1be4f0d5-58a2-484f-925a-8d2623579c45	colaboradores	UPDATE	2792184	{"dep_id": "INCA", "id_colab": 2792184, "is_active": true, "puesto_id": 500031, "nombre_colab": "AVILA CEDEÑO, JOSE MIGUEL", "asignacion_act": "Asignacion Interina", "supervisor_act_id": 2752867, "supervisor_reg_id": 2273667}	{"dep_id": "INCA", "id_colab": 2792184, "is_active": true, "puesto_id": 500031, "nombre_colab": "AVILA CEDEÑO, JOSE MIGUEL", "asignacion_act": "Asignacion Interina", "supervisor_act_id": 2757800, "supervisor_reg_id": 2747812}	2026-03-09 12:36:46.990887+00
+135	1be4f0d5-58a2-484f-925a-8d2623579c45	colaboradores	UPDATE	2792184	{"dep_id": "INCA", "id_colab": 2792184, "is_active": true, "puesto_id": 500031, "nombre_colab": "AVILA CEDEÑO, JOSE MIGUEL", "asignacion_act": "Asignacion Interina", "supervisor_act_id": 2757800, "supervisor_reg_id": 2747812}	{"dep_id": "INCA", "id_colab": 2792184, "is_active": true, "puesto_id": 500031, "nombre_colab": "AVILA CEDEÑO, JOSE MIGUEL", "asignacion_act": "Asignacion Interina", "supervisor_act_id": 2757800, "supervisor_reg_id": 2747812}	2026-03-09 12:37:09.060637+00
+136	1be4f0d5-58a2-484f-925a-8d2623579c45	puestos	UPDATE	500031	{"id_puesto": 500031, "is_active": true, "nombre_puesto": "ASIS DE GESTION ADMINISTRATIVA"}	{"id_puesto": 500031, "is_active": true, "nombre_puesto": "ASIS DE GESTION ADMINISTRATIVA"}	2026-03-09 12:37:36.042108+00
+137	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	23	{"dep_id": "INCR", "colab_id": 2225611, "puesto_id": 500031, "id_dep_puesto": 23}	\N	2026-03-09 12:37:36.288075+00
+138	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	255	{"dep_id": "INCD", "colab_id": 2728923, "puesto_id": 500031, "id_dep_puesto": 255}	\N	2026-03-09 12:37:36.288075+00
+139	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	365	{"dep_id": "INCD", "colab_id": 2764661, "puesto_id": 500031, "id_dep_puesto": 365}	\N	2026-03-09 12:37:36.288075+00
+140	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	461	{"dep_id": "INCA", "colab_id": 2792184, "puesto_id": 500031, "id_dep_puesto": 461}	\N	2026-03-09 12:37:36.288075+00
+141	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	510	{"dep_id": "INCR", "colab_id": 2803313, "puesto_id": 500031, "id_dep_puesto": 510}	\N	2026-03-09 12:37:36.288075+00
+142	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	DELETE	527	{"dep_id": "INCR", "colab_id": 2812711, "puesto_id": 500031, "id_dep_puesto": 527}	\N	2026-03-09 12:37:36.288075+00
+143	1be4f0d5-58a2-484f-925a-8d2623579c45	departamento_puesto	INSERT	668	\N	{"dep_id": "INCA", "colab_id": null, "puesto_id": 500031, "id_dep_puesto": 668}	2026-03-09 12:37:36.531347+00
+144	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0001	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	{"estado": "activo", "origen": "Historial", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	2026-03-09 14:05:51.323805+00
+145	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0001	{"estado": "activo", "origen": "Historial", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0001", "is_active": true, "grupo_curso": null, "nombre_curso": "PROTECCIÓN PERSONAL: AUDICIÓN, RESPIRACIÓN Y VESTIMENTA", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-10-01"}	2026-03-09 14:06:27.316764+00
+146	1be4f0d5-58a2-484f-925a-8d2623579c45	cursos	UPDATE	CU_0086	{"estado": null, "origen": "Matriz", "id_curso": "CU_0086", "is_active": true, "grupo_curso": 3, "nombre_curso": "ACP COLLISION PREVENTION REGULATIONS & COLREGS/72", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0086", "is_active": true, "grupo_curso": 3, "nombre_curso": "ACP COLLISION PREVENTION REGULATIONS & COLREGS/72", "ultima_fecha": null, "primera_fecha": null}	2026-03-10 16:03:35.627945+00
+147	1be4f0d5-58a2-484f-925a-8d2623579c45	cursos	UPDATE	CU_0005	{"estado": null, "origen": "Matriz", "id_curso": "CU_0005", "is_active": true, "grupo_curso": 10, "nombre_curso": "15 REGLAS DE ORO EN ÉTICA Y VALORES", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0005", "is_active": true, "grupo_curso": 10, "nombre_curso": "15 REGLAS DE ORO EN ÉTICA Y VALORES", "ultima_fecha": null, "primera_fecha": null}	2026-03-10 18:30:52.622049+00
 \.
 
 
@@ -20731,7 +20758,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 157, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 172, true);
 
 
 --
@@ -20745,7 +20772,7 @@ SELECT pg_catalog.setval('"public"."dep_puesto_id_seq"', 1, true);
 -- Name: departamento_puesto_id_dep_puesto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 667, true);
+SELECT pg_catalog.setval('"public"."departamento_puesto_id_dep_puesto_seq"', 668, true);
 
 
 --
@@ -20759,7 +20786,7 @@ SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11121, 
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 132, true);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 147, true);
 
 
 --
@@ -20773,6 +20800,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500184, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict qKauIxNZW5DuRowxQFcqwJmiO1FcmkDOJbbDfu3tWLA6mNiN7UbyToJPFrVdSXa
+-- \unrestrict xkzCpafAGXNdjSu8gN4MIfKvyOzjU9JFfEhEg4d2TqCKf3oMNV1rfxRify10gBX
 
 RESET ALL;
