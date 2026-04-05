@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict HaVWgBW3whCtPiimWqmn9O9J6N3lyEFUA04lftezCWEWm9IWWc1sodm5xqBos5K
+-- \restrict yfa9KLVGJ6NumFw4ZxVyekSnXVwtBbv9stfb9z0Lyi6O4XeYuY9Mo8Ynqt4a7ec
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -21528,6 +21528,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500184, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict HaVWgBW3whCtPiimWqmn9O9J6N3lyEFUA04lftezCWEWm9IWWc1sodm5xqBos5K
+-- \unrestrict yfa9KLVGJ6NumFw4ZxVyekSnXVwtBbv9stfb9z0Lyi6O4XeYuY9Mo8Ynqt4a7ec
 
 RESET ALL;
