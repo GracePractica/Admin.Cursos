@@ -91,20 +91,8 @@
                                     </div>
                                 </div>
 
-                                <div class="table-responsive">
-                                    <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Curso</th>
-                                                <th>Puesto</th>
-                                                <th>Colaboradores faltantes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="faltantesCursoTableBody">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div id="paginationFaltantes2"></div>
+                                <div id="faltantesCursoCards" class="space-y-2"></div>
+                                <div id="paginationFaltantes2" style="margin-top: 1rem;"></div>
                             </div>
                         </div>
 
@@ -150,6 +138,24 @@
     <script src="js/faltantes.js"></script>
     <script src="components/authGuard.js"></script>
     <script src="components/nav.js"></script>
+
+    <div id="cursoDetalleModal" style="display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; z-index: 1000;">
+        <div style="background: white; border-radius: 10px; width: min(640px, 90%); box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; background: #f7f7f7; border-bottom: 1px solid #e6e6e6;">
+                <div>
+                    <h2 style="margin: 0; font-size: 1.25rem;">Detalle de curso</h2>
+                    <p id="cursoModalSubtitle" style="margin: 0.25rem 0 0; color: #555; font-size: 0.95rem;"></p>
+                </div>
+                <button onclick="closeCursoDetalleModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div style="padding: 1.25rem;">
+                <div id="cursoModalContent"></div>
+            </div>
+            <div style="padding: 1rem 1.25rem; background: #f7f7f7; text-align: right;">
+                <button class="btn btn-secondary" onclick="closeCursoDetalleModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

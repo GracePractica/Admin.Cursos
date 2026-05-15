@@ -5,7 +5,7 @@
 const FALTANTES_STATE = {
     activeTab: 'porColaborador',
     porColaborador: { page: 1, limit: 50, puestoId: null },
-    porCurso: { page: 1, limit: 50, cursoId: null }
+    porCurso: { page: 1, limit: 50, cursoId: null, expandedCourseId: null }
 };
 
 const FALTANTES_DATA = {
@@ -238,28 +238,115 @@ document.addEventListener('click', (event) => {
 });
 
 function renderTab2() {
-    const { page, limit, cursoId } = FALTANTES_STATE.porCurso;
+    const { page, limit, cursoId, expandedCourseId } = FALTANTES_STATE.porCurso;
     let rows = [...FALTANTES_DATA.rowsByCourse];
     if (cursoId) {
         const filterValue = String(cursoId);
         rows = rows.filter(row => String(row.cursoId) === filterValue);
     }
-    const totalRows = rows.length;
-    if (totalRows === 0) {
-        document.getElementById('faltantesCursoTableBody').innerHTML = '<tr><td colspan="3" class="text-center">No se encontraron resultados con el filtro seleccionado.</td></tr>';
+
+    const grouped = rows.reduce((acc, row) => {
+        const key = String(row.cursoId);
+        if (!acc[key]) {
+            acc[key] = {
+                cursoId: row.cursoId,
+                curso: row.curso,
+                total: 0,
+                puestos: []
+            };
+        }
+        acc[key].puestos.push({ puesto: row.puesto, faltantes: row.faltantes });
+        acc[key].total += Number(row.faltantes);
+        return acc;
+    }, {});
+
+    const groupedCourses = Object.values(grouped).sort((a, b) => a.curso.localeCompare(b.curso));
+    const totalGroups = groupedCourses.length;
+
+    if (totalGroups === 0) {
+        document.getElementById('faltantesCursoCards').innerHTML = '<div class="text-center" style="padding: 1.25rem; color: #555;">No se encontraron resultados con el filtro seleccionado.</div>';
         renderPaginationControls(0, 1, limit, 'paginationFaltantes2', 'renderTab2Page');
         return;
     }
+
     const startIndex = (page - 1) * limit;
-    const pageRows = rows.slice(startIndex, startIndex + limit);
-    document.getElementById('faltantesCursoTableBody').innerHTML = pageRows.map(row => `
-        <tr>
-            <td>${row.curso}</td>
-            <td>${row.puesto}</td>
-            <td>${row.faltantes}</td>
+    const pageGroups = groupedCourses.slice(startIndex, startIndex + limit);
+
+    document.getElementById('faltantesCursoCards').innerHTML = pageGroups.map(group => {
+        const isExpanded = String(group.cursoId) === String(expandedCourseId);
+        return `
+            <div style="border: 1px solid #ddd; border-radius: 12px; overflow: hidden; background: white;">
+                <button type="button" onclick="toggleCourseCard('${group.cursoId}')" style="width: 100%; text-align: left; padding: 1rem 1.25rem; background: #f8f8f8; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                    <div>
+                        <div style="font-weight: 600; font-size: 1rem; color: #222;">${group.curso}</div>
+                        <div style="font-size: 0.9rem; color: #555; margin-top: 0.35rem;">Total: ${group.total} colaboradores • ${group.puestos.length} puestos</div>
+                    </div>
+                    <span style="font-size: 0.9rem; color: #777;">${isExpanded ? '−' : '+'}</span>
+                </button>
+                <div style="display: ${isExpanded ? 'block' : 'none'}; padding: 0 1.25rem 1.25rem;">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 0.75rem;">
+                        <thead>
+                            <tr style="background: #f5f5f5; text-align: left;">
+                                <th style="padding: 0.75rem 0.5rem; font-weight: 600;">Puesto</th>
+                                <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: right;">Faltantes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${group.puestos.map(puesto => `
+                                <tr style="border-top: 1px solid #ececec;">
+                                    <td style="padding: 0.75rem 0.5rem;">${puesto.puesto}</td>
+                                    <td style="padding: 0.75rem 0.5rem; text-align: right;">${puesto.faltantes}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="openCursoDetalleModal('${group.cursoId}')" style="margin-top: 1rem; padding: 0.65rem 1rem; border: 1px solid #0070f3; background: #fff; color: #0070f3; border-radius: 8px; cursor: pointer;">Ver en modal</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    renderPaginationControls(totalGroups, page, limit, 'paginationFaltantes2', 'renderTab2Page');
+}
+
+function toggleCourseCard(cursoId) {
+    const current = FALTANTES_STATE.porCurso.expandedCourseId;
+    FALTANTES_STATE.porCurso.expandedCourseId = current === String(cursoId) ? null : String(cursoId);
+    renderTab2();
+}
+
+function openCursoDetalleModal(cursoId) {
+    const rows = FALTANTES_DATA.rowsByCourse.filter(row => String(row.cursoId) === String(cursoId));
+    if (!rows.length) return;
+
+    const cursoName = rows[0].curso;
+    const total = rows.reduce((sum, row) => sum + Number(row.faltantes), 0);
+    const puestosHtml = rows.map(row => `
+        <tr style="border-top: 1px solid #e8e8e8;">
+            <td style="padding: 0.75rem 0.5rem;">${row.puesto}</td>
+            <td style="padding: 0.75rem 0.5rem; text-align: right;">${row.faltantes}</td>
         </tr>
     `).join('');
-    renderPaginationControls(totalRows, page, limit, 'paginationFaltantes2', 'renderTab2Page');
+
+    document.getElementById('cursoModalSubtitle').textContent = `${cursoName} · Total de faltantes: ${total}`;
+    document.getElementById('cursoModalContent').innerHTML = `
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: #f5f5f5; text-align: left;">
+                    <th style="padding: 0.75rem 0.5rem; font-weight: 600;">Puesto</th>
+                    <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: right;">Colaboradores faltantes</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${puestosHtml}
+            </tbody>
+        </table>
+    `;
+    document.getElementById('cursoDetalleModal').style.display = 'flex';
+}
+
+function closeCursoDetalleModal() {
+    document.getElementById('cursoDetalleModal').style.display = 'none';
 }
 
 function renderTab1Page(page) {
