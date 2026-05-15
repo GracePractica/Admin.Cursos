@@ -23,9 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initFaltantesPage() {
     setupTabNavigation();
-    setupSelectFilters();
     setupPageSizeSelectors();
-    await loadFilterOptions();
+    setupSelectFilters();
     await loadFaltantesData();
 }
 
@@ -72,17 +71,38 @@ function setupSelectFilters() {
 
     cursoSelect?.addEventListener('change', (e) => {
         const value = e.target.value;
-        FALTANTES_STATE.porCurso.cursoId = value ? Number(value) : null;
+        FALTANTES_STATE.porCurso.cursoId = value ? value : null;
         FALTANTES_STATE.porCurso.page = 1;
         renderTab2();
     });
 }
 
-async function loadFilterOptions() {
-    await Promise.all([
-        loadPuestosFilter('puestoFilterSelect'),
-        loadCursosFilter('cursoFilterSelect')
-    ]);
+function populateSelectFiltersFromData() {
+    const puestoSelect = document.getElementById('puestoFilterSelect');
+    const cursoSelect = document.getElementById('cursoFilterSelect');
+
+    if (puestoSelect) {
+        puestoSelect.innerHTML = '<option value="">Todos los puestos</option>' +
+            FALTANTES_DATA.puestos.map(puesto =>
+                `<option value="${puesto.id_puesto}">${puesto.nombre_puesto}</option>`
+            ).join('');
+    }
+
+    if (cursoSelect) {
+        const uniqueCourses = new Map();
+        FALTANTES_DATA.rowsByCourse.forEach(row => {
+            if (!uniqueCourses.has(row.cursoId)) {
+                uniqueCourses.set(row.cursoId, row.curso);
+            }
+        });
+
+        cursoSelect.innerHTML = '<option value="">Todos los cursos</option>' +
+            Array.from(uniqueCourses.entries())
+                .sort(([, nameA], [, nameB]) => nameA.localeCompare(nameB))
+                .map(([id, nombre]) =>
+                    `<option value="${id}">${nombre}</option>`
+                ).join('');
+    }
 }
 
 async function loadFaltantesData() {
@@ -94,6 +114,8 @@ async function loadFaltantesData() {
         FALTANTES_DATA.cursos = cursos;
         FALTANTES_DATA.rowsByCollaborator = rowsByCollaborator;
         FALTANTES_DATA.rowsByCourse = buildMissingCoursesByCourse(rowsByCollaborator);
+
+        populateSelectFiltersFromData();
 
         console.log(`Total registros cargados: ${FALTANTES_DATA.rowsByCollaborator.length}`);
         renderCurrentTab();
@@ -142,7 +164,8 @@ function renderTab1() {
     const { page, limit, puestoId } = FALTANTES_STATE.porColaborador;
     let rows = [...FALTANTES_DATA.rowsByCollaborator];
     if (puestoId) {
-        rows = rows.filter(row => row.puestoId === Number(puestoId));
+        const filterValue = String(puestoId);
+        rows = rows.filter(row => String(row.puestoId) === filterValue);
     }
     const totalRows = rows.length;
     if (totalRows === 0) {
@@ -218,7 +241,8 @@ function renderTab2() {
     const { page, limit, cursoId } = FALTANTES_STATE.porCurso;
     let rows = [...FALTANTES_DATA.rowsByCourse];
     if (cursoId) {
-        rows = rows.filter(row => row.cursoId === Number(cursoId));
+        const filterValue = String(cursoId);
+        rows = rows.filter(row => String(row.cursoId) === filterValue);
     }
     const totalRows = rows.length;
     if (totalRows === 0) {
