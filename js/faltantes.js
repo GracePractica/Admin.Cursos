@@ -23,8 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initFaltantesPage() {
     setupTabNavigation();
-    setupAutocompleteFilters();
+    setupSelectFilters();
     setupPageSizeSelectors();
+    await loadFilterOptions();
     await loadFaltantesData();
 }
 
@@ -56,166 +57,32 @@ function setupPageSizeSelectors() {
         FALTANTES_STATE.porCurso.page = 1;
         renderTab2();
     });
-
-    // document.getElementById('resetFiltersTab1')?.addEventListener('click', () => {
-    //     document.getElementById('puestoFilterInput').value = '';
-    //     document.getElementById('puestoFilterId').value = '';
-    //     document.getElementById('clearPuestoFilter').style.display = 'none';
-    //     FALTANTES_STATE.porColaborador.puestoId = null;
-    //     FALTANTES_STATE.porColaborador.page = 1;
-    //     renderTab1();
-    // });
-
-    // document.getElementById('resetFiltersTab2')?.addEventListener('click', () => {
-    //     document.getElementById('cursoFilterInput').value = '';
-    //     document.getElementById('cursoFilterId').value = '';
-    //     document.getElementById('clearCursoFilter').style.display = 'none';
-    //     FALTANTES_STATE.porCurso.cursoId = null;
-    //     FALTANTES_STATE.porCurso.page = 1;
-    //     renderTab2();
-    // });
 }
 
-function setupAutocompleteFilters() {
-    const puestoInput = document.getElementById('puestoFilterInput');
-    const puestoResults = document.getElementById('puestoFilterResults');
-    const puestoIdInput = document.getElementById('puestoFilterId');
-    const clearPuesto = document.getElementById('clearPuestoFilter');
+function setupSelectFilters() {
+    const puestoSelect = document.getElementById('puestoFilterSelect');
+    const cursoSelect = document.getElementById('cursoFilterSelect');
 
-    const cursoInput = document.getElementById('cursoFilterInput');
-    const cursoResults = document.getElementById('cursoFilterResults');
-    const cursoIdInput = document.getElementById('cursoFilterId');
-    const clearCurso = document.getElementById('clearCursoFilter');
-
-    const updatePuestoSuggestions = () => {
-        const term = puestoInput.value.trim().toLowerCase();
-        const results = FALTANTES_DATA.puestos.filter(p => p.nombre_puesto.toLowerCase().includes(term));
-        renderAutocompleteList(results, puestoResults, (item) => {
-            puestoInput.value = item.nombre_puesto;
-            puestoIdInput.value = item.id_puesto;
-            FALTANTES_STATE.porColaborador.puestoId = item.id_puesto;
-            FALTANTES_STATE.porColaborador.page = 1;
-            clearPuesto.style.display = 'inline-flex';
-            puestoResults.style.display = 'none';
-            renderTab1();
-        });
-    };
-
-    const updateCursoSuggestions = () => {
-        const term = cursoInput.value.trim().toLowerCase();
-        const results = FALTANTES_DATA.cursos.filter(c => c.nombre_curso.toLowerCase().includes(term));
-        renderAutocompleteList(results, cursoResults, (item) => {
-            cursoInput.value = item.nombre_curso;
-            cursoIdInput.value = item.id_curso;
-            FALTANTES_STATE.porCurso.cursoId = item.id_curso;
-            FALTANTES_STATE.porCurso.page = 1;
-            clearCurso.style.display = 'inline-flex';
-            cursoResults.style.display = 'none';
-            renderTab2();
-        });
-    };
-
-    puestoInput?.addEventListener('input', () => {
-        if (!puestoInput.value.trim()) {
-            FALTANTES_STATE.porColaborador.puestoId = null;
-            puestoIdInput.value = '';
-            clearPuesto.style.display = 'none';
-            FALTANTES_STATE.porColaborador.page = 1;
-            renderTab1();
-            puestoResults.style.display = 'none';
-            return;
-        }
-        FALTANTES_STATE.porColaborador.puestoId = null;
-        puestoIdInput.value = '';
-        clearPuesto.style.display = 'inline-flex';
-        updatePuestoSuggestions();
-    });
-
-    puestoInput?.addEventListener('focus', () => {
-        if (!puestoInput.value) {
-            renderAutocompleteList(FALTANTES_DATA.puestos.slice(0, 50), puestoResults, (item) => {
-                puestoInput.value = item.nombre_puesto;
-                puestoIdInput.value = item.id_puesto;
-                FALTANTES_STATE.porColaborador.puestoId = item.id_puesto;
-                FALTANTES_STATE.porColaborador.page = 1;
-                clearPuesto.style.display = 'inline-flex';
-                puestoResults.style.display = 'none';
-                renderTab1();
-            });
-        }
-    });
-
-    clearPuesto?.addEventListener('click', () => {
-        puestoInput.value = '';
-        puestoIdInput.value = '';
-        FALTANTES_STATE.porColaborador.puestoId = null;
-        clearPuesto.style.display = 'none';
+    puestoSelect?.addEventListener('change', (e) => {
+        const value = e.target.value;
+        FALTANTES_STATE.porColaborador.puestoId = value ? Number(value) : null;
+        FALTANTES_STATE.porColaborador.page = 1;
         renderTab1();
     });
 
-    cursoInput?.addEventListener('input', () => {
-        if (!cursoInput.value.trim()) {
-            FALTANTES_STATE.porCurso.cursoId = null;
-            cursoIdInput.value = '';
-            clearCurso.style.display = 'none';
-            FALTANTES_STATE.porCurso.page = 1;
-            renderTab2();
-            cursoResults.style.display = 'none';
-            return;
-        }
-        FALTANTES_STATE.porCurso.cursoId = null;
-        cursoIdInput.value = '';
-        clearCurso.style.display = cursoInput.value ? 'inline-flex' : 'none';
-        updateCursoSuggestions();
-    });
-
-    cursoInput?.addEventListener('focus', () => {
-        if (!cursoInput.value) {
-            renderAutocompleteList(FALTANTES_DATA.cursos.slice(0, 50), cursoResults, (item) => {
-                cursoInput.value = item.nombre_curso;
-                cursoIdInput.value = item.id_curso;
-                FALTANTES_STATE.porCurso.cursoId = item.id_curso;
-                FALTANTES_STATE.porCurso.page = 1;
-                clearCurso.style.display = 'inline-flex';
-                cursoResults.style.display = 'none';
-                renderTab2();
-            });
-        }
-    });
-
-    clearCurso?.addEventListener('click', () => {
-        cursoInput.value = '';
-        cursoIdInput.value = '';
-        FALTANTES_STATE.porCurso.cursoId = null;
-        clearCurso.style.display = 'none';
+    cursoSelect?.addEventListener('change', (e) => {
+        const value = e.target.value;
+        FALTANTES_STATE.porCurso.cursoId = value ? Number(value) : null;
+        FALTANTES_STATE.porCurso.page = 1;
         renderTab2();
-    });
-
-    document.addEventListener('click', (event) => {
-        if (!event.target.closest('#puestoFilterInput') && !event.target.closest('#puestoFilterResults')) {
-            puestoResults.style.display = 'none';
-        }
-        if (!event.target.closest('#cursoFilterInput') && !event.target.closest('#cursoFilterResults')) {
-            cursoResults.style.display = 'none';
-        }
     });
 }
 
-function renderAutocompleteList(items, container, onSelect) {
-    container.innerHTML = '';
-    if (!items || items.length === 0) {
-        container.innerHTML = '<div class="dropdown-item no-results">No se encontraron coincidencias</div>';
-        container.style.display = 'block';
-        return;
-    }
-    items.slice(0, 20).forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'dropdown-item';
-        div.textContent = item.nombre_puesto || item.nombre_curso;
-        div.addEventListener('click', () => onSelect(item));
-        container.appendChild(div);
-    });
-    container.style.display = 'block';
+async function loadFilterOptions() {
+    await Promise.all([
+        loadPuestosFilter('puestoFilterSelect'),
+        loadCursosFilter('cursoFilterSelect')
+    ]);
 }
 
 async function loadFaltantesData() {
@@ -241,17 +108,19 @@ async function loadFaltantesData() {
 function buildMissingCoursesByCourse(rows) {
     const grouped = new Map();
     rows.forEach(row => {
-        const key = `${row.cursoId}-${row.puestoId}`;
-        if (!grouped.has(key)) {
-            grouped.set(key, {
-                cursoId: row.cursoId,
-                curso: row.curso,
-                puestoId: row.puestoId,
-                puesto: row.puesto,
-                faltantes: 0
-            });
-        }
-        grouped.get(key).faltantes += 1;
+        (row.cursosFaltantesDetalle || []).forEach(curso => {
+            const key = `${curso.id_curso}-${row.puestoId}`;
+            if (!grouped.has(key)) {
+                grouped.set(key, {
+                    cursoId: curso.id_curso,
+                    curso: curso.nombre_curso,
+                    puestoId: row.puestoId,
+                    puesto: row.puesto,
+                    faltantes: 0
+                });
+            }
+            grouped.get(key).faltantes += 1;
+        });
     });
 
     return Array.from(grouped.values()).sort((a, b) => {
@@ -277,22 +146,73 @@ function renderTab1() {
     }
     const totalRows = rows.length;
     if (totalRows === 0) {
-        document.getElementById('faltantesTableBody').innerHTML = '<tr><td colspan="3" class="text-center">No se encontraron cursos faltantes con el filtro seleccionado.</td></tr>';
+        document.getElementById('faltantesTableBody').innerHTML = '<tr><td colspan="5" class="text-center">No se encontraron cursos faltantes con el filtro seleccionado.</td></tr>';
         renderPaginationControls(0, 1, limit, 'paginationFaltantes1', 'renderTab1Page');
         return;
     }
     const startIndex = (page - 1) * limit;
     const pageRows = rows.slice(startIndex, startIndex + limit);
-    const html = pageRows.map(row => `
-        <tr>
-            <td style="white-space: nowrap;">${row.colaborador}</td>
-            <td style="white-space: nowrap;">${row.puesto}</td>
-            <td>${row.curso}</td>
-        </tr>
-    `).join('');
+    const html = pageRows.map((row, index) => {
+        const rowId = `row_${page}_${index}`;
+        // Store the row data globally for the modal
+        window.faltantesRowData = window.faltantesRowData || {};
+        window.faltantesRowData[rowId] = row;
+        return `
+            <tr>
+                <td style="white-space: nowrap;">${row.colaborador}</td>
+                <td style="white-space: nowrap;">${row.puesto}</td>
+                <td style="text-align: center;">${row.totalCursosMatriz}</td>
+                <td style="text-align: center;">${row.cursosFaltantesCount}</td>
+                <td style="text-align: center;">
+                    <button class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;" onclick="openCursosModal('${rowId}')">Ver</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
     document.getElementById('faltantesTableBody').innerHTML = html;
     renderPaginationControls(totalRows, page, limit, 'paginationFaltantes1', 'renderTab1Page');
 }
+
+function openCursosModal(rowId) {
+    console.log('openCursosModal called with rowId:', rowId);
+    try {
+        const row = window.faltantesRowData[rowId];
+        console.log('Retrieved row:', row);
+        if (!row) {
+            console.error('No row data found for id:', rowId);
+            return;
+        }
+        const modal = document.getElementById('cursosModal');
+        console.log('Modal element:', modal);
+        document.getElementById('cursosModalColaborador').textContent = row.colaborador;
+        document.getElementById('cursosModalPuesto').textContent = row.puesto;
+        document.getElementById('cursosModalTotal').textContent = row.totalCursosMatriz;
+        document.getElementById('cursosModalFaltantes').textContent = row.cursosFaltantesCount;
+
+        const cursosList = (row.cursosFaltantesDetalle || [])
+            .map(c => `<div style="padding: 0.5rem; border-bottom: 1px solid #f0f0f0;">• ${c.nombre_curso}</div>`)
+            .join('');
+        document.getElementById('cursosModalList').innerHTML = cursosList || '<p>No hay cursos faltantes</p>';
+
+        modal.style.display = 'flex';
+        console.log('Modal should be visible now');
+    } catch (error) {
+        console.error('Error abriendo modal:', error);
+    }
+}
+
+function closeCursosModal() {
+    const modal = document.getElementById('cursosModal');
+    modal.style.display = 'none';
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', (event) => {
+    const modal = document.getElementById('cursosModal');
+    if (modal && modal.style.display === 'flex' && event.target === modal) {
+        closeCursosModal();
+    }
+});
 
 function renderTab2() {
     const { page, limit, cursoId } = FALTANTES_STATE.porCurso;

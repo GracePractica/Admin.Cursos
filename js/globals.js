@@ -476,10 +476,77 @@ function buildMissingCoursesRows({ colaboradores, puestos, puestoCursos, cursos,
     });
 }
 
+function buildMissingCoursesSummaryByCollaborator({ colaboradores, puestos, puestoCursos, cursos, historial }) {
+    const activeCourseMap = new Map(
+        cursos
+            .filter(c => c.is_active === true && c.origen === 'Matriz')
+            .map(c => [c.id_curso, c.nombre_curso])
+    );
+
+    const puestoCoursesByPuesto = new Map();
+    puestoCursos
+        .filter(pc => pc.clasificacion_estrategica === 'NECESARIO' && activeCourseMap.has(pc.curso_id))
+        .forEach(pc => {
+            if (!puestoCoursesByPuesto.has(pc.puesto_id)) {
+                puestoCoursesByPuesto.set(pc.puesto_id, []);
+            }
+            puestoCoursesByPuesto.get(pc.puesto_id).push(pc);
+        });
+
+    const puestoMap = new Map(puestos.map(p => [p.id_puesto, p.nombre_puesto]));
+    const historialSet = new Set(historial.map(h => `${h.colaborador_id}-${h.curso_id}`));
+
+    const rowsByCollaborator = [];
+
+    colaboradores.forEach(colaborador => {
+        if (!colaborador.puesto_id) return;
+        const puestoNombre = puestoMap.get(colaborador.puesto_id);
+        if (!puestoNombre) return;
+
+        const puestoCursoList = puestoCoursesByPuesto.get(colaborador.puesto_id) || [];
+        const totalCursosMatriz = puestoCursoList.length;
+
+        const cursosFaltantes = [];
+        let cursosFaltantesCount = 0;
+
+        puestoCursoList.forEach(pc => {
+            const cursoNombre = activeCourseMap.get(pc.curso_id);
+            if (!cursoNombre) return;
+
+            const historialKey = `${colaborador.id_colab}-${pc.curso_id}`;
+            if (!historialSet.has(historialKey)) {
+                cursosFaltantes.push({
+                    id_curso: pc.curso_id,
+                    nombre_curso: cursoNombre
+                });
+                cursosFaltantesCount += 1;
+            }
+        });
+
+        if (cursosFaltantesCount > 0) {
+            rowsByCollaborator.push({
+                colaboradorId: colaborador.id_colab,
+                colaborador: colaborador.nombre_colab,
+                puestoId: colaborador.puesto_id,
+                puesto: puestoNombre,
+                totalCursosMatriz: totalCursosMatriz,
+                cursosFaltantesCount: cursosFaltantesCount,
+                cursosFaltantesDetalle: cursosFaltantes
+            });
+        }
+    });
+
+    return rowsByCollaborator.sort((a, b) => {
+        const faltantesCompare = b.cursosFaltantesCount - a.cursosFaltantesCount;
+        if (faltantesCompare !== 0) return faltantesCompare;
+        return a.colaborador.localeCompare(b.colaborador);
+    });
+}
+
 async function fetchMissingCoursesRows() {
     const baseData = await fetchMissingCoursesBaseData();
     return {
-        rowsByCollaborator: buildMissingCoursesRows(baseData),
+        rowsByCollaborator: buildMissingCoursesSummaryByCollaborator(baseData),
         puestos: baseData.puestos,
         cursos: baseData.cursos.filter(c => c.is_active === true && c.origen === 'Matriz')
     };
@@ -543,10 +610,12 @@ async function loadDepartamentosFilter(selectId) {
 
 async function loadPuestosFilter(selectId) {
     try {
-        const { data: puestos } = await supabaseClient
+        const { data: puestos, error } = await supabaseClient
             .from('puestos')
             .select('*')
             .order('nombre_puesto');
+
+        if (error) throw error;
 
         const select = document.getElementById(selectId);
         if (select && puestos) {
@@ -558,6 +627,30 @@ async function loadPuestosFilter(selectId) {
         }
     } catch (error) {
         console.error('Error cargando puestos para filtro:', error);
+    }
+}
+
+async function loadCursosFilter(selectId) {
+    try {
+        const { data: cursos, error } = await supabaseClient
+            .from('cursos')
+            .select('*')
+            .eq('is_active', true)
+            .eq('origen', 'Matriz')
+            .order('nombre_curso');
+
+        if (error) throw error;
+
+        const select = document.getElementById(selectId);
+        if (select && cursos) {
+            const options = cursos.map(curso =>
+                `<option value="${curso.id_curso}">${curso.nombre_curso}</option>`
+            ).join('');
+
+            select.innerHTML = '<option value="">Todos los cursos</option>' + options;
+        }
+    } catch (error) {
+        console.error('Error cargando cursos para filtro:', error);
     }
 }
 

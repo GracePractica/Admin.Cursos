@@ -37,14 +37,11 @@
 
                             <div id="tabPorColaborador" class="tab-content active">
                                 <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
-                                    <div class="filter-group" style="position: relative;">
-                                        <label for="puestoFilterInput">Filtrar por Puesto</label>
-                                        <div class="input-group">
-                                            <input type="text" id="puestoFilterInput" class="form-input" placeholder="Escribe un puesto..." autocomplete="off">
-                                            <input type="hidden" id="puestoFilterId">
-                                            <button class="btn btn-outline" id="clearPuestoFilter" style="display: none; min-width: 2.5rem;">×</button>
-                                        </div>
-                                        <div id="puestoFilterResults" class="dropdown-results" style="display:none;"></div>
+                                    <div class="filter-group">
+                                        <label for="puestoFilterSelect">Filtrar por Puesto</label>
+                                        <select id="puestoFilterSelect" class="form-select">
+                                            <option value="">Todos los puestos</option>
+                                        </select>
                                     </div>
                                     <div class="filter-group" style="display:flex; gap:0.75rem; align-items:center; justify-content:flex-end;">
                                         <label for="tab1PageSize" style="margin:0;">Registros por página</label>
@@ -63,7 +60,9 @@
                                             <tr>
                                                 <th>Colaborador</th>
                                                 <th>Puesto</th>
-                                                <th>Curso faltante</th>
+                                                <th>Total Cursos</th>
+                                                <th>Faltantes</th>
+                                                <th style="text-align: center;">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="faltantesTableBody">
@@ -75,14 +74,11 @@
 
                             <div id="tabPorCurso" class="tab-content">
                                 <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
-                                    <div class="filter-group" style="position: relative;">
-                                        <label for="cursoFilterInput">Filtrar por Curso</label>
-                                        <div class="input-group">
-                                            <input type="text" id="cursoFilterInput" class="form-input" placeholder="Escribe un curso..." autocomplete="off">
-                                            <input type="hidden" id="cursoFilterId">
-                                            <button class="btn btn-outline" id="clearCursoFilter" style="display: none; min-width: 2.5rem;">×</button>
-                                        </div>
-                                        <div id="cursoFilterResults" class="dropdown-results" style="display:none;"></div>
+                                    <div class="filter-group">
+                                        <label for="cursoFilterSelect">Filtrar por Curso</label>
+                                        <select id="cursoFilterSelect" class="form-select">
+                                            <option value="">Todos los cursos</option>
+                                        </select>
                                     </div>
                                     <div class="filter-group" style="display:flex; gap:0.75rem; align-items:center; justify-content:flex-end;">
                                         <label for="tab2PageSize" style="margin:0;">Registros por página</label>
@@ -120,6 +116,32 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Modal para ver detalles de cursos faltantes -->
+    <div id="cursosModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
+        <div style="background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); max-width: 600px; width: 90%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background-color: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                <h2 style="margin: 0; font-size: 1.5rem; color: #333;">Cursos Faltantes</h2>
+                <button onclick="closeCursosModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px;">&times;</button>
+            </div>
+            <div style="padding: 1.5rem; font-size: 0.95rem;">
+                <div style="margin-bottom: 1rem;">
+                    <p style="margin: 0.5rem 0;"><strong>Colaborador:</strong> <span id="cursosModalColaborador"></span></p>
+                    <p style="margin: 0.5rem 0;"><strong>Puesto:</strong> <span id="cursosModalPuesto"></span></p>
+                    <p style="margin: 0.5rem 0;"><strong>Total en Matriz:</strong> <span id="cursosModalTotal"></span></p>
+                    <p style="margin: 0.5rem 0;"><strong>Faltantes:</strong> <span id="cursosModalFaltantes"></span></p>
+                </div>
+                <div style="border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+                    <h3 style="margin-bottom: 0.75rem;">Lista de Cursos Faltantes:</h3>
+                    <div id="cursosModalList" style="max-height: 400px; overflow-y: auto;">
+                    </div>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #e0e0e0; padding: 1rem 1.5rem; background-color: #f5f5f5; display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <button class="btn btn-secondary" onclick="closeCursosModal()">Cerrar</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
