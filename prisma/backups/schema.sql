@@ -38,6 +38,13 @@ CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
 
 
 
+CREATE EXTENSION IF NOT EXISTS "tablefunc" WITH SCHEMA "public";
+
+
+
+
+
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
 
@@ -653,9 +660,86 @@ GRANT USAGE ON SCHEMA "public" TO "service_role";
 
 
 
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer) TO "postgres";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer) TO "anon";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer) TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer, "text") TO "postgres";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer, "text") TO "anon";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer, "text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", integer, "text") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer) TO "postgres";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer) TO "anon";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer) TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer, "text") TO "postgres";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer, "text") TO "anon";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer, "text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."connectby"("text", "text", "text", "text", "text", integer, "text") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."crosstab"("text") TO "postgres";
+GRANT ALL ON FUNCTION "public"."crosstab"("text") TO "anon";
+GRANT ALL ON FUNCTION "public"."crosstab"("text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."crosstab"("text") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."crosstab"("text", integer) TO "postgres";
+GRANT ALL ON FUNCTION "public"."crosstab"("text", integer) TO "anon";
+GRANT ALL ON FUNCTION "public"."crosstab"("text", integer) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."crosstab"("text", integer) TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."crosstab"("text", "text") TO "postgres";
+GRANT ALL ON FUNCTION "public"."crosstab"("text", "text") TO "anon";
+GRANT ALL ON FUNCTION "public"."crosstab"("text", "text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."crosstab"("text", "text") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."crosstab2"("text") TO "postgres";
+GRANT ALL ON FUNCTION "public"."crosstab2"("text") TO "anon";
+GRANT ALL ON FUNCTION "public"."crosstab2"("text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."crosstab2"("text") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."crosstab3"("text") TO "postgres";
+GRANT ALL ON FUNCTION "public"."crosstab3"("text") TO "anon";
+GRANT ALL ON FUNCTION "public"."crosstab3"("text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."crosstab3"("text") TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."crosstab4"("text") TO "postgres";
+GRANT ALL ON FUNCTION "public"."crosstab4"("text") TO "anon";
+GRANT ALL ON FUNCTION "public"."crosstab4"("text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."crosstab4"("text") TO "service_role";
+
+
+
 GRANT ALL ON FUNCTION "public"."es_admin"() TO "anon";
 GRANT ALL ON FUNCTION "public"."es_admin"() TO "authenticated";
 GRANT ALL ON FUNCTION "public"."es_admin"() TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."normal_rand"(integer, double precision, double precision) TO "postgres";
+GRANT ALL ON FUNCTION "public"."normal_rand"(integer, double precision, double precision) TO "anon";
+GRANT ALL ON FUNCTION "public"."normal_rand"(integer, double precision, double precision) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."normal_rand"(integer, double precision, double precision) TO "service_role";
 
 
 
