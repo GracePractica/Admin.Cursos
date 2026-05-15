@@ -33,6 +33,11 @@ async function loadDataQualityStats() {
                 updateStatWithProgress('cursosSinEstado', cached.sinEstado, cached.sinEstadoPct);
                 updateStatWithProgress('cursosInactivos', cached.inactivos, cached.inactivosPct);
                 updateStatWithProgress('colabSinPuesto', cached.colabSinPuesto, cached.colabSinPuestoPct);
+                updateStatWithProgress('cursosFaltantes', cached.cursosFaltantes || 0, 0);
+                const countElement = document.getElementById('cursosFaltantesCount');
+                if (countElement) {
+                    countElement.textContent = cached.cursosFaltantes || 0;
+                }
                 updateHealthScore(cached.healthScore);
                 return; // Cache válido, no recalcular
             }
@@ -96,6 +101,16 @@ async function loadDataQualityStats() {
         // Actualizar UI con duplicados
         updateStatWithProgress('cursosDuplicados', duplicados, duplicadosPct);
 
+        // Calcular cursos faltantes en background
+        const cursosFaltantes = await countMissingCourses();
+        updateStatWithProgress('cursosFaltantes', cursosFaltantes, 0);
+        
+        // Actualizar el contador total de registros para cursos faltantes
+        const countElement = document.getElementById('cursosFaltantesCount');
+        if (countElement) {
+            countElement.textContent = cursosFaltantes;
+        }
+
         // Calcular salud de la BD
         const avgProblems = (duplicadosPct + sinEstadoPct + inactivosPct + sinPuestoPct) / 4;
         const healthScore = Math.max(0, 100 - avgProblems);
@@ -109,6 +124,7 @@ async function loadDataQualityStats() {
                 sinEstado, sinEstadoPct,
                 inactivos, inactivosPct,
                 colabSinPuesto, sinPuestoPct,
+                cursosFaltantes,
                 healthScore
             }));
         } catch (err) {

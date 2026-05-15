@@ -367,6 +367,159 @@ function renderPaginationControls(totalItems, currentPage, itemsPerPage, contain
     `;
 }
 
+async function getAllRecords(table, select, filters = {}) {
+    const pageSize = 1000;
+    let from = 0;
+    const allData = [];
+
+    while (true) {
+        let query = supabaseClient.from(table).select(select).range(from, from + pageSize - 1);
+
+        Object.entries(filters).forEach(([column, value]) => {
+            if (value === true) {
+                query = query.eq(column, true);
+            } else if (value === false) {
+                query = query.eq(column, false);
+            } else if (value !== undefined && value !== null) {
+                query = query.eq(column, value);
+            }
+        });
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            break;
+        }
+
+        allData.push(...data);
+
+        if (data.length < pageSize) {
+            break;
+        }
+
+        from += pageSize;
+    }
+
+    return allData;
+}
+
+async function fetchMissingCoursesBaseData() {
+    const [colaboradoresRes, puestosRes, puestoCursosRes, cursosRes, historialRes] = await Promise.all([
+        getAllRecords('colaboradores', 'id_colab, nombre_colab, puesto_id, is_active', { is_active: true }),
+        getAllRecords('puestos', 'id_puesto, nombre_puesto'),
+        getAllRecords('puesto_curso', 'curso_id, puesto_id, clasificacion_estrategica'),
+        getAllRecords('cursos', 'id_curso, nombre_curso, is_active, origen', { is_active: true }),
+        getAllRecords('historial_cursos', 'colaborador_id, curso_id, is_active', { is_active: true })
+    ]);
+
+    return {
+        colaboradores: colaboradoresRes,
+        puestos: puestosRes,
+        puestoCursos: puestoCursosRes,
+        cursos: cursosRes,
+        historial: historialRes
+    };
+}
+
+function buildMissingCoursesRows({ colaboradores, puestos, puestoCursos, cursos, historial }) {
+    const activeCourseMap = new Map(
+        cursos
+            .filter(c => c.is_active === true && c.origen === 'Matriz')
+            .map(c => [c.id_curso, c.nombre_curso])
+    );
+
+    const puestoCoursesByPuesto = new Map();
+    puestoCursos
+        .filter(pc => pc.clasificacion_estrategica === 'NECESARIO' && activeCourseMap.has(pc.curso_id))
+        .forEach(pc => {
+            if (!puestoCoursesByPuesto.has(pc.puesto_id)) {
+                puestoCoursesByPuesto.set(pc.puesto_id, []);
+            }
+            puestoCoursesByPuesto.get(pc.puesto_id).push(pc);
+        });
+
+    const puestoMap = new Map(puestos.map(p => [p.id_puesto, p.nombre_puesto]));
+    const historialSet = new Set(historial.map(h => `${h.colaborador_id}-${h.curso_id}`));
+
+    const rows = [];
+    colaboradores.forEach(colaborador => {
+        if (!colaborador.puesto_id) return;
+        const puestoNombre = puestoMap.get(colaborador.puesto_id);
+        if (!puestoNombre) return;
+
+        const cursoPuestos = puestoCoursesByPuesto.get(colaborador.puesto_id) || [];
+        cursoPuestos.forEach(pc => {
+            const cursoNombre = activeCourseMap.get(pc.curso_id);
+            if (!cursoNombre) return;
+
+            const historialKey = `${colaborador.id_colab}-${pc.curso_id}`;
+            if (!historialSet.has(historialKey)) {
+                rows.push({
+                    colaboradorId: colaborador.id_colab,
+                    colaborador: colaborador.nombre_colab,
+                    puestoId: colaborador.puesto_id,
+                    puesto: puestoNombre,
+                    cursoId: pc.curso_id,
+                    curso: cursoNombre
+                });
+            }
+        });
+    });
+
+    return rows.sort((a, b) => {
+        const colaborador = a.colaborador.localeCompare(b.colaborador);
+        if (colaborador !== 0) return colaborador;
+        const puesto = a.puesto.localeCompare(b.puesto);
+        if (puesto !== 0) return puesto;
+        return a.curso.localeCompare(b.curso);
+    });
+}
+
+async function fetchMissingCoursesRows() {
+    const baseData = await fetchMissingCoursesBaseData();
+    return {
+        rowsByCollaborator: buildMissingCoursesRows(baseData),
+        puestos: baseData.puestos,
+        cursos: baseData.cursos.filter(c => c.is_active === true && c.origen === 'Matriz')
+    };
+}
+
+async function countMissingCourses() {
+    const baseData = await fetchMissingCoursesBaseData();
+    const activeCourseMap = new Map(
+        baseData.cursos
+            .filter(c => c.is_active === true && c.origen === 'Matriz')
+            .map(c => [c.id_curso, c.nombre_curso])
+    );
+
+    const puestoCoursesByPuesto = new Map();
+    baseData.puestoCursos
+        .filter(pc => pc.clasificacion_estrategica === 'NECESARIO' && activeCourseMap.has(pc.curso_id))
+        .forEach(pc => {
+            if (!puestoCoursesByPuesto.has(pc.puesto_id)) {
+                puestoCoursesByPuesto.set(pc.puesto_id, []);
+            }
+            puestoCoursesByPuesto.get(pc.puesto_id).push(pc);
+        });
+
+    const historialSet = new Set(baseData.historial.map(h => `${h.colaborador_id}-${h.curso_id}`));
+    let total = 0;
+
+    baseData.colaboradores.forEach(colaborador => {
+        if (!colaborador.puesto_id) return;
+        const cursoPuestos = puestoCoursesByPuesto.get(colaborador.puesto_id) || [];
+        cursoPuestos.forEach(pc => {
+            const historialKey = `${colaborador.id_colab}-${pc.curso_id}`;
+            if (!historialSet.has(historialKey)) {
+                total += 1;
+            }
+        });
+    });
+
+    return total;
+}
+
 // === FILTROS ===
 async function loadDepartamentosFilter(selectId) {
     try {

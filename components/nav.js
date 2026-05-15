@@ -41,6 +41,12 @@ function getNavigationHTML(activePage = 'dashboard') {
                         </svg>
                         <span>Historial</span>
                     </a>
+                    <a href="faltantes.html" class="navbar-link ${activePage === 'faltantes' ? 'active' : ''}">
+                        <svg class="navbar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5 4h14v2H5V4zm0 6h10v2H5v-2zm0 6h14v2H5v-2z" />
+                        </svg>
+                        <span>Faltantes</span>
+                    </a>
                     <a href="departamentos.html" class="navbar-link ${activePage === 'departamentos' ? 'active' : ''}">
                         <svg class="navbar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2z" />

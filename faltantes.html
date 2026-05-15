@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos Faltantes - Sistema de Capacitaciones</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:wght@700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-page="faltantes">
+    <div class="dashboard">
+        <div id="navigation"></div>
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="page-title">Cursos Faltantes</h1>
+            </header>
+
+            <div id="alertContainer"></div>
+
+            <section class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Revisión de cursos faltantes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="tabs-container">
+                            <div class="tabs-header">
+                                <button class="tab-button active" data-tab="porColaborador">Por Colaborador</button>
+                                <button class="tab-button" data-tab="porCurso">Por Curso</button>
+                            </div>
+
+                            <div id="tabPorColaborador" class="tab-content active">
+                                <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+                                    <div class="filter-group" style="position: relative;">
+                                        <label for="puestoFilterInput">Filtrar por Puesto</label>
+                                        <div class="input-group">
+                                            <input type="text" id="puestoFilterInput" class="form-input" placeholder="Escribe un puesto..." autocomplete="off">
+                                            <input type="hidden" id="puestoFilterId">
+                                            <button class="btn btn-outline" id="clearPuestoFilter" style="display: none; min-width: 2.5rem;">×</button>
+                                        </div>
+                                        <div id="puestoFilterResults" class="dropdown-results" style="display:none;"></div>
+                                    </div>
+                                    <div class="filter-group" style="display:flex; gap:0.75rem; align-items:center; justify-content:flex-end;">
+                                        <label for="tab1PageSize" style="margin:0;">Registros por página</label>
+                                        <select id="tab1PageSize" class="form-select" style="max-width: 140px;">
+                                            <option value="50" selected>50</option>
+                                            <option value="100">100</option>
+                                            <option value="200">200</option>
+                                            <option value="500">500</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Colaborador</th>
+                                                <th>Puesto</th>
+                                                <th>Curso faltante</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="faltantesTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paginationFaltantes1"></div>
+                            </div>
+
+                            <div id="tabPorCurso" class="tab-content">
+                                <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+                                    <div class="filter-group" style="position: relative;">
+                                        <label for="cursoFilterInput">Filtrar por Curso</label>
+                                        <div class="input-group">
+                                            <input type="text" id="cursoFilterInput" class="form-input" placeholder="Escribe un curso..." autocomplete="off">
+                                            <input type="hidden" id="cursoFilterId">
+                                            <button class="btn btn-outline" id="clearCursoFilter" style="display: none; min-width: 2.5rem;">×</button>
+                                        </div>
+                                        <div id="cursoFilterResults" class="dropdown-results" style="display:none;"></div>
+                                    </div>
+                                    <div class="filter-group" style="display:flex; gap:0.75rem; align-items:center; justify-content:flex-end;">
+                                        <label for="tab2PageSize" style="margin:0;">Registros por página</label>
+                                        <select id="tab2PageSize" class="form-select" style="max-width: 140px;">
+                                            <option value="50" selected>50</option>
+                                            <option value="100">100</option>
+                                            <option value="200">200</option>
+                                            <option value="500">500</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Curso</th>
+                                                <th>Puesto</th>
+                                                <th>Colaboradores faltantes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="faltantesCursoTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paginationFaltantes2"></div>
+                            </div>
+                        </div>
+
+                        <div id="faltantesLoading" class="table-loading" style="display: none;">
+                            <div class="spinner-large"></div>
+                            <p>Cargando datos de cursos faltantes...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/faltantes.js"></script>
+    <script src="components/authGuard.js"></script>
+    <script src="components/nav.js"></script>
+</body>
+
+</html>
