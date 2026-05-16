@@ -132,30 +132,36 @@
         </div>
     </div>
 
+    <!-- Modal para ver colaboradores por curso y puesto -->
+    <div id="cursoDetalleModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
+        <div style="background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); max-width: 600px; width: 90%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; background-color: #f5f5f5; border-bottom: 1px solid #e0e0e0;">
+                <h2 style="margin: 0; font-size: 1.25rem; color: #333;">Colaboradores faltantes</h2>
+                <button onclick="closeCursoDetalleModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px;">&times;</button>
+            </div>
+            <div style="padding: 1.5rem; font-size: 0.95rem;">
+                <div style="margin-bottom: 1rem;">
+                    <p style="margin: 0.5rem 0;"><strong>Curso:</strong> <span id="cursoDetalleCurso"></span></p>
+                    <p style="margin: 0.5rem 0;"><strong>Puesto:</strong> <span id="cursoDetallePuesto"></span></p>
+                </div>
+                <div style="border-top: 1px solid #e0e0e0; padding-top: 1rem;">
+                    <h3 style="margin-bottom: 0.75rem;">Lista de Colaboradores:</h3>
+                    <div id="cursoDetalleList" style="max-height: 400px; overflow-y: auto;">
+                    </div>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #e0e0e0; padding: 1rem 1.5rem; background-color: #f5f5f5; display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <button class="btn btn-secondary" onclick="closeCursoDetalleModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/globals.js"></script>
     <script src="js/faltantes.js"></script>
     <script src="components/authGuard.js"></script>
     <script src="components/nav.js"></script>
-
-    <div id="cursoDetalleModal" style="display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); align-items: center; justify-content: center; z-index: 1000;">
-        <div style="background: white; border-radius: 10px; width: min(640px, 90%); box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden;">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; background: #f7f7f7; border-bottom: 1px solid #e6e6e6;">
-                <div>
-                    <h2 style="margin: 0; font-size: 1.25rem;">Detalle de curso</h2>
-                    <p id="cursoModalSubtitle" style="margin: 0.25rem 0 0; color: #555; font-size: 0.95rem;"></p>
-                </div>
-                <button onclick="closeCursoDetalleModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-            </div>
-            <div style="padding: 1.25rem;">
-                <div id="cursoModalContent"></div>
-            </div>
-            <div style="padding: 1rem 1.25rem; background: #f7f7f7; text-align: right;">
-                <button class="btn btn-secondary" onclick="closeCursoDetalleModal()">Cerrar</button>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>

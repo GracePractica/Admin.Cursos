@@ -138,10 +138,15 @@ function buildMissingCoursesByCourse(rows) {
                     curso: curso.nombre_curso,
                     puestoId: row.puestoId,
                     puesto: row.puesto,
-                    faltantes: 0
+                    faltantes: 0,
+                    colaboradoresDetalle: []
                 });
             }
             grouped.get(key).faltantes += 1;
+            grouped.get(key).colaboradoresDetalle.push({
+                id_colab: row.colaboradorId,
+                nombre_colab: row.colaborador
+            });
         });
     });
 
@@ -218,6 +223,7 @@ function openCursosModal(rowId) {
         document.getElementById('cursosModalList').innerHTML = cursosList || '<p>No hay cursos faltantes</p>';
 
         modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
         console.log('Modal should be visible now');
     } catch (error) {
         console.error('Error abriendo modal:', error);
@@ -227,6 +233,7 @@ function openCursosModal(rowId) {
 function closeCursosModal() {
     const modal = document.getElementById('cursosModal');
     modal.style.display = 'none';
+    document.body.style.overflow = '';
 }
 
 // Close modal when clicking outside
@@ -255,7 +262,7 @@ function renderTab2() {
                 puestos: []
             };
         }
-        acc[key].puestos.push({ puesto: row.puesto, faltantes: row.faltantes });
+        acc[key].puestos.push({ puesto: row.puesto, faltantes: row.faltantes, puestoId: row.puestoId, colaboradoresDetalle: row.colaboradoresDetalle || [] });
         acc[key].total += Number(row.faltantes);
         return acc;
     }, {});
@@ -289,6 +296,7 @@ function renderTab2() {
                             <tr style="background: #f5f5f5; text-align: left;">
                                 <th style="padding: 0.75rem 0.5rem; font-weight: 600;">Puesto</th>
                                 <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: right;">Faltantes</th>
+                                <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: center;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -296,16 +304,18 @@ function renderTab2() {
                                 <tr style="border-top: 1px solid #ececec;">
                                     <td style="padding: 0.75rem 0.5rem;">${puesto.puesto}</td>
                                     <td style="padding: 0.75rem 0.5rem; text-align: right;">${puesto.faltantes}</td>
+                                    <td style="padding: 0.75rem 0.5rem; text-align: center;">
+                                        <button class="btn btn-outline" style="padding: 0.35rem 0.6rem; font-size: 0.8rem;" onclick="openCourseCollaboratorsModal('${group.cursoId}','${puesto.puestoId}')">Ver colaboradores</button>
+                                    </td>
                                 </tr>
                             `).join('')}
                         </tbody>
                     </table>
-                    <button type="button" onclick="openCursoDetalleModal('${group.cursoId}')" style="margin-top: 1rem; padding: 0.65rem 1rem; border: 1px solid #0070f3; background: #fff; color: #0070f3; border-radius: 8px; cursor: pointer;">Ver en modal</button>
                 </div>
             </div>
-        `;
+    `
     }).join('');
-
+    
     renderPaginationControls(totalGroups, page, limit, 'paginationFaltantes2', 'renderTab2Page');
 }
 
@@ -315,38 +325,30 @@ function toggleCourseCard(cursoId) {
     renderTab2();
 }
 
-function openCursoDetalleModal(cursoId) {
-    const rows = FALTANTES_DATA.rowsByCourse.filter(row => String(row.cursoId) === String(cursoId));
-    if (!rows.length) return;
+function openCourseCollaboratorsModal(cursoId, puestoId) {
+    const modal = document.getElementById('cursoDetalleModal');
+    if (!modal) return;
 
-    const cursoName = rows[0].curso;
-    const total = rows.reduce((sum, row) => sum + Number(row.faltantes), 0);
-    const puestosHtml = rows.map(row => `
-        <tr style="border-top: 1px solid #e8e8e8;">
-            <td style="padding: 0.75rem 0.5rem;">${row.puesto}</td>
-            <td style="padding: 0.75rem 0.5rem; text-align: right;">${row.faltantes}</td>
-        </tr>
-    `).join('');
+    // Buscar en los datos agrupados la entrada correspondiente
+    const match = FALTANTES_DATA.rowsByCourse.find(r => String(r.cursoId) === String(cursoId) && String(r.puestoId) === String(puestoId));
+    const colaboradores = (match && match.colaboradoresDetalle) ? match.colaboradoresDetalle : [];
 
-    document.getElementById('cursoModalSubtitle').textContent = `${cursoName} · Total de faltantes: ${total}`;
-    document.getElementById('cursoModalContent').innerHTML = `
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="background: #f5f5f5; text-align: left;">
-                    <th style="padding: 0.75rem 0.5rem; font-weight: 600;">Puesto</th>
-                    <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: right;">Colaboradores faltantes</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${puestosHtml}
-            </tbody>
-        </table>
-    `;
-    document.getElementById('cursoDetalleModal').style.display = 'flex';
+    document.getElementById('cursoDetalleCurso').textContent = match ? match.curso : '';
+    document.getElementById('cursoDetallePuesto').textContent = match ? match.puesto : '';
+
+    const listHtml = colaboradores.length > 0 ? colaboradores
+        .sort((a, b) => a.nombre_colab.localeCompare(b.nombre_colab))
+        .map(c => `<div style="padding: 0.5rem; border-bottom: 1px solid #f0f0f0;">• <strong>${c.id_colab}</strong> - ${c.nombre_colab}</div>`).join('')
+        : '<p>No hay colaboradores faltantes para este puesto.</p>';
+
+    document.getElementById('cursoDetalleList').innerHTML = listHtml;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 }
 
 function closeCursoDetalleModal() {
     document.getElementById('cursoDetalleModal').style.display = 'none';
+    document.body.style.overflow = '';
 }
 
 function renderTab1Page(page) {
