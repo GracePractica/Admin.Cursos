@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict 8qpJdWmDWy35huS5IqvCUmX8dfO8jOUYgbtkLNHjceRaeTmA3FrxECzQL0YV21g
+-- \restrict vy49QXeqGuG2MdZUhaY694Tik0rK3ritb2ZguICRg2dAyfWC0WVf0PTcmmUGhie
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -52,7 +52,7 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
 00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-04-29 14:38:41.852313+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-04-30 20:10:49.538993+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	f846e8de-213b-46fb-8d20-a217e3f45b2a	authenticated	authenticated	supervisor2@gmail.com	$2a$10$gjT8xeRlqUTNNWVJwyY/jOpC.27/IBPegvCAA8R3vhkEmr/IUeJtG	2026-02-23 05:58:22.347918+00	\N		\N		\N			\N	2026-03-11 21:17:21.053968+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:22.327418+00	2026-04-02 16:11:42.982811+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-05-15 05:57:22.318026+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-05-15 08:56:13.107426+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-05-16 03:39:23.777819+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-05-16 14:23:40.328935+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	8ce075b3-0c7e-426f-b745-d5aea5390bb3	authenticated	authenticated	supervisor3@gmail.com	$2a$10$sTnD1g2m4XI3Bx9yrXzdGeoDnsDHngPZhIMJspnOH1NVx6FhvhNOa	2026-02-23 05:58:53.330609+00	\N		\N		\N			\N	2026-02-26 16:12:11.382248+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:53.326068+00	2026-02-26 16:12:11.384443+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
@@ -91,20 +91,23 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
 16325def-3828-4d5e-be97-8311c7ee6e02	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-04-29 14:46:42.583334+00	2026-04-29 18:10:11.915636+00	\N	aal1	\N	2026-04-29 18:10:11.915537	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
-71ede854-20f1-4b65-9af4-ecb78e435978	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-14 19:16:01.385586+00	2026-05-15 08:35:39.312365+00	\N	aal1	\N	2026-05-15 08:35:39.312244	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	186.75.8.202	\N	\N	\N	\N	\N
 8c2a4f8e-72df-44b2-bd48-3017fae645f4	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-15 05:57:22.318146+00	2026-05-15 08:54:49.695146+00	\N	aal1	\N	2026-05-15 08:54:49.694499	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	186.75.8.202	\N	\N	\N	\N	\N
-802fb6c8-fcbf-4876-9968-6169e589d46b	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-14 09:15:23.859252+00	2026-05-15 08:56:13.117415+00	\N	aal1	\N	2026-05-15 08:56:13.116745	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	186.75.8.202	\N	\N	\N	\N	\N
 79e54a67-578e-48cb-98a1-1ab4164f4cc6	f846e8de-213b-46fb-8d20-a217e3f45b2a	2026-03-11 21:17:21.054075+00	2026-04-02 16:11:43.000846+00	\N	aal1	\N	2026-04-02 16:11:43.000714	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0	181.78.164.251	\N	\N	\N	\N	\N
 f01baba2-cc81-4aee-82c8-92b55fcf25ab	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-04-13 14:51:22.494552+00	2026-04-13 14:51:22.494552+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+5d8a40fc-eb57-4aff-9335-9e85cbeec460	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-04-14 00:57:19.671371+00	2026-05-15 15:43:09.695177+00	\N	aal1	\N	2026-05-15 15:43:09.695058	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.214.193.67	\N	\N	\N	\N	\N
 c428184e-1937-42b6-b434-4f301331e3c9	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-04-28 17:40:43.66508+00	2026-04-29 12:06:21.071629+00	\N	aal1	\N	2026-04-29 12:06:21.071515	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+802fb6c8-fcbf-4876-9968-6169e589d46b	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-14 09:15:23.859252+00	2026-05-16 12:07:16.551839+00	\N	aal1	\N	2026-05-16 12:07:16.551722	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	190.33.74.55	\N	\N	\N	\N	\N
 5591ca98-1f09-44e9-982e-bf5649b38c34	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-11 16:31:41.37281+00	2026-04-29 14:38:19.861531+00	\N	aal1	\N	2026-04-29 14:38:19.861422	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.251	\N	\N	\N	\N	\N
 15793d01-8735-45fc-9a69-bd10d55df9fe	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-04-29 13:32:35.364533+00	2026-04-29 15:30:59.61595+00	\N	aal1	\N	2026-04-29 15:30:59.615836	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
-5d8a40fc-eb57-4aff-9335-9e85cbeec460	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-04-14 00:57:19.671371+00	2026-05-15 05:10:42.569839+00	\N	aal1	\N	2026-05-15 05:10:42.568521	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.214.193.67	\N	\N	\N	\N	\N
+71ede854-20f1-4b65-9af4-ecb78e435978	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-14 19:16:01.385586+00	2026-05-16 12:14:43.820414+00	\N	aal1	\N	2026-05-16 12:14:43.819269	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	190.33.74.55	\N	\N	\N	\N	\N
+fe87b1cd-f429-437e-b6e5-980eb98723c4	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-16 03:39:23.778934+00	2026-05-16 14:23:40.344817+00	\N	aal1	\N	2026-05-16 14:23:40.344707	Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1	172.225.167.13	\N	\N	\N	\N	\N
 bfc6e109-ac58-4e73-9257-4f1005c51214	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-04-29 16:11:32.856605+00	2026-04-29 18:07:27.642121+00	\N	aal1	\N	2026-04-29 18:07:27.641431	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36	181.78.164.252	\N	\N	\N	\N	\N
+434ad0e1-9377-4a95-bc88-d831f59cabe5	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-15 14:24:08.478893+00	2026-05-15 17:19:28.717914+00	\N	aal1	\N	2026-05-15 17:19:28.717807	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 4e6db5f7-344e-42db-86a2-7518bcc94d89	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-04-29 14:38:41.852398+00	2026-04-30 20:10:49.551342+00	\N	aal1	\N	2026-04-30 20:10:49.551224	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.251	\N	\N	\N	\N	\N
 ceeaa3f7-6bb4-415e-ac71-1dc15fc73d82	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-04-29 18:08:34.797016+00	2026-05-01 13:44:24.757414+00	\N	aal1	\N	2026-05-01 13:44:24.75729	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36	181.78.164.252	\N	\N	\N	\N	\N
 1835bdba-1c56-4460-95ce-be49dbd22367	f846e8de-213b-46fb-8d20-a217e3f45b2a	2026-03-11 15:49:16.308856+00	2026-03-11 15:49:16.308856+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 a45586c4-10f5-4937-9dcf-0aa8469b79b3	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-14 15:15:49.087825+00	2026-05-14 15:15:49.087825+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+bb87f95f-01a7-4c74-8690-9a4a90d1102f	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-15 16:03:30.490067+00	2026-05-15 19:57:35.734604+00	\N	aal1	\N	2026-05-15 19:57:35.734486	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	190.14.17.163	\N	\N	\N	\N	\N
 3c9afb61-7222-474d-bd69-34ef1eda330f	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-18 18:22:18.480097+00	2026-03-18 18:22:18.480097+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 \.
 
@@ -130,6 +133,9 @@ ceeaa3f7-6bb4-415e-ac71-1dc15fc73d82	2026-04-29 18:08:34.815693+00	2026-04-29 18
 a45586c4-10f5-4937-9dcf-0aa8469b79b3	2026-05-14 15:15:49.163489+00	2026-05-14 15:15:49.163489+00	password	a0247ab9-03c8-49cd-aa68-dbb6e3b1b333
 71ede854-20f1-4b65-9af4-ecb78e435978	2026-05-14 19:16:01.468874+00	2026-05-14 19:16:01.468874+00	password	c9edee64-56b5-45a5-ba05-93660d383b43
 8c2a4f8e-72df-44b2-bd48-3017fae645f4	2026-05-15 05:57:22.337275+00	2026-05-15 05:57:22.337275+00	password	e6ab11d8-a28d-4fe7-91ac-439c4e11eca1
+434ad0e1-9377-4a95-bc88-d831f59cabe5	2026-05-15 14:24:08.572815+00	2026-05-15 14:24:08.572815+00	password	b54d83cc-d750-4307-94ab-fb43f2b08218
+bb87f95f-01a7-4c74-8690-9a4a90d1102f	2026-05-15 16:03:30.536308+00	2026-05-15 16:03:30.536308+00	password	d5479785-5cdb-46c3-a1a8-32f2da047f47
+fe87b1cd-f429-437e-b6e5-980eb98723c4	2026-05-16 03:39:23.856362+00	2026-05-16 03:39:23.856362+00	password	4c03c2a8-35b3-414a-b4ac-54d450959d95
 \.
 
 
@@ -201,7 +207,6 @@ COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked"
 00000000-0000-0000-0000-000000000000	283	t3gxrbswxpu6	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-14 19:32:51.734926+00	2026-05-14 20:42:53.296621+00	ll7ruy2uzygy	802fb6c8-fcbf-4876-9968-6169e589d46b
 00000000-0000-0000-0000-000000000000	285	dy3rs2ncgipi	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-14 20:42:53.300408+00	2026-05-15 02:44:19.571943+00	t3gxrbswxpu6	802fb6c8-fcbf-4876-9968-6169e589d46b
 00000000-0000-0000-0000-000000000000	288	e6fn2eax4mwl	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 03:44:33.535785+00	2026-05-15 04:43:50.874607+00	jyjeepgjreiw	71ede854-20f1-4b65-9af4-ecb78e435978
-00000000-0000-0000-0000-000000000000	292	pneo7hk7xkmp	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-15 05:10:42.518954+00	2026-05-15 05:10:42.518954+00	3blqgkwnk7ml	5d8a40fc-eb57-4aff-9335-9e85cbeec460
 00000000-0000-0000-0000-000000000000	291	rmmx3iawi5ol	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 04:52:45.012041+00	2026-05-15 05:56:52.29247+00	slvtwa5leiai	802fb6c8-fcbf-4876-9968-6169e589d46b
 00000000-0000-0000-0000-000000000000	294	m5swfui3ezyb	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 05:57:22.335937+00	2026-05-15 06:55:42.921201+00	\N	8c2a4f8e-72df-44b2-bd48-3017fae645f4
 00000000-0000-0000-0000-000000000000	290	w3xkqokrudfb	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 04:43:50.887887+00	2026-05-15 07:36:55.158412+00	e6fn2eax4mwl	71ede854-20f1-4b65-9af4-ecb78e435978
@@ -210,15 +215,20 @@ COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked"
 00000000-0000-0000-0000-000000000000	295	sunsiok4oog4	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 06:55:42.943412+00	2026-05-15 07:54:37.72908+00	m5swfui3ezyb	8c2a4f8e-72df-44b2-bd48-3017fae645f4
 00000000-0000-0000-0000-000000000000	192	rvphwmdhgkpq	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 16:58:36.815484+00	2026-03-12 18:01:00.705351+00	zbovfpodswwy	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	296	g5vkp73fvjj2	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 07:36:55.173709+00	2026-05-15 08:35:39.253132+00	w3xkqokrudfb	71ede854-20f1-4b65-9af4-ecb78e435978
-00000000-0000-0000-0000-000000000000	299	is6kdl5wcqmx	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-15 08:35:39.279545+00	2026-05-15 08:35:39.279545+00	g5vkp73fvjj2	71ede854-20f1-4b65-9af4-ecb78e435978
 00000000-0000-0000-0000-000000000000	298	kkfccvjhwux7	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 07:54:37.757236+00	2026-05-15 08:54:49.649519+00	sunsiok4oog4	8c2a4f8e-72df-44b2-bd48-3017fae645f4
 00000000-0000-0000-0000-000000000000	300	drhctlkfujkh	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-15 08:54:49.669107+00	2026-05-15 08:54:49.669107+00	kkfccvjhwux7	8c2a4f8e-72df-44b2-bd48-3017fae645f4
 00000000-0000-0000-0000-000000000000	297	dntcci6d4kkj	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 07:37:13.141385+00	2026-05-15 08:56:13.082019+00	ngjass4aikh6	802fb6c8-fcbf-4876-9968-6169e589d46b
-00000000-0000-0000-0000-000000000000	301	5ikd2aldd5f4	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-15 08:56:13.099308+00	2026-05-15 08:56:13.099308+00	dntcci6d4kkj	802fb6c8-fcbf-4876-9968-6169e589d46b
+00000000-0000-0000-0000-000000000000	292	pneo7hk7xkmp	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 05:10:42.518954+00	2026-05-15 14:44:47.536492+00	3blqgkwnk7ml	5d8a40fc-eb57-4aff-9335-9e85cbeec460
 00000000-0000-0000-0000-000000000000	194	exogfcdnazu2	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 18:01:00.725305+00	2026-03-12 19:12:38.573418+00	rvphwmdhgkpq	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	180	ynzw3ct2kq3l	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-11 17:32:17.708635+00	2026-03-12 19:26:17.084072+00	zso5hy67vbig	5591ca98-1f09-44e9-982e-bf5649b38c34
+00000000-0000-0000-0000-000000000000	302	ye3jsjrnu5vr	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 14:24:08.523778+00	2026-05-15 15:22:50.162556+00	\N	434ad0e1-9377-4a95-bc88-d831f59cabe5
 00000000-0000-0000-0000-000000000000	196	hztppnij66wj	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 19:12:38.586894+00	2026-03-12 20:11:00.758438+00	exogfcdnazu2	79e54a67-578e-48cb-98a1-1ab4164f4cc6
+00000000-0000-0000-0000-000000000000	303	chfr7qlmyae2	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 14:44:47.551516+00	2026-05-15 15:43:09.655162+00	pneo7hk7xkmp	5d8a40fc-eb57-4aff-9335-9e85cbeec460
+00000000-0000-0000-0000-000000000000	305	drhzew3jgqih	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-15 15:43:09.675836+00	2026-05-15 15:43:09.675836+00	chfr7qlmyae2	5d8a40fc-eb57-4aff-9335-9e85cbeec460
 00000000-0000-0000-0000-000000000000	198	ay3bwyfuylf7	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 20:11:00.770226+00	2026-03-12 21:09:13.905786+00	hztppnij66wj	79e54a67-578e-48cb-98a1-1ab4164f4cc6
+00000000-0000-0000-0000-000000000000	301	5ikd2aldd5f4	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 08:56:13.099308+00	2026-05-15 16:10:21.933125+00	dntcci6d4kkj	802fb6c8-fcbf-4876-9968-6169e589d46b
+00000000-0000-0000-0000-000000000000	299	is6kdl5wcqmx	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 08:35:39.279545+00	2026-05-15 16:10:36.412543+00	g5vkp73fvjj2	71ede854-20f1-4b65-9af4-ecb78e435978
+00000000-0000-0000-0000-000000000000	304	6vapnjoxik34	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 15:22:50.20115+00	2026-05-15 16:21:15.546771+00	ye3jsjrnu5vr	434ad0e1-9377-4a95-bc88-d831f59cabe5
 00000000-0000-0000-0000-000000000000	199	d4x5c35b6kms	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 21:09:13.916709+00	2026-03-12 22:07:13.758093+00	ay3bwyfuylf7	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	201	aoswklue6kfi	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 22:07:13.775579+00	2026-03-12 23:05:20.648583+00	d4x5c35b6kms	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	202	xp3igsbhh37i	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 23:05:20.660165+00	2026-03-13 10:58:24.753501+00	aoswklue6kfi	79e54a67-578e-48cb-98a1-1ab4164f4cc6
@@ -283,6 +293,22 @@ COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked"
 00000000-0000-0000-0000-000000000000	259	3iadw7pgfai7	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-04-29 18:08:34.812226+00	2026-04-30 11:56:40.963801+00	\N	ceeaa3f7-6bb4-415e-ac71-1dc15fc73d82
 00000000-0000-0000-0000-000000000000	264	7zrm2vkstr6b	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-04-30 11:56:40.970362+00	2026-04-30 12:54:47.158472+00	3iadw7pgfai7	ceeaa3f7-6bb4-415e-ac71-1dc15fc73d82
 00000000-0000-0000-0000-000000000000	263	ap4f4tmjk23o	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-04-30 11:47:11.37094+00	2026-04-30 13:35:39.085362+00	47d2vbejio7o	4e6db5f7-344e-42db-86a2-7518bcc94d89
+00000000-0000-0000-0000-000000000000	306	dq3nkdkqdp5a	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 16:03:30.509765+00	2026-05-15 17:01:31.033854+00	\N	bb87f95f-01a7-4c74-8690-9a4a90d1102f
+00000000-0000-0000-0000-000000000000	309	pw55gngrwgu2	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 16:21:15.582652+00	2026-05-15 17:19:28.679009+00	6vapnjoxik34	434ad0e1-9377-4a95-bc88-d831f59cabe5
+00000000-0000-0000-0000-000000000000	311	etix2eneyvsc	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-15 17:19:28.69535+00	2026-05-15 17:19:28.69535+00	pw55gngrwgu2	434ad0e1-9377-4a95-bc88-d831f59cabe5
+00000000-0000-0000-0000-000000000000	310	k3trjyewtml2	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 17:01:31.060941+00	2026-05-15 18:59:24.243601+00	dq3nkdkqdp5a	bb87f95f-01a7-4c74-8690-9a4a90d1102f
+00000000-0000-0000-0000-000000000000	312	pwtxb5cxv7pi	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 18:59:24.259094+00	2026-05-15 19:57:35.669603+00	k3trjyewtml2	bb87f95f-01a7-4c74-8690-9a4a90d1102f
+00000000-0000-0000-0000-000000000000	313	u2orwv62m7we	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-15 19:57:35.702269+00	2026-05-15 19:57:35.702269+00	pwtxb5cxv7pi	bb87f95f-01a7-4c74-8690-9a4a90d1102f
+00000000-0000-0000-0000-000000000000	308	bufkjaooaygs	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 16:10:36.419193+00	2026-05-16 02:59:21.222506+00	is6kdl5wcqmx	71ede854-20f1-4b65-9af4-ecb78e435978
+00000000-0000-0000-0000-000000000000	307	5kb3nrsjcvxd	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-15 16:10:21.956049+00	2026-05-16 02:59:23.55907+00	5ikd2aldd5f4	802fb6c8-fcbf-4876-9968-6169e589d46b
+00000000-0000-0000-0000-000000000000	314	bpzlrjmn45gi	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-16 02:59:21.251262+00	2026-05-16 04:01:57.669016+00	bufkjaooaygs	71ede854-20f1-4b65-9af4-ecb78e435978
+00000000-0000-0000-0000-000000000000	315	mrf332m253kq	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-16 02:59:23.559514+00	2026-05-16 04:10:38.296347+00	5kb3nrsjcvxd	802fb6c8-fcbf-4876-9968-6169e589d46b
+00000000-0000-0000-0000-000000000000	318	nntmtojpzee2	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-16 04:10:38.313379+00	2026-05-16 12:07:16.48868+00	mrf332m253kq	802fb6c8-fcbf-4876-9968-6169e589d46b
+00000000-0000-0000-0000-000000000000	319	aawpfi5sn5qz	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-16 12:07:16.516558+00	2026-05-16 12:07:16.516558+00	nntmtojpzee2	802fb6c8-fcbf-4876-9968-6169e589d46b
+00000000-0000-0000-0000-000000000000	317	kuioybt5b2xa	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-16 04:01:57.690697+00	2026-05-16 12:14:43.781251+00	bpzlrjmn45gi	71ede854-20f1-4b65-9af4-ecb78e435978
+00000000-0000-0000-0000-000000000000	320	x7kkpurqcvr3	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-16 12:14:43.796598+00	2026-05-16 12:14:43.796598+00	kuioybt5b2xa	71ede854-20f1-4b65-9af4-ecb78e435978
+00000000-0000-0000-0000-000000000000	316	7rs57arvku2t	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-16 03:39:23.815287+00	2026-05-16 14:23:40.290437+00	\N	fe87b1cd-f429-437e-b6e5-980eb98723c4
+00000000-0000-0000-0000-000000000000	321	imofhneuiqt3	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-16 14:23:40.315956+00	2026-05-16 14:23:40.315956+00	7rs57arvku2t	fe87b1cd-f429-437e-b6e5-980eb98723c4
 \.
 
 
@@ -1211,11 +1237,13 @@ COPY "public"."cursos" ("id_curso", "nombre_curso", "primera_fecha", "ultima_fec
 CU_0086	ACP COLLISION PREVENTION REGULATIONS & COLREGS/72	\N	\N	activo	3	Matriz	t
 CU_0415	INTRODUCCIÓN A LA INDUSTRIA MARÍTIMA PARTE I	\N	\N	activo	\N	Historial	t
 CU_0087	RESPUESTA A DERRAMES Y PREVENCIÓN DE CONTAMINACIÓN	2021-11-04	2025-09-08	activo	\N	Matriz	t
+CU_0089	CTAN	\N	\N	activo	\N	Matriz	t
+CU_0135	EXCEL PARA PRINCIPIANTES	\N	\N	activo	8	Matriz	t
 CU_0002	MANEJO DEFENSIVO	\N	\N	activo	\N	Matriz	t
-CU_0089	CTAN	\N	\N	\N	\N	Matriz	t
 CU_0216	BÁSICO DE EXTINTORES PORTÁTILES	\N	\N	activo	2	Historial	t
 CU_0459	MANT. DE SIST. DE DISTRIBUCIÓN ELÉCT. ESCLUSAS PANAMAX	\N	\N	activo	\N	Historial	t
 CU_0100	MANEJO Y FILTRO DE LA INFORMACIÓN ORGANIZACIONAL	\N	\N	activo	\N	Matriz	t
+CU_0160	LOGRAR UNA COMUNICACIÓN DE ALTO IMPACTO	2023-03-16	2023-03-16	activo	7	Matriz	t
 CU_0493	MÓDULO DE SEGURIDAD MARÍTIMA	\N	\N	activo	\N	Historial	t
 CU_0528	OPERACIÓN DE GRÚAS II	\N	\N	activo	\N	Historial	t
 CU_0109	AUTODESARROLLO: CLAVE DEL ÉXITO	2022-01-06	2025-02-28	activo	\N	Matriz	t
@@ -1248,10 +1276,6 @@ CU_0055	ANALIZANDO LA CAUSA RAÍZ DE LOS ACCIDENTES E INCIDENTES	\N	\N	\N	\N	Mat
 CU_0003	PRIMEROS AUXILIOS, RCP Y DEA	\N	\N	activo	1	Matriz	t
 CU_0004	PROTECCIÓN DEL MEDIO AMBIENTE	\N	\N	activo	\N	Matriz	t
 CU_0011	CÓMO ADMINISTRAR EL TRABAJO	2022-01-03	2025-07-09	activo	\N	Matriz	t
-CU_0028	OPPB JASON WEDDERBURN	\N	\N	\N	\N	Matriz	t
-CU_0031	LA VELOCIDAD DE LA CONFIANZA	\N	\N	\N	\N	Matriz	t
-CU_0054	SOGAS Y NUDOS	\N	\N	\N	\N	Matriz	t
-CU_0083	NAUTICAL CHARTS	\N	\N	\N	4	Matriz	t
 CU_0007	PLANIFICACIÓN DEL TRABAJO	2025-03-26	2025-03-26	inactivo	\N	Matriz	t
 CU_0008	ANÁLISIS DE MERCADO	\N	\N	\N	\N	Matriz	f
 CU_0009	MENTORÍA	2022-06-08	2022-06-08	activo	\N	Matriz	t
@@ -1314,22 +1338,14 @@ CU_0081	SEAMANSHIP, LIFESAVINGS APPLIANCES (CADA 5 AÑOS)	2022-03-07	2024-06-03	
 CU_0082	INTRODUCCION AL CODIGO DE PROTECCION MARITIMA ISPS CODE	2025-06-17	2025-06-19	activo	\N	Matriz	t
 CU_0023	ESCALERAS Y ANDAMIOS	\N	\N	activo	\N	Matriz	t
 CU_0053	RESBALONES, TROPIEZOS Y CAÍDAS	\N	\N	activo	11	Matriz	t
+CU_0028	OPPB JASON WEDDERBURN	\N	\N	activo	\N	Matriz	t
+CU_0031	LA VELOCIDAD DE LA CONFIANZA	\N	\N	activo	\N	Matriz	t
+CU_0054	SOGAS Y NUDOS	\N	\N	activo	\N	Matriz	t
+CU_0083	NAUTICAL CHARTS	\N	\N	activo	4	Matriz	t
 CU_0084	NAUTICAL CHARTS (CADA 5 AÑOS)	\N	\N	\N	4	Matriz	t
-CU_0120	ACCES INTRODUCCIÓN .	\N	\N	\N	\N	Matriz	t
-CU_0121	ACCES INTERMEDIO	\N	\N	\N	\N	Matriz	t
-CU_0122	ACCES AVANZADO .	\N	\N	\N	\N	Matriz	t
-CU_0135	EXCEL PARA PRINCIPIANTES	\N	\N	\N	8	Matriz	t
-CU_0151	NEUROLIDERAZGO: CLAVE PARA LA GESTIÓN DE SU EQUIPO	\N	\N	\N	\N	Matriz	t
 CU_0156	POTENCIAR Y MANTENER TU RED DE CONTACTOS	2022-08-29	2024-08-08	\N	\N	Matriz	t
-CU_0157	HERRAMIENTAS PRÁCTICAS PARA SUPERVISAR	2021-11-08	2025-09-08	\N	\N	Matriz	t
 CU_0158	ORIENTACIÓN SOBRE SEGURIDAD FÉRREA	\N	\N	\N	\N	Matriz	t
-CU_0159	FOMENTE LA COLABORACIÓN EN SU EQUIPO	\N	\N	\N	\N	Matriz	t
-CU_0160	LOGRAR UNA COMUNICACIÓN DE ALTO IMPACTO	2023-03-16	2023-03-16	\N	7	Matriz	t
-CU_0161	ACTIVA LA RESILIENCIA Y SUPERA LAS ADVERSIDADES	\N	\N	\N	6	Matriz	t
-CU_0162	PLAN DE FORMACIÓN PARA LA MEJORA DEL EQUIPO	2022-03-28	2023-11-17	\N	\N	Matriz	t
-CU_0163	¿QUÉ ES EL TABAQUISMO Y CÓMO MANEJARLO?	\N	\N	\N	\N	Matriz	t
 CU_0164	25 AÑOS DE LEGADO FEMENINO EN EL CANAL DE PANAMÁ	\N	\N	\N	\N	Matriz	t
-CU_0165	250 SERIES - DIESEL ENGINE - BASIC (ONLINE)	\N	\N	\N	\N	Matriz	t
 CU_0166	5TO SEMINARIO DE BIBLIOTECÓLOGOS	\N	\N	\N	\N	Historial	t
 CU_0167	ACADEMIA DEL PINTOR-ARQUITECTÓNICA	\N	\N	\N	\N	Historial	t
 CU_0168	ACADEMIA DEL PINTOR-AUTOMOTRIZ	\N	\N	\N	\N	Historial	t
@@ -1396,6 +1412,16 @@ CU_0152	LA COMUNICACIÓN ASERTIVA PARA LA EFICIENCIA DE LA OPERACIÓN	\N	\N	acti
 CU_0153	DISEÑANDO PRESENTACIONES DE ALTO IMPACTO	2023-10-02	2025-08-25	activo	\N	Matriz	t
 CU_0154	LIDERANDO NUEVAS GENERACIONES	\N	\N	inactivo	\N	Matriz	t
 CU_0155	INFLUENCIA Y NEGOCIACIÓN	\N	\N	activo	\N	Matriz	t
+CU_0120	ACCES INTRODUCCIÓN .	\N	\N	inactivo	\N	Matriz	t
+CU_0121	ACCES INTERMEDIO	\N	\N	inactivo	\N	Matriz	t
+CU_0122	ACCES AVANZADO .	\N	\N	inactivo	\N	Matriz	t
+CU_0151	NEUROLIDERAZGO: CLAVE PARA LA GESTIÓN DE SU EQUIPO	\N	\N	activo	\N	Matriz	t
+CU_0157	HERRAMIENTAS PRÁCTICAS PARA SUPERVISAR	2021-11-08	2025-09-08	activo	\N	Matriz	t
+CU_0159	FOMENTE LA COLABORACIÓN EN SU EQUIPO	\N	\N	activo	\N	Matriz	t
+CU_0161	ACTIVA LA RESILIENCIA Y SUPERA LAS ADVERSIDADES	\N	\N	activo	6	Matriz	t
+CU_0162	PLAN DE FORMACIÓN PARA LA MEJORA DEL EQUIPO	2022-03-28	2023-11-17	activo	\N	Matriz	t
+CU_0163	¿QUÉ ES EL TABAQUISMO Y CÓMO MANEJARLO?	\N	\N	activo	\N	Matriz	t
+CU_0165	250 SERIES - DIESEL ENGINE - BASIC (ONLINE)	\N	\N	activo	\N	Matriz	t
 CU_0175	ACTUALIZACIÓN DE TEAM MATE 2024	\N	\N	\N	\N	Historial	t
 CU_0176	ACTUALIZACIÓN DEL MANUAL DE CORRESPONDENCIA	\N	\N	\N	\N	Historial	t
 CU_0177	ACTUALIZACIÓN EN GESTIÓN DE PROYECTOS	\N	\N	\N	9	Historial	t
@@ -1449,7 +1475,6 @@ CU_0232	CÓMO COMUNICAR DE FORMA EFECTIVA POR EMAIL	\N	\N	\N	\N	Historial	t
 CU_0233	CÓMO COMUNICARSE CON TACTO Y DIPLOMACIA	\N	\N	\N	\N	Historial	t
 CU_0234	CÓMO CULTIVAR UNA MENTALIDAD DE CRECIMIENTO	\N	\N	\N	\N	Historial	t
 CU_0235	CÓMO DECIR QUE NO	\N	\N	\N	\N	Historial	t
-CU_0236	CÓMO DELEGAR TAREAS EN LA EMPRESA	\N	\N	\N	\N	Historial	t
 CU_0237	CÓMO DESACTIVAR LA COMUNICACIÓN TÓXICA	\N	\N	\N	\N	Historial	t
 CU_0238	COMO DESARROLLAR TU ELEVADOR PITCH	\N	\N	\N	\N	Historial	t
 CU_0239	CÓMO ENFRENTARSE A LOS CAMBIOS	\N	\N	\N	\N	Historial	t
@@ -1463,7 +1488,6 @@ CU_0246	CÓMO OPERAN LAS EMPRESAS DIGITALES.	\N	\N	\N	\N	Historial	t
 CU_0247	CÓMO PREPARARSE PARA PRESENTAR EN PÚBLICO	\N	\N	\N	\N	Historial	t
 CU_0248	CÓMO PRESENTAR, MANTENER EL RUMBO Y ENGANCHAR A TU PÚBLICO	\N	\N	\N	\N	Historial	t
 CU_0249	CÓMO Y POR QUÉ DESARROLLAR UNA MENTALIDAD DE APRENDIZAJE CONTINUO	\N	\N	\N	\N	Historial	t
-CU_0250	COMPORTAMIENTO DEL FUEGO Y USO DE EXTINTORES PORTÁTILES	\N	\N	\N	2	Historial	t
 CU_0251	COMPRAS CON INTEGRIDAD: GUÍA ÉTICA PARA AGENTES DE COMPRAS	\N	\N	\N	\N	Historial	t
 CU_0252	COMPRENDER Y APROVECHAR LA TECNOLOGÍA	\N	\N	\N	\N	Historial	t
 CU_0253	COMUNICACIÓN EFECTIVA CON INTELIGENCIA EMOCIONAL	\N	\N	\N	7	Historial	t
@@ -1483,6 +1507,8 @@ CU_0215	BÁSICO DE EMBARQUE Y DESEMBARQUE SEGURO	\N	\N	activo	\N	Historial	t
 CU_0446	LIDERAZGO PARA LA SOSTENIBILIDAD V2	\N	\N	activo	12	Historial	t
 CU_0195	ANÁLISIS DE MERCADO: SU IMPORTANCIA Y GUÍA GENERAL PARA REALIZAR	\N	\N	activo	\N	Historial	t
 CU_0193	ALINEACIÓN PARA LA IDENTIFICACIÓN DE NECESIDADES Y/O ACCIONES	\N	\N	activo	\N	Historial	t
+CU_0250	COMPORTAMIENTO DEL FUEGO Y USO DE EXTINTORES PORTÁTILES	2026-05-15	2026-05-15	activo	2	Matriz	t
+CU_0236	CÓMO DELEGAR TAREAS EN LA EMPRESA	\N	\N	inactivo	\N	Historial	t
 CU_0264	CONMEMORACIÓN DÍA MUNDIAL DE LA SEGURIDAD Y SALUD EN EL TRABAJO	\N	\N	\N	\N	Historial	t
 CU_0265	CONSTRUCTION OF SHIPS AND SHIPBOARD FIREFIGHTING	\N	\N	\N	\N	Historial	t
 CU_0266	CONTINUAR APRENDIENDO DEPENDE DE TI	\N	\N	\N	\N	Historial	t
@@ -15018,6 +15044,26 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1636	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	6356	{"estado": null, "curso_id": "CU_0007", "puesto_id": 500088, "vigencia_anio": null, "id_puesto_curso": 6356, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0007", "puesto_id": 500088, "vigencia_anio": 0, "id_puesto_curso": 6356, "clasificacion_estrategica": "NECESARIO"}	2026-04-30 19:12:25.72763+00
 1637	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	6476	{"estado": null, "curso_id": "CU_0003", "puesto_id": 500088, "vigencia_anio": null, "id_puesto_curso": 6476, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0003", "puesto_id": 500088, "vigencia_anio": 0, "id_puesto_curso": 6476, "clasificacion_estrategica": "NECESARIO"}	2026-04-30 19:12:37.505828+00
 1638	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	6622	{"estado": null, "curso_id": "CU_0004", "puesto_id": 500088, "vigencia_anio": null, "id_puesto_curso": 6622, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0004", "puesto_id": 500088, "vigencia_anio": 0, "id_puesto_curso": 6622, "clasificacion_estrategica": "NECESARIO"}	2026-04-30 19:12:45.061344+00
+1639	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0250	{"estado": null, "origen": "Historial", "id_curso": "CU_0250", "is_active": true, "grupo_curso": 2, "nombre_curso": "COMPORTAMIENTO DEL FUEGO Y USO DE EXTINTORES PORTÁTILES", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0250", "is_active": true, "grupo_curso": 2, "nombre_curso": "COMPORTAMIENTO DEL FUEGO Y USO DE EXTINTORES PORTÁTILES", "ultima_fecha": "2026-05-15", "primera_fecha": "2026-05-15"}	2026-05-15 15:03:28.587358+00
+1640	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0028	{"estado": null, "origen": "Matriz", "id_curso": "CU_0028", "is_active": true, "grupo_curso": null, "nombre_curso": "OPPB JASON WEDDERBURN", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0028", "is_active": true, "grupo_curso": null, "nombre_curso": "OPPB JASON WEDDERBURN", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:33:56.551141+00
+1641	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0031	{"estado": null, "origen": "Matriz", "id_curso": "CU_0031", "is_active": true, "grupo_curso": null, "nombre_curso": "LA VELOCIDAD DE LA CONFIANZA", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0031", "is_active": true, "grupo_curso": null, "nombre_curso": "LA VELOCIDAD DE LA CONFIANZA", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:34:07.576382+00
+1642	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0054	{"estado": null, "origen": "Matriz", "id_curso": "CU_0054", "is_active": true, "grupo_curso": null, "nombre_curso": "SOGAS Y NUDOS", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0054", "is_active": true, "grupo_curso": null, "nombre_curso": "SOGAS Y NUDOS", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:34:14.378016+00
+1643	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0083	{"estado": null, "origen": "Matriz", "id_curso": "CU_0083", "is_active": true, "grupo_curso": 4, "nombre_curso": "NAUTICAL CHARTS", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0083", "is_active": true, "grupo_curso": 4, "nombre_curso": "NAUTICAL CHARTS", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:34:22.95681+00
+1644	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0089	{"estado": null, "origen": "Matriz", "id_curso": "CU_0089", "is_active": true, "grupo_curso": null, "nombre_curso": "CTAN", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0089", "is_active": true, "grupo_curso": null, "nombre_curso": "CTAN", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:34:44.995538+00
+1645	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0120	{"estado": null, "origen": "Matriz", "id_curso": "CU_0120", "is_active": true, "grupo_curso": null, "nombre_curso": "ACCES INTRODUCCIÓN .", "ultima_fecha": null, "primera_fecha": null}	{"estado": "inactivo", "origen": "Matriz", "id_curso": "CU_0120", "is_active": true, "grupo_curso": null, "nombre_curso": "ACCES INTRODUCCIÓN .", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:35:00.959157+00
+1646	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0121	{"estado": null, "origen": "Matriz", "id_curso": "CU_0121", "is_active": true, "grupo_curso": null, "nombre_curso": "ACCES INTERMEDIO", "ultima_fecha": null, "primera_fecha": null}	{"estado": "inactivo", "origen": "Matriz", "id_curso": "CU_0121", "is_active": true, "grupo_curso": null, "nombre_curso": "ACCES INTERMEDIO", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:35:06.414374+00
+1647	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0122	{"estado": null, "origen": "Matriz", "id_curso": "CU_0122", "is_active": true, "grupo_curso": null, "nombre_curso": "ACCES AVANZADO .", "ultima_fecha": null, "primera_fecha": null}	{"estado": "inactivo", "origen": "Matriz", "id_curso": "CU_0122", "is_active": true, "grupo_curso": null, "nombre_curso": "ACCES AVANZADO .", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:35:12.257472+00
+1648	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0135	{"estado": null, "origen": "Matriz", "id_curso": "CU_0135", "is_active": true, "grupo_curso": 8, "nombre_curso": "EXCEL PARA PRINCIPIANTES", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0135", "is_active": true, "grupo_curso": 8, "nombre_curso": "EXCEL PARA PRINCIPIANTES", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:35:16.768902+00
+1649	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0151	{"estado": null, "origen": "Matriz", "id_curso": "CU_0151", "is_active": true, "grupo_curso": null, "nombre_curso": "NEUROLIDERAZGO: CLAVE PARA LA GESTIÓN DE SU EQUIPO", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0151", "is_active": true, "grupo_curso": null, "nombre_curso": "NEUROLIDERAZGO: CLAVE PARA LA GESTIÓN DE SU EQUIPO", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:35:26.239219+00
+1650	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0157	{"estado": null, "origen": "Matriz", "id_curso": "CU_0157", "is_active": true, "grupo_curso": null, "nombre_curso": "HERRAMIENTAS PRÁCTICAS PARA SUPERVISAR", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-11-08"}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0157", "is_active": true, "grupo_curso": null, "nombre_curso": "HERRAMIENTAS PRÁCTICAS PARA SUPERVISAR", "ultima_fecha": "2025-09-08", "primera_fecha": "2021-11-08"}	2026-05-15 16:35:53.480878+00
+1651	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0159	{"estado": null, "origen": "Matriz", "id_curso": "CU_0159", "is_active": true, "grupo_curso": null, "nombre_curso": "FOMENTE LA COLABORACIÓN EN SU EQUIPO", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0159", "is_active": true, "grupo_curso": null, "nombre_curso": "FOMENTE LA COLABORACIÓN EN SU EQUIPO", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:36:43.762614+00
+1652	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0160	{"estado": null, "origen": "Matriz", "id_curso": "CU_0160", "is_active": true, "grupo_curso": 7, "nombre_curso": "LOGRAR UNA COMUNICACIÓN DE ALTO IMPACTO", "ultima_fecha": "2023-03-16", "primera_fecha": "2023-03-16"}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0160", "is_active": true, "grupo_curso": 7, "nombre_curso": "LOGRAR UNA COMUNICACIÓN DE ALTO IMPACTO", "ultima_fecha": "2023-03-16", "primera_fecha": "2023-03-16"}	2026-05-15 16:36:52.705179+00
+1653	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0161	{"estado": null, "origen": "Matriz", "id_curso": "CU_0161", "is_active": true, "grupo_curso": 6, "nombre_curso": "ACTIVA LA RESILIENCIA Y SUPERA LAS ADVERSIDADES", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0161", "is_active": true, "grupo_curso": 6, "nombre_curso": "ACTIVA LA RESILIENCIA Y SUPERA LAS ADVERSIDADES", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:37:00.577127+00
+1654	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0162	{"estado": null, "origen": "Matriz", "id_curso": "CU_0162", "is_active": true, "grupo_curso": null, "nombre_curso": "PLAN DE FORMACIÓN PARA LA MEJORA DEL EQUIPO", "ultima_fecha": "2023-11-17", "primera_fecha": "2022-03-28"}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0162", "is_active": true, "grupo_curso": null, "nombre_curso": "PLAN DE FORMACIÓN PARA LA MEJORA DEL EQUIPO", "ultima_fecha": "2023-11-17", "primera_fecha": "2022-03-28"}	2026-05-15 16:37:08.025131+00
+1655	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0163	{"estado": null, "origen": "Matriz", "id_curso": "CU_0163", "is_active": true, "grupo_curso": null, "nombre_curso": "¿QUÉ ES EL TABAQUISMO Y CÓMO MANEJARLO?", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0163", "is_active": true, "grupo_curso": null, "nombre_curso": "¿QUÉ ES EL TABAQUISMO Y CÓMO MANEJARLO?", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:37:18.634103+00
+1656	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0165	{"estado": null, "origen": "Matriz", "id_curso": "CU_0165", "is_active": true, "grupo_curso": null, "nombre_curso": "250 SERIES - DIESEL ENGINE - BASIC (ONLINE)", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0165", "is_active": true, "grupo_curso": null, "nombre_curso": "250 SERIES - DIESEL ENGINE - BASIC (ONLINE)", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:37:34.172667+00
+1657	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0236	{"estado": null, "origen": "Historial", "id_curso": "CU_0236", "is_active": true, "grupo_curso": null, "nombre_curso": "CÓMO DELEGAR TAREAS EN LA EMPRESA", "ultima_fecha": null, "primera_fecha": null}	{"estado": "inactivo", "origen": "Historial", "id_curso": "CU_0236", "is_active": true, "grupo_curso": null, "nombre_curso": "CÓMO DELEGAR TAREAS EN LA EMPRESA", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:42:10.168+00
+1658	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	987	{"estado": "OK", "curso_id": "CU_0095", "puesto_id": 500001, "vigencia_anio": 0, "id_puesto_curso": 987, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0095", "puesto_id": 500001, "vigencia_anio": 0, "id_puesto_curso": 987, "clasificacion_estrategica": "NECESARIO"}	2026-05-15 20:09:32.316404+00
 \.
 
 
@@ -15962,12 +16008,12 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 978	NECESARIO	0	OK	CU_0403	500073
 979	NECESARIO	0	OK	CU_0403	500062
 980	NECESARIO	0	OK	CU_0403	500023
+987	NECESARIO	0	OK	CU_0095	500001
 982	NECESARIO	0	OK	CU_0095	500016
 983	NECESARIO	0	OK	CU_0095	500048
 984	NECESARIO	0	OK	CU_0095	500005
 985	NECESARIO	0	OK	CU_0095	500033
 986	NECESARIO	0	OK	CU_0095	500088
-987	NECESARIO	0	OK	CU_0095	500001
 988	NECESARIO	0	OK	CU_0095	500049
 989	NECESARIO	0	OK	CU_0095	500027
 990	NECESARIO	0	OK	CU_0095	500024
@@ -22093,7 +22139,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 301, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 321, true);
 
 
 --
@@ -22121,7 +22167,7 @@ SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11121, 
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 1638, true);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 1658, true);
 
 
 --
@@ -22135,6 +22181,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500184, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict 8qpJdWmDWy35huS5IqvCUmX8dfO8jOUYgbtkLNHjceRaeTmA3FrxECzQL0YV21g
+-- \unrestrict vy49QXeqGuG2MdZUhaY694Tik0rK3ritb2ZguICRg2dAyfWC0WVf0PTcmmUGhie
 
 RESET ALL;
