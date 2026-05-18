@@ -145,7 +145,8 @@ function buildMissingCoursesByCourse(rows) {
             grouped.get(key).faltantes += 1;
             grouped.get(key).colaboradoresDetalle.push({
                 id_colab: row.colaboradorId,
-                nombre_colab: row.colaborador
+                nombre_colab: row.colaborador,
+                dep_id: row.depId
             });
         });
     });
@@ -338,7 +339,10 @@ function openCourseCollaboratorsModal(cursoId, puestoId) {
 
     const listHtml = colaboradores.length > 0 ? colaboradores
         .sort((a, b) => a.nombre_colab.localeCompare(b.nombre_colab))
-        .map(c => `<div style="padding: 0.5rem; border-bottom: 1px solid #f0f0f0;">• <strong>${c.id_colab}</strong> - ${c.nombre_colab}</div>`).join('')
+        .map(c => {
+            const depText = c.dep_id != null ? `Dep ID: ${c.dep_id}` : 'Dep ID: -';
+            return `<div style="padding: 0.5rem; border-bottom: 1px solid #f0f0f0;">• <strong>${c.id_colab}</strong> - ${c.nombre_colab} <span style="color: #666; font-size: 0.88rem;">(${depText})</span></div>`;
+        }).join('')
         : '<p>No hay colaboradores faltantes para este puesto.</p>';
 
     document.getElementById('cursoDetalleList').innerHTML = listHtml;

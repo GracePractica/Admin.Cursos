@@ -406,7 +406,7 @@ async function getAllRecords(table, select, filters = {}) {
 
 async function fetchMissingCoursesBaseData() {
     const [colaboradoresRes, puestosRes, puestoCursosRes, cursosRes, historialRes] = await Promise.all([
-        getAllRecords('colaboradores', 'id_colab, nombre_colab, puesto_id, is_active', { is_active: true }),
+        getAllRecords('colaboradores', 'id_colab, nombre_colab, dep_id, puesto_id, is_active', { is_active: true }),
         getAllRecords('puestos', 'id_puesto, nombre_puesto'),
         getAllRecords('puesto_curso', 'curso_id, puesto_id, clasificacion_estrategica'),
         getAllRecords('cursos', 'id_curso, nombre_curso, is_active, origen', { is_active: true }),
@@ -527,6 +527,7 @@ function buildMissingCoursesSummaryByCollaborator({ colaboradores, puestos, pues
             rowsByCollaborator.push({
                 colaboradorId: colaborador.id_colab,
                 colaborador: colaborador.nombre_colab,
+                depId: colaborador.dep_id,
                 puestoId: colaborador.puesto_id,
                 puesto: puestoNombre,
                 totalCursosMatriz: totalCursosMatriz,

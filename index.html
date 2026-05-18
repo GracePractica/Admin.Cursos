@@ -4,62 +4,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Capacitaciones - Redirigiendo...</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Archivo', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .redirect-container {
-            text-align: center;
-            color: white;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        h1 {
-            font-size: 24px;
-            margin: 0 0 10px;
-        }
-
-        p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-    </style>
-    <script>
-        // Redirect to dashboard immediately
-        window.location.href = 'dashboard.html';
-    </script>
+    <title>Sistema Integral de Gestión de Capacitaciones</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:wght@700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="redirect-container">
-        <div class="spinner"></div>
-        <h1>Sistema de Capacitaciones</h1>
-        <p>Redirigiendo al dashboard...</p>
-    </div>
+    <!-- Navigation Bar -->
+    <nav class="landing-navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <div class="navbar-logo-space">
+                    <img src="/resourses/CanalGold.webp" alt="Logo" class="navbar-logo-space">
+                </div>
+                <span class="navbar-brand-text">Canal de Panamá</span>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-help" onclick="alert('Soporte técnico disponible en breve')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4"></path>
+                        <path d="M12 8h.01"></path>
+                    </svg>
+                    Ayuda
+                </button>
+                <a href="login.html" class="btn btn-login">
+                    Iniciar sesión
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="landing-page">
+        <section class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">Canal de Panamá</p>
+                <h1 class="hero-title">Sistema Integral de Gestión de <span>Capacitaciones</span></h1>
+                <p class="hero-text">Centraliza, consulta y da seguimiento a la información de capacitaciones por área de trabajo. Selecciona el tablero que deseas visualizar para acceder a sus indicadores y análisis.</p>
+                <div class="hero-actions">
+                    <a href="dashboard.html" class="btn btn-primary">Ir a dashboard INCA</a>
+                    <a href="#preview" class="btn btn-secondary">Ver vista previa</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card hero-card-primary">
+                    <div class="hero-card-icon">INCA</div>
+                    <div class="hero-card-copy">
+                        <h2>Área de Infraestructura de Canal</h2>
+                        <p>Accede al dashboard completo y consulta todos los indicadores.</p>
+                    </div>
+                    <a href="dashboard.html" class="btn btn-secondary btn-hero">Acceder →</a>
+                </div>
+                <div class="hero-card hero-card-secondary">
+                    <div class="hero-card-icon">INMT</div>
+                    <div class="hero-card-copy">
+                        <h2>Área de Administración de Programas de Mantenimiento</h2>
+                        <p>Tablero pendiente de implementación, visible en frontend para el cliente.</p>
+                    </div>
+                    <button class="btn btn-disabled" disabled>Próximamente</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="preview-section" id="preview">
+            <div class="preview-header">
+                <p class="eyebrow">Vista previa de los tableros</p>
+                <h2>Resumen de los indicadores más importantes</h2>
+            </div>
+            <div class="preview-grid">
+                <article class="preview-card">
+                    <div class="preview-card-top">
+                        <div>
+                            <h3>INCA – Resumen del dashboard</h3>
+                            <p>Indicadores actuales y análisis de salud de datos.</p>
+                        </div>
+                        <span class="badge badge-primary">Activo</span>
+                    </div>
+                    <div class="preview-metrics">
+                        <div class="preview-metric"><strong>82%</strong><span>Salud de la base de datos</span></div>
+                        <div class="preview-metric"><strong>76</strong><span>Posibles duplicados</span></div>
+                        <div class="preview-metric"><strong>34</strong><span>Cursos inactivos</span></div>
+                        <div class="preview-metric"><strong>3</strong><span>Colaboradores sin puesto</span></div>
+                    </div>
+                </article>
+                <article class="preview-card">
+                    <div class="preview-card-top">
+                        <div>
+                            <h3>INMT – Resumen del dashboard</h3>
+                            <p>Tarjeta todavía no implementada, se muestra para el cliente.</p>
+                        </div>
+                        <span class="badge badge-secondary">Borrador</span>
+                    </div>
+                    <div class="preview-metrics">
+                        <div class="preview-metric"><strong>78%</strong><span>Salud de la base de datos</span></div>
+                        <div class="preview-metric"><strong>64</strong><span>Posibles duplicados</span></div>
+                        <div class="preview-metric"><strong>27</strong><span>Cursos inactivos</span></div>
+                        <div class="preview-metric"><strong>2</strong><span>Colaboradores sin puesto</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
 </body>
 
 </html>
