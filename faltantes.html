@@ -36,7 +36,7 @@
                             </div>
 
                             <div id="tabPorColaborador" class="tab-content active">
-                                <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+                                <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto auto; gap: 1rem; align-items: end;">
                                     <div class="filter-group">
                                         <label for="puestoFilterSelect">Filtrar por Puesto</label>
                                         <select id="puestoFilterSelect" class="form-select">
@@ -52,6 +52,10 @@
                                             <option value="500">500</option>
                                         </select>
                                     </div>
+                                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.25rem;">
+                                        <label style="margin:0; font-weight:700; font-size:0.9rem; color:#374151;">Completado (general)</label>
+                                        <div id="faltantesGeneralPct" style="font-weight:800; color:#10b981;">--%</div>
+                                    </div>
                                 </div>
 
                                 <div class="table-responsive">
@@ -62,6 +66,7 @@
                                                 <th>Puesto</th>
                                                 <th>Total Cursos</th>
                                                 <th>Cursos Faltantes</th>
+                                                <th style="text-align: center;">% Completado</th>
                                                 <th style="text-align: center;">Acciones</th>
                                             </tr>
                                         </thead>

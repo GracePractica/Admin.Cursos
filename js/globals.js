@@ -546,10 +546,47 @@ function buildMissingCoursesSummaryByCollaborator({ colaboradores, puestos, pues
 
 async function fetchMissingCoursesRows() {
     const baseData = await fetchMissingCoursesBaseData();
+    // Además de los rows por colaborador, calculamos totales asignados por curso y por puesto
+    const activeCourseMap = new Map(
+        baseData.cursos
+            .filter(c => c.is_active === true && c.origen === 'Matriz')
+            .map(c => [c.id_curso, c.nombre_curso])
+    );
+
+    const puestoCoursesByPuesto = new Map();
+    baseData.puestoCursos
+        .filter(pc => pc.clasificacion_estrategica === 'NECESARIO' && activeCourseMap.has(pc.curso_id))
+        .forEach(pc => {
+            if (!puestoCoursesByPuesto.has(pc.puesto_id)) {
+                puestoCoursesByPuesto.set(pc.puesto_id, []);
+            }
+            puestoCoursesByPuesto.get(pc.puesto_id).push(pc);
+        });
+
+    // coursePuestoAssigned: { [cursoId]: { [puestoId]: count } }
+    const coursePuestoAssigned = {};
+    const courseTotalAssigned = {};
+
+    baseData.colaboradores.forEach(colaborador => {
+        if (!colaborador.puesto_id) return;
+        const puestoId = colaborador.puesto_id;
+        const cursoPuestos = puestoCoursesByPuesto.get(puestoId) || [];
+        cursoPuestos.forEach(pc => {
+            const cursoId = pc.curso_id;
+            coursePuestoAssigned[cursoId] = coursePuestoAssigned[cursoId] || {};
+            coursePuestoAssigned[cursoId][puestoId] = (coursePuestoAssigned[cursoId][puestoId] || 0) + 1;
+            courseTotalAssigned[cursoId] = (courseTotalAssigned[cursoId] || 0) + 1;
+        });
+    });
+
     return {
         rowsByCollaborator: buildMissingCoursesSummaryByCollaborator(baseData),
         puestos: baseData.puestos,
-        cursos: baseData.cursos.filter(c => c.is_active === true && c.origen === 'Matriz')
+        cursos: baseData.cursos.filter(c => c.is_active === true && c.origen === 'Matriz'),
+        courseTotals: {
+            perCoursePuesto: coursePuestoAssigned,
+            perCourseTotal: courseTotalAssigned
+        }
     };
 }
 

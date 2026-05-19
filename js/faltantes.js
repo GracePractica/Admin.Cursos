@@ -109,10 +109,11 @@ async function loadFaltantesData() {
     const loading = document.getElementById('faltantesLoading');
     loading.style.display = 'block';
     try {
-        const { rowsByCollaborator, puestos, cursos } = await fetchMissingCoursesRows();
+        const { rowsByCollaborator, puestos, cursos, courseTotals } = await fetchMissingCoursesRows();
         FALTANTES_DATA.puestos = puestos;
         FALTANTES_DATA.cursos = cursos;
         FALTANTES_DATA.rowsByCollaborator = rowsByCollaborator;
+        FALTANTES_DATA.courseTotals = courseTotals || { perCoursePuesto: {}, perCourseTotal: {} };
         FALTANTES_DATA.rowsByCourse = buildMissingCoursesByCourse(rowsByCollaborator);
 
         populateSelectFiltersFromData();
@@ -181,17 +182,41 @@ function renderTab1() {
     }
     const startIndex = (page - 1) * limit;
     const pageRows = rows.slice(startIndex, startIndex + limit);
+
+    // Calcular porcentaje general sobre los rows filtrados
+    let totalRequired = 0;
+    let totalCompleted = 0;
+    rows.forEach(r => {
+        const req = Number(r.totalCursosMatriz) || 0;
+        const falt = Number(r.cursosFaltantesCount) || 0;
+        totalRequired += req;
+        totalCompleted += Math.max(0, req - falt);
+    });
+
+    const overallPct = totalRequired > 0 ? (totalCompleted / totalRequired) * 100 : null;
+    const overallEl = document.getElementById('faltantesGeneralPct');
+    if (overallEl) {
+        overallEl.textContent = overallPct == null ? '--%' : `${overallPct.toFixed(1)}%`;
+    }
+
     const html = pageRows.map((row, index) => {
         const rowId = `row_${page}_${index}`;
         // Store the row data globally for the modal
         window.faltantesRowData = window.faltantesRowData || {};
         window.faltantesRowData[rowId] = row;
+        // Porcentaje por colaborador
+        const total = Number(row.totalCursosMatriz) || 0;
+        const falt = Number(row.cursosFaltantesCount) || 0;
+        const completed = Math.max(0, total - falt);
+        const pctText = total > 0 ? `${((completed / total) * 100).toFixed(1)}%` : '-';
+
         return `
             <tr>
                 <td style="white-space: nowrap;">${row.colaborador}</td>
                 <td style="white-space: nowrap;">${row.puesto}</td>
                 <td style="text-align: center;">${row.totalCursosMatriz}</td>
                 <td style="text-align: center;">${row.cursosFaltantesCount}</td>
+                <td style="text-align: center; font-weight:700; color:#10b981;">${pctText}</td>
                 <td style="text-align: center;">
                     <button class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;" onclick="openCursosModal('${rowId}')">Ver</button>
                 </td>
@@ -282,12 +307,18 @@ function renderTab2() {
 
     document.getElementById('faltantesCursoCards').innerHTML = pageGroups.map(group => {
         const isExpanded = String(group.cursoId) === String(expandedCourseId);
+        // Totales asignados para este curso
+        const totalAssigned = (FALTANTES_DATA.courseTotals && FALTANTES_DATA.courseTotals.perCourseTotal && FALTANTES_DATA.courseTotals.perCourseTotal[group.cursoId]) || 0;
+        const totalFaltantes = Number(group.total) || 0;
+        const totalCompleted = Math.max(0, totalAssigned - totalFaltantes);
+        const overallPct = totalAssigned > 0 ? (totalCompleted / totalAssigned) * 100 : null;
         return `
             <div style="border: 1px solid #ddd; border-radius: 12px; overflow: hidden; background: white;">
                 <button type="button" onclick="toggleCourseCard('${group.cursoId}')" style="width: 100%; text-align: left; padding: 1rem 1.25rem; background: #f8f8f8; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                     <div>
                         <div style="font-weight: 600; font-size: 1rem; color: #222;">${group.curso}</div>
-                        <div style="font-size: 0.9rem; color: #555; margin-top: 0.35rem;">Total: ${group.total} colaboradores • ${group.puestos.length} puestos</div>
+                        <div style="font-size: 0.9rem; color: #555; margin-top: 0.35rem;">Total faltantes: ${group.total} colaboradores • ${group.puestos.length} puestos</div>
+                        <div style="font-size: 0.9rem; color: ${overallPct != null && overallPct < 50 ? '#ef4444' : '#10b981'}; margin-top: 0.25rem; font-weight:700;">${overallPct == null ? '--%' : overallPct.toFixed(1) + '% completado'}</div>
                     </div>
                     <span style="font-size: 0.9rem; color: #777;">${isExpanded ? '−' : '+'}</span>
                 </button>
@@ -297,6 +328,8 @@ function renderTab2() {
                             <tr style="background: #f5f5f5; text-align: left;">
                                 <th style="padding: 0.75rem 0.5rem; font-weight: 600;">Puesto</th>
                                 <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: right;">Faltantes</th>
+                                <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: right;">Asignados</th>
+                                <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: center;">% Completado</th>
                                 <th style="padding: 0.75rem 0.5rem; font-weight: 600; text-align: center;">Acciones</th>
                             </tr>
                         </thead>
@@ -305,6 +338,15 @@ function renderTab2() {
                                 <tr style="border-top: 1px solid #ececec;">
                                     <td style="padding: 0.75rem 0.5rem;">${puesto.puesto}</td>
                                     <td style="padding: 0.75rem 0.5rem; text-align: right;">${puesto.faltantes}</td>
+                                    <td style="padding: 0.75rem 0.5rem; text-align: right;">
+                                        ${(FALTANTES_DATA.courseTotals && FALTANTES_DATA.courseTotals.perCoursePuesto && FALTANTES_DATA.courseTotals.perCoursePuesto[group.cursoId] && (FALTANTES_DATA.courseTotals.perCoursePuesto[group.cursoId][puesto.puestoId] || 0)) || 0}
+                                    </td>
+                                    <td style="padding: 0.75rem 0.5rem; text-align: center; font-weight:700; color:#10b981;">${(() => {
+                                        const assigned = (FALTANTES_DATA.courseTotals && FALTANTES_DATA.courseTotals.perCoursePuesto && FALTANTES_DATA.courseTotals.perCoursePuesto[group.cursoId] && (FALTANTES_DATA.courseTotals.perCoursePuesto[group.cursoId][puesto.puestoId] || 0)) || 0;
+                                        const falt = Number(puesto.faltantes) || 0;
+                                        const comp = Math.max(0, assigned - falt);
+                                        return assigned > 0 ? ( (comp / assigned) * 100 ).toFixed(1) + '%' : '-';
+                                    })()}</td>
                                     <td style="padding: 0.75rem 0.5rem; text-align: center;">
                                         <button class="btn btn-outline" style="padding: 0.35rem 0.6rem; font-size: 0.8rem;" onclick="openCourseCollaboratorsModal('${group.cursoId}','${puesto.puestoId}')">Ver colaboradores</button>
                                     </td>
@@ -336,6 +378,25 @@ function openCourseCollaboratorsModal(cursoId, puestoId) {
 
     document.getElementById('cursoDetalleCurso').textContent = match ? match.curso : '';
     document.getElementById('cursoDetallePuesto').textContent = match ? match.puesto : '';
+
+    // Calcular porcentaje para el puesto seleccionado
+    const assigned = (FALTANTES_DATA.courseTotals && FALTANTES_DATA.courseTotals.perCoursePuesto && FALTANTES_DATA.courseTotals.perCoursePuesto[cursoId] && (FALTANTES_DATA.courseTotals.perCoursePuesto[cursoId][puestoId] || 0)) || 0;
+    const faltantesCount = colaboradores.length || 0;
+    const completed = Math.max(0, assigned - faltantesCount);
+    const pctText = assigned > 0 ? `${((completed / assigned) * 100).toFixed(1)}%` : '--%';
+
+    // Mostrar porcentaje en el modal (insertar o actualizar el elemento)
+    let pctEl = document.getElementById('cursoDetallePuestoPct');
+    if (!pctEl) {
+        const container = document.querySelector('#cursoDetalleModal .padding-pct') || document.getElementById('cursoDetallePuesto').parentElement;
+        pctEl = document.createElement('div');
+        pctEl.id = 'cursoDetallePuestoPct';
+        pctEl.style.fontWeight = '800';
+        pctEl.style.color = '#10b981';
+        pctEl.style.marginTop = '4px';
+        document.getElementById('cursoDetallePuesto').parentElement.appendChild(pctEl);
+    }
+    pctEl.textContent = `Completado puesto: ${pctText} (${completed}/${assigned})`;
 
     const listHtml = colaboradores.length > 0 ? colaboradores
         .sort((a, b) => a.nombre_colab.localeCompare(b.nombre_colab))
