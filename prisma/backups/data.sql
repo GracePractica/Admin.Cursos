@@ -4,7 +4,7 @@ SET session_replication_role = replica;
 -- PostgreSQL database dump
 --
 
--- \restrict CawuQQSEpsx89TyY8BjPa4UokXdpeSv7BlxcOsswp5XV8OdNQPGRbQTHf8B2YNn
+-- \restrict 9tdAQigGpXyOMteUojypKZ2RCAtfCD7VradeNTIbV6a6f0oLEJbZfbyicVu4hJR
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 17.6
@@ -52,8 +52,8 @@ COPY "auth"."flow_state" ("id", "user_id", "auth_code", "code_challenge_method",
 COPY "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") FROM stdin;
 00000000-0000-0000-0000-000000000000	1be4f0d5-58a2-484f-925a-8d2623579c45	authenticated	authenticated	supervisor1@gmail.com	$2a$10$3.eiJHvvnpBy3XNSONomuu4XZSqKCeqDbV8Hufw89CwH9ofBgm/ky	2026-02-19 22:36:58.594586+00	\N		\N		\N			\N	2026-04-29 14:38:41.852313+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:36:58.579395+00	2026-04-30 20:10:49.538993+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	f846e8de-213b-46fb-8d20-a217e3f45b2a	authenticated	authenticated	supervisor2@gmail.com	$2a$10$gjT8xeRlqUTNNWVJwyY/jOpC.27/IBPegvCAA8R3vhkEmr/IUeJtG	2026-02-23 05:58:22.347918+00	\N		\N		\N			\N	2026-03-11 21:17:21.053968+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:22.327418+00	2026-04-02 16:11:42.982811+00	\N	\N			\N		0	\N		\N	f	\N	f
-00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-05-18 12:39:46.137371+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-05-18 12:39:46.162715+00	\N	\N			\N		0	\N		\N	f	\N	f
 00000000-0000-0000-0000-000000000000	8ce075b3-0c7e-426f-b745-d5aea5390bb3	authenticated	authenticated	supervisor3@gmail.com	$2a$10$sTnD1g2m4XI3Bx9yrXzdGeoDnsDHngPZhIMJspnOH1NVx6FhvhNOa	2026-02-23 05:58:53.330609+00	\N		\N		\N			\N	2026-02-26 16:12:11.382248+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-23 05:58:53.326068+00	2026-02-26 16:12:11.384443+00	\N	\N			\N		0	\N		\N	f	\N	f
+00000000-0000-0000-0000-000000000000	44c828c1-057b-41d8-ae97-ce82e7a9a02a	authenticated	authenticated	admin@gmail.com	$2a$10$njoZ0zt5JCWeK/Ka8IgM.uKdFGtGWCy6xAkzGrTfHgynHNFiROvRK	2026-02-19 22:31:41.840007+00	\N		\N		\N			\N	2026-05-20 12:10:49.474225+00	{"provider": "email", "providers": ["email"]}	{"email_verified": true}	\N	2026-02-19 22:31:41.812936+00	2026-05-20 12:10:49.482841+00	\N	\N			\N		0	\N		\N	f	\N	f
 \.
 
 
@@ -90,20 +90,27 @@ COPY "auth"."oauth_clients" ("id", "client_secret_hash", "registration_type", "r
 --
 
 COPY "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag", "oauth_client_id", "refresh_token_hmac_key", "refresh_token_counter", "scopes") FROM stdin;
-19fb3518-b283-4b82-a976-6634ff5b744c	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 12:21:34.536726+00	2026-05-18 12:21:34.536726+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36	181.78.164.252	\N	\N	\N	\N	\N
 0ace02e0-18e9-4a61-a5ea-7151957b009d	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 12:26:21.131772+00	2026-05-18 12:26:21.131772+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 64093294-a839-4952-8129-185f53228621	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 12:30:13.497127+00	2026-05-18 12:30:13.497127+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
-7702cd85-b2ec-4735-8de9-d5ceee604c72	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 12:39:46.138519+00	2026-05-18 12:39:46.138519+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 79e54a67-578e-48cb-98a1-1ab4164f4cc6	f846e8de-213b-46fb-8d20-a217e3f45b2a	2026-03-11 21:17:21.054075+00	2026-04-02 16:11:43.000846+00	\N	aal1	\N	2026-04-02 16:11:43.000714	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0	181.78.164.251	\N	\N	\N	\N	\N
 f01baba2-cc81-4aee-82c8-92b55fcf25ab	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-04-13 14:51:22.494552+00	2026-04-13 14:51:22.494552+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+8abe5f91-d12d-45f6-97db-faf47d0dee44	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 13:12:29.897746+00	2026-05-18 13:12:29.897746+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+19fb3518-b283-4b82-a976-6634ff5b744c	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 12:21:34.536726+00	2026-05-18 14:01:27.47908+00	\N	aal1	\N	2026-05-18 14:01:27.478964	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36	181.78.164.252	\N	\N	\N	\N	\N
 5591ca98-1f09-44e9-982e-bf5649b38c34	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-11 16:31:41.37281+00	2026-04-29 14:38:19.861531+00	\N	aal1	\N	2026-04-29 14:38:19.861422	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.251	\N	\N	\N	\N	\N
+9d61bbe2-18d9-40e5-9bf5-e76642eab269	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 17:39:31.40795+00	2026-05-18 17:39:31.40795+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+3e56b567-6e49-4b38-be06-19e798e81cd8	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 15:37:30.080142+00	2026-05-18 18:30:50.457982+00	\N	aal1	\N	2026-05-18 18:30:50.457871	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 4e6db5f7-344e-42db-86a2-7518bcc94d89	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-04-29 14:38:41.852398+00	2026-04-30 20:10:49.551342+00	\N	aal1	\N	2026-04-30 20:10:49.551224	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.251	\N	\N	\N	\N	\N
+6cf68430-070a-4e0d-af85-be33e1731e56	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 14:03:54.375119+00	2026-05-19 12:08:00.803187+00	\N	aal1	\N	2026-05-19 12:08:00.803073	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36	181.78.164.252	\N	\N	\N	\N	\N
 1835bdba-1c56-4460-95ce-be49dbd22367	f846e8de-213b-46fb-8d20-a217e3f45b2a	2026-03-11 15:49:16.308856+00	2026-03-11 15:49:16.308856+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
-da0360f5-77e9-4ba4-b309-8ce1706db804	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 02:00:12.075989+00	2026-05-18 02:00:12.075989+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	201.227.220.207	\N	\N	\N	\N	\N
 923895c7-e1e1-4ff2-973a-987fa5e25115	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 03:24:13.517922+00	2026-05-18 03:24:13.517922+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.214.193.67	\N	\N	\N	\N	\N
+da0360f5-77e9-4ba4-b309-8ce1706db804	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 02:00:12.075989+00	2026-05-20 00:40:48.34523+00	\N	aal1	\N	2026-05-20 00:40:48.344565	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	186.75.8.202	\N	\N	\N	\N	\N
 4aac2c88-d171-4471-87e5-dcc2a1a58cfb	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 12:05:39.796409+00	2026-05-18 12:05:39.796409+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
 a7b5b91e-8239-43b2-8263-b90819e71796	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 03:28:01.827365+00	2026-05-18 12:12:21.695455+00	\N	aal1	\N	2026-05-18 12:12:21.694716	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36	181.214.193.67	\N	\N	\N	\N	\N
 3c9afb61-7222-474d-bd69-34ef1eda330f	1be4f0d5-58a2-484f-925a-8d2623579c45	2026-03-18 18:22:18.480097+00	2026-03-18 18:22:18.480097+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+cd11e999-894f-424d-a984-4d766cf77673	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-19 16:33:02.813958+00	2026-05-20 00:40:52.093666+00	\N	aal1	\N	2026-05-20 00:40:52.09357	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 OPR/131.0.0.0	186.75.8.202	\N	\N	\N	\N	\N
+7702cd85-b2ec-4735-8de9-d5ceee604c72	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-18 12:39:46.138519+00	2026-05-20 11:46:16.951025+00	\N	aal1	\N	2026-05-20 11:46:16.950919	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0	181.78.164.252	\N	\N	\N	\N	\N
+0799ef64-6c7c-4935-840b-cc7cb1516053	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-19 12:08:16.31683+00	2026-05-20 12:10:23.890245+00	\N	aal1	\N	2026-05-20 12:10:23.890132	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36	181.78.164.252	\N	\N	\N	\N	\N
+42c78757-0bab-4d8b-812d-e31521889645	44c828c1-057b-41d8-ae97-ce82e7a9a02a	2026-05-20 12:10:49.474311+00	2026-05-20 12:10:49.474311+00	\N	aal1	\N	\N	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36	181.78.164.252	\N	\N	\N	\N	\N
 \.
 
 
@@ -126,6 +133,13 @@ a7b5b91e-8239-43b2-8263-b90819e71796	2026-05-18 03:28:01.838624+00	2026-05-18 03
 0ace02e0-18e9-4a61-a5ea-7151957b009d	2026-05-18 12:26:21.189342+00	2026-05-18 12:26:21.189342+00	password	08655ed7-b317-4d18-8f85-73d7c782b2c4
 64093294-a839-4952-8129-185f53228621	2026-05-18 12:30:13.509676+00	2026-05-18 12:30:13.509676+00	password	03ed246c-1b48-46bf-975e-f5365cf72355
 7702cd85-b2ec-4735-8de9-d5ceee604c72	2026-05-18 12:39:46.164315+00	2026-05-18 12:39:46.164315+00	password	7774bed4-7827-4246-b28e-263e6732e36e
+8abe5f91-d12d-45f6-97db-faf47d0dee44	2026-05-18 13:12:29.940497+00	2026-05-18 13:12:29.940497+00	password	b53120dd-3210-4b23-870a-8c21b3842601
+6cf68430-070a-4e0d-af85-be33e1731e56	2026-05-18 14:03:54.399453+00	2026-05-18 14:03:54.399453+00	password	11e204d7-b334-4b7f-be71-f85959720531
+3e56b567-6e49-4b38-be06-19e798e81cd8	2026-05-18 15:37:30.153823+00	2026-05-18 15:37:30.153823+00	password	37fc8be7-100f-47b7-887f-f7649725c82f
+9d61bbe2-18d9-40e5-9bf5-e76642eab269	2026-05-18 17:39:31.472787+00	2026-05-18 17:39:31.472787+00	password	1224aaca-7d5f-4f86-8f09-1868db6e02da
+0799ef64-6c7c-4935-840b-cc7cb1516053	2026-05-19 12:08:16.333904+00	2026-05-19 12:08:16.333904+00	password	7b14e68e-67a1-4471-9fd8-1b857f329cee
+cd11e999-894f-424d-a984-4d766cf77673	2026-05-19 16:33:02.889919+00	2026-05-19 16:33:02.889919+00	password	d5cc6ca9-04ac-4293-bf7b-8b192c22bd97
+42c78757-0bab-4d8b-812d-e31521889645	2026-05-20 12:10:49.483203+00	2026-05-20 12:10:49.483203+00	password	5d87a48a-9e45-413f-b911-090a70266220
 \.
 
 
@@ -182,7 +196,6 @@ COPY "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "rel
 --
 
 COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") FROM stdin;
-00000000-0000-0000-0000-000000000000	324	a3nv2g2wj2go	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 02:00:12.111965+00	2026-05-18 02:00:12.111965+00	\N	da0360f5-77e9-4ba4-b309-8ce1706db804
 00000000-0000-0000-0000-000000000000	225	y6cshwru7xah	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-19 13:07:51.247529+00	2026-03-19 18:41:21.532202+00	qaa7mwinwohh	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	197	evlgc3u2r4qp	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-12 19:26:17.100616+00	2026-04-29 14:38:19.825127+00	ynzw3ct2kq3l	5591ca98-1f09-44e9-982e-bf5649b38c34
 00000000-0000-0000-0000-000000000000	326	znbxupzbe5le	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 03:28:01.835267+00	2026-05-18 12:12:21.62025+00	\N	a7b5b91e-8239-43b2-8263-b90819e71796
@@ -190,10 +203,24 @@ COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked"
 00000000-0000-0000-0000-000000000000	328	ofabnvq7lgzu	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 12:12:21.648503+00	2026-05-18 12:12:21.648503+00	znbxupzbe5le	a7b5b91e-8239-43b2-8263-b90819e71796
 00000000-0000-0000-0000-000000000000	330	bcqx6exbyewg	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 12:26:21.168343+00	2026-05-18 12:26:21.168343+00	\N	0ace02e0-18e9-4a61-a5ea-7151957b009d
 00000000-0000-0000-0000-000000000000	271	ki2mqgdz75d3	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-04-30 18:22:51.580223+00	2026-04-30 20:10:49.514649+00	otqja2wtye2q	4e6db5f7-344e-42db-86a2-7518bcc94d89
-00000000-0000-0000-0000-000000000000	332	yti3cgynbsec	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 12:39:46.153332+00	2026-05-18 12:39:46.153332+00	\N	7702cd85-b2ec-4735-8de9-d5ceee604c72
 00000000-0000-0000-0000-000000000000	174	ktsgnmrzapkv	f846e8de-213b-46fb-8d20-a217e3f45b2a	f	2026-03-11 15:49:16.324491+00	2026-03-11 15:49:16.324491+00	\N	1835bdba-1c56-4460-95ce-be49dbd22367
+00000000-0000-0000-0000-000000000000	332	yti3cgynbsec	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 12:39:46.153332+00	2026-05-18 13:38:12.766117+00	\N	7702cd85-b2ec-4735-8de9-d5ceee604c72
+00000000-0000-0000-0000-000000000000	334	swmxrrolbk7u	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 13:38:12.785231+00	2026-05-18 14:36:38.816343+00	yti3cgynbsec	7702cd85-b2ec-4735-8de9-d5ceee604c72
 00000000-0000-0000-0000-000000000000	179	zso5hy67vbig	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-11 16:31:41.413829+00	2026-03-11 17:32:17.681102+00	\N	5591ca98-1f09-44e9-982e-bf5649b38c34
+00000000-0000-0000-0000-000000000000	338	sbrv72y2diy6	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 15:37:30.117588+00	2026-05-18 18:30:50.397441+00	\N	3e56b567-6e49-4b38-be06-19e798e81cd8
+00000000-0000-0000-0000-000000000000	342	4s4kr3skfc6s	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 18:30:50.425331+00	2026-05-18 18:30:50.425331+00	sbrv72y2diy6	3e56b567-6e49-4b38-be06-19e798e81cd8
+00000000-0000-0000-0000-000000000000	340	mxtcr3yrs64p	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 17:22:51.625641+00	2026-05-19 12:02:21.51012+00	5xv2iwfevwzq	7702cd85-b2ec-4735-8de9-d5ceee604c72
+00000000-0000-0000-0000-000000000000	336	v27zfyd2helh	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 14:03:54.39139+00	2026-05-19 12:08:00.799179+00	\N	6cf68430-070a-4e0d-af85-be33e1731e56
+00000000-0000-0000-0000-000000000000	344	2zsnugpzhw5s	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-19 12:08:00.800147+00	2026-05-19 12:08:00.800147+00	v27zfyd2helh	6cf68430-070a-4e0d-af85-be33e1731e56
+00000000-0000-0000-0000-000000000000	324	a3nv2g2wj2go	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 02:00:12.111965+00	2026-05-19 19:43:47.996454+00	\N	da0360f5-77e9-4ba4-b309-8ce1706db804
+00000000-0000-0000-0000-000000000000	347	i3tahsdynlns	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 15:48:05.66354+00	2026-05-19 20:22:01.407879+00	sfe4rvu6c4mt	7702cd85-b2ec-4735-8de9-d5ceee604c72
+00000000-0000-0000-0000-000000000000	349	46pmixjkquj7	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 19:17:01.01468+00	2026-05-19 21:17:33.802108+00	5kp2phlbpex3	cd11e999-894f-424d-a984-4d766cf77673
+00000000-0000-0000-0000-000000000000	353	7odlrscxh7g7	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 21:17:33.8105+00	2026-05-19 22:15:36.402888+00	46pmixjkquj7	cd11e999-894f-424d-a984-4d766cf77673
+00000000-0000-0000-0000-000000000000	355	hfrvjtpxhatq	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 22:32:15.607466+00	2026-05-20 00:40:48.306693+00	3pcvrmrscqco	da0360f5-77e9-4ba4-b309-8ce1706db804
+00000000-0000-0000-0000-000000000000	351	upofjxgmrcvv	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 20:22:01.428966+00	2026-05-20 11:46:16.882376+00	i3tahsdynlns	7702cd85-b2ec-4735-8de9-d5ceee604c72
 00000000-0000-0000-0000-000000000000	188	zbovfpodswwy	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-11 21:17:21.088124+00	2026-03-12 16:58:36.787746+00	\N	79e54a67-578e-48cb-98a1-1ab4164f4cc6
+00000000-0000-0000-0000-000000000000	358	j4sy6my6xkv4	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-20 11:46:16.915532+00	2026-05-20 11:46:16.915532+00	upofjxgmrcvv	7702cd85-b2ec-4735-8de9-d5ceee604c72
+00000000-0000-0000-0000-000000000000	345	ybcjcpuehlsr	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 12:08:16.332622+00	2026-05-20 12:10:23.869945+00	\N	0799ef64-6c7c-4935-840b-cc7cb1516053
 00000000-0000-0000-0000-000000000000	192	rvphwmdhgkpq	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 16:58:36.815484+00	2026-03-12 18:01:00.705351+00	zbovfpodswwy	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	194	exogfcdnazu2	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-12 18:01:00.725305+00	2026-03-12 19:12:38.573418+00	rvphwmdhgkpq	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	180	ynzw3ct2kq3l	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-03-11 17:32:17.708635+00	2026-03-12 19:26:17.084072+00	zso5hy67vbig	5591ca98-1f09-44e9-982e-bf5649b38c34
@@ -218,20 +245,35 @@ COPY "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked"
 00000000-0000-0000-0000-000000000000	228	rn7rympibkgc	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-19 18:41:21.558698+00	2026-03-20 18:17:21.508584+00	y6cshwru7xah	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	268	xccn4u43npku	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-04-30 14:34:11.24241+00	2026-04-30 15:33:52.373837+00	6375cdou6ijz	4e6db5f7-344e-42db-86a2-7518bcc94d89
 00000000-0000-0000-0000-000000000000	229	woe6uejtnhoa	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-20 18:17:21.539474+00	2026-03-20 19:56:29.687159+00	rn7rympibkgc	79e54a67-578e-48cb-98a1-1ab4164f4cc6
-00000000-0000-0000-0000-000000000000	329	w2gzggilwxar	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 12:21:34.550062+00	2026-05-18 12:21:34.550062+00	\N	19fb3518-b283-4b82-a976-6634ff5b744c
 00000000-0000-0000-0000-000000000000	230	ekvt7nmilrq7	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-20 19:56:29.703283+00	2026-03-23 12:35:06.751871+00	woe6uejtnhoa	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	331	grtt4txuxxpd	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 12:30:13.504883+00	2026-05-18 12:30:13.504883+00	\N	64093294-a839-4952-8129-185f53228621
 00000000-0000-0000-0000-000000000000	231	ve45f7myqv6w	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-23 12:35:06.78844+00	2026-03-23 14:32:11.445288+00	ekvt7nmilrq7	79e54a67-578e-48cb-98a1-1ab4164f4cc6
+00000000-0000-0000-0000-000000000000	333	7dnjhgkz5uzm	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 13:12:29.912976+00	2026-05-18 13:12:29.912976+00	\N	8abe5f91-d12d-45f6-97db-faf47d0dee44
 00000000-0000-0000-0000-000000000000	232	gz2bqxftepaf	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-23 14:32:11.460212+00	2026-03-23 15:35:10.83911+00	ve45f7myqv6w	79e54a67-578e-48cb-98a1-1ab4164f4cc6
+00000000-0000-0000-0000-000000000000	329	w2gzggilwxar	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 12:21:34.550062+00	2026-05-18 14:01:27.449339+00	\N	19fb3518-b283-4b82-a976-6634ff5b744c
 00000000-0000-0000-0000-000000000000	233	2flj2so3ta62	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-23 15:35:10.860847+00	2026-03-23 19:33:47.008919+00	gz2bqxftepaf	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	274	oexynzjzl2r3	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-04-30 20:10:49.526494+00	2026-04-30 20:10:49.526494+00	ki2mqgdz75d3	4e6db5f7-344e-42db-86a2-7518bcc94d89
 00000000-0000-0000-0000-000000000000	234	rwfc547ifcbn	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-23 19:33:47.042965+00	2026-03-24 16:48:05.630573+00	2flj2so3ta62	79e54a67-578e-48cb-98a1-1ab4164f4cc6
+00000000-0000-0000-0000-000000000000	335	nfejgdjnsayt	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 14:01:27.4637+00	2026-05-18 14:01:27.4637+00	w2gzggilwxar	19fb3518-b283-4b82-a976-6634ff5b744c
 00000000-0000-0000-0000-000000000000	235	odd7czathf35	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-24 16:48:05.661304+00	2026-03-25 13:48:25.31431+00	rwfc547ifcbn	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	236	gptopzeeqcll	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-25 13:48:25.346787+00	2026-03-26 12:08:21.286324+00	odd7czathf35	79e54a67-578e-48cb-98a1-1ab4164f4cc6
+00000000-0000-0000-0000-000000000000	337	pz5f4pt7qpqr	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 14:36:38.836626+00	2026-05-18 16:14:47.379449+00	swmxrrolbk7u	7702cd85-b2ec-4735-8de9-d5ceee604c72
 00000000-0000-0000-0000-000000000000	237	d2y26btvp6r3	f846e8de-213b-46fb-8d20-a217e3f45b2a	t	2026-03-26 12:08:21.319119+00	2026-04-02 16:11:42.934739+00	gptopzeeqcll	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	238	5wfamegazuo4	f846e8de-213b-46fb-8d20-a217e3f45b2a	f	2026-04-02 16:11:42.963814+00	2026-04-02 16:11:42.963814+00	d2y26btvp6r3	79e54a67-578e-48cb-98a1-1ab4164f4cc6
 00000000-0000-0000-0000-000000000000	239	w3efd6l7mjcx	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-04-13 14:51:22.54999+00	2026-04-13 14:51:22.54999+00	\N	f01baba2-cc81-4aee-82c8-92b55fcf25ab
+00000000-0000-0000-0000-000000000000	339	5xv2iwfevwzq	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-18 16:14:47.403188+00	2026-05-18 17:22:51.611762+00	pz5f4pt7qpqr	7702cd85-b2ec-4735-8de9-d5ceee604c72
+00000000-0000-0000-0000-000000000000	341	kwrxfj2gct55	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-18 17:39:31.453286+00	2026-05-18 17:39:31.453286+00	\N	9d61bbe2-18d9-40e5-9bf5-e76642eab269
+00000000-0000-0000-0000-000000000000	343	utf5qw5n7v7x	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 12:02:21.536867+00	2026-05-19 13:03:00.123657+00	mxtcr3yrs64p	7702cd85-b2ec-4735-8de9-d5ceee604c72
+00000000-0000-0000-0000-000000000000	346	sfe4rvu6c4mt	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 13:03:00.150874+00	2026-05-19 15:48:05.650773+00	utf5qw5n7v7x	7702cd85-b2ec-4735-8de9-d5ceee604c72
+00000000-0000-0000-0000-000000000000	348	5kp2phlbpex3	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 16:33:02.862585+00	2026-05-19 19:17:00.985264+00	\N	cd11e999-894f-424d-a984-4d766cf77673
+00000000-0000-0000-0000-000000000000	350	ys3kvwy5i3m3	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 19:43:48.025434+00	2026-05-19 20:43:17.608334+00	a3nv2g2wj2go	da0360f5-77e9-4ba4-b309-8ce1706db804
+00000000-0000-0000-0000-000000000000	352	3pcvrmrscqco	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 20:43:17.641018+00	2026-05-19 22:32:15.592989+00	ys3kvwy5i3m3	da0360f5-77e9-4ba4-b309-8ce1706db804
+00000000-0000-0000-0000-000000000000	356	pnz7es4p63g5	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-20 00:40:48.3228+00	2026-05-20 00:40:48.3228+00	hfrvjtpxhatq	da0360f5-77e9-4ba4-b309-8ce1706db804
 00000000-0000-0000-0000-000000000000	249	qxeepu4gwcbu	1be4f0d5-58a2-484f-925a-8d2623579c45	f	2026-04-29 14:38:19.841992+00	2026-04-29 14:38:19.841992+00	evlgc3u2r4qp	5591ca98-1f09-44e9-982e-bf5649b38c34
+00000000-0000-0000-0000-000000000000	354	ihwafb4hzy6x	44c828c1-057b-41d8-ae97-ce82e7a9a02a	t	2026-05-19 22:15:36.423099+00	2026-05-20 00:40:52.088074+00	7odlrscxh7g7	cd11e999-894f-424d-a984-4d766cf77673
+00000000-0000-0000-0000-000000000000	357	oc4bmyi3ae4b	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-20 00:40:52.088657+00	2026-05-20 00:40:52.088657+00	ihwafb4hzy6x	cd11e999-894f-424d-a984-4d766cf77673
+00000000-0000-0000-0000-000000000000	359	susyo2hjhna6	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-20 12:10:23.875228+00	2026-05-20 12:10:23.875228+00	ybcjcpuehlsr	0799ef64-6c7c-4935-840b-cc7cb1516053
+00000000-0000-0000-0000-000000000000	360	wjanmchi2ukw	44c828c1-057b-41d8-ae97-ce82e7a9a02a	f	2026-05-20 12:10:49.481832+00	2026-05-20 12:10:49.481832+00	\N	42c78757-0bab-4d8b-812d-e31521889645
 00000000-0000-0000-0000-000000000000	250	vgfct5j4gaup	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-04-29 14:38:41.864176+00	2026-04-29 16:15:17.643683+00	\N	4e6db5f7-344e-42db-86a2-7518bcc94d89
 00000000-0000-0000-0000-000000000000	255	fqbgcxefc54t	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-04-29 16:15:17.648949+00	2026-04-29 17:13:42.549904+00	vgfct5j4gaup	4e6db5f7-344e-42db-86a2-7518bcc94d89
 00000000-0000-0000-0000-000000000000	257	c6umbmlr6uhh	1be4f0d5-58a2-484f-925a-8d2623579c45	t	2026-04-29 17:13:42.560585+00	2026-04-29 18:37:15.451172+00	fqbgcxefc54t	4e6db5f7-344e-42db-86a2-7518bcc94d89
@@ -1176,10 +1218,12 @@ CU_0160	LOGRAR UNA COMUNICACIÓN DE ALTO IMPACTO	2023-03-16	2023-03-16	activo	7	
 CU_0493	MÓDULO DE SEGURIDAD MARÍTIMA	\N	\N	activo	\N	Historial	t
 CU_0528	OPERACIÓN DE GRÚAS II	\N	\N	activo	\N	Historial	t
 CU_0109	AUTODESARROLLO: CLAVE DEL ÉXITO	2022-01-06	2025-02-28	activo	\N	Matriz	t
+CU_0603	RESOLUCIÓN DE PROBLEMAS: TÉCNICAS ANÁLISIS CAUSA RAÍZ	\N	\N	activo	\N	Matriz	t
 CU_0202	APRENDE A RESUMIR	\N	\N	\N	\N	Historial	t
 CU_0602	RESILIENCIA: RETOS ANTE LOS CAMBIOS ORGANIZACIONAL	\N	\N	activo	6	Historial	t
 CU_0583	REFORZAMIENTO COMPETENCIAS MATEMÁTICAS: ÁLGEBRA	\N	\N	activo	\N	Historial	t
 CU_0115	INTRODUCCIÓN AL CÓDIGO DE PROTECCIÓN MARÍTIMA (CADA 5 AÑOS)	\N	\N	activo	\N	Matriz	t
+CU_0006	ANÁLISIS DE CAUSA RAÍZ	\N	\N	inactivo	\N	Matriz	t
 CU_0200	APLICACIÓN DE LOS RECUBRIMIENTOS INDUSTRIALES I	\N	\N	activo	\N	Historial	t
 CU_0605	RESPUESTA A DERRAMES CURSO MODELO OMI OPRC NIVEL I (PTY)	\N	\N	inactivo	\N	Historial	t
 CU_0133	RENOVACIÓN DE LICENCIA PARA CAPITÁNES	2022-10-21	2024-01-25	activo	\N	Matriz	t
@@ -1199,7 +1243,6 @@ CU_0079	SISTEMA DE GESTIÓN LABORAL	2022-04-11	2022-10-19	\N	\N	Matriz	f
 CU_0362	FUNDAMENTOS DE LA GESTIÓN DE PROYECTO: RIESGOS	\N	\N	activo	\N	Historial	t
 CU_0080	SEAMANSHIP, LIFESAVINGS APPLIANCES	\N	\N	inactivo	5	Historial	t
 CU_0704	Curso nuevo 2	\N	\N	inactivo	\N	\N	t
-CU_0006	ANÁLISIS DE CAUSA RAÍZ	\N	\N	activo	\N	Matriz	t
 CU_0040	LA CAUSA RAÍZ DE LOS ACCIDENTES	2023-04-26	2023-06-08	\N	\N	Matriz	f
 CU_0055	ANALIZANDO LA CAUSA RAÍZ DE LOS ACCIDENTES E INCIDENTES	\N	\N	\N	\N	Matriz	f
 CU_0003	PRIMEROS AUXILIOS, RCP Y DEA	\N	\N	activo	1	Matriz	t
@@ -1776,7 +1819,6 @@ CU_0584	REFORZAMIENTO COMPETENCIAS MATEMÁTICAS: ARITMÉTICA	\N	\N	activo	\N	His
 CU_0595	REPASO ANUAL DE ÉTICA Y VALORES 2023	\N	\N	inactivo	10	Historial	t
 CU_0596	REPASO ANUAL DE ÉTICA Y VALORES 2024	\N	\N	inactivo	10	Historial	t
 CU_0597	REPASO ANUAL DE ÉTICA Y VALORES 2025	\N	\N	inactivo	10	Historial	t
-CU_0603	RESOLUCIÓN DE PROBLEMAS: TÉCNICAS ANÁLISIS CAUSA RAÍZ	\N	\N	activo	\N	Historial	t
 CU_0604	RESPUESTA A DERRAMES CURSO MODELO OMI OPRC NIVEL I	\N	\N	activo	\N	Historial	t
 CU_0610	SEAMANSHIP & LIFE SAVING APPLIANCES	\N	\N	activo	5	Historial	t
 CU_0615	SEGURIDAD, BIENESTAR Y SALUD	\N	\N	activo	11	Historial	t
@@ -14658,6 +14700,7 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1171	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6911	{"estado": null, "curso_id": "CU_0019", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 6911, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0019", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 6911, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:22:06.580562+00
 1176	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6606	{"estado": null, "curso_id": "CU_0003", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 6606, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0003", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 6606, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:22:34.300422+00
 1179	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2714	{"estado": null, "curso_id": "CU_0234", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2714, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0234", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2714, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:23:01.825807+00
+1693	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	INSERT	7017	\N	{"estado": "OK", "curso_id": "CU_0250", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 7017, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:28:03.223582+00
 1130	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6912	{"estado": null, "curso_id": "CU_0019", "puesto_id": 500064, "vigencia_anio": null, "id_puesto_curso": 6912, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0019", "puesto_id": 500064, "vigencia_anio": 0, "id_puesto_curso": 6912, "clasificacion_estrategica": "RECOMENDADO"}	2026-04-29 16:16:35.012337+00
 1131	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	5369	{"estado": null, "curso_id": "CU_0163", "puesto_id": 500064, "vigencia_anio": null, "id_puesto_curso": 5369, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0163", "puesto_id": 500064, "vigencia_anio": 0, "id_puesto_curso": 5369, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:16:48.395188+00
 1132	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2413	{"estado": null, "curso_id": "CU_0688", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2413, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0688", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2413, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:17:09.262994+00
@@ -14676,6 +14719,7 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1153	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2508	{"estado": null, "curso_id": "CU_0419", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2508, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0419", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2508, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:20:43.089998+00
 1154	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	5147	{"estado": null, "curso_id": "CU_0011", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 5147, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0011", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 5147, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:20:50.248499+00
 1156	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	5224	{"estado": null, "curso_id": "CU_0027", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 5224, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0027", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 5224, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:20:56.62631+00
+1695	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	DELETE	5458	{"estado": null, "curso_id": "CU_0038", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 5458, "clasificacion_estrategica": null}	\N	2026-05-18 13:29:14.83991+00
 1157	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	5260	{"estado": null, "curso_id": "CU_0102", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 5260, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0102", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 5260, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:21:03.87385+00
 1159	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2576	{"estado": null, "curso_id": "CU_0683", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2576, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0683", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2576, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:21:14.162835+00
 1161	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2588	{"estado": null, "curso_id": "CU_0283", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2588, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0283", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2588, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:21:23.480702+00
@@ -14694,6 +14738,7 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1178	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6214	{"estado": null, "curso_id": "CU_0039", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 6214, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0039", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 6214, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:22:51.096316+00
 1183	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2763	{"estado": null, "curso_id": "CU_0693", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2763, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0693", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2763, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:23:41.502716+00
 1185	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	4101	{"estado": null, "curso_id": "CU_0605", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 4101, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0605", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 4101, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:23:50.938753+00
+1696	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	DELETE	5495	{"estado": null, "curso_id": "CU_0023", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 5495, "clasificacion_estrategica": null}	\N	2026-05-18 13:32:17.363863+00
 1180	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	4484	{"estado": null, "curso_id": "CU_0479", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 4484, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0479", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 4484, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:23:06.25118+00
 1181	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2723	{"estado": null, "curso_id": "CU_0230", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2723, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0230", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2723, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:23:15.963984+00
 1182	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2730	{"estado": null, "curso_id": "CU_0401", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2730, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0401", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2730, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:23:27.346743+00
@@ -14712,6 +14757,7 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1379	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	6972	{"estado": null, "curso_id": "CU_0143", "puesto_id": 500082, "vigencia_anio": null, "id_puesto_curso": 6972, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0143", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 6972, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 17:34:48.274715+00
 1393	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	6160	{"estado": null, "curso_id": "CU_0052", "puesto_id": 500032, "vigencia_anio": null, "id_puesto_curso": 6160, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0052", "puesto_id": 500032, "vigencia_anio": 0, "id_puesto_curso": 6160, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 18:45:50.333788+00
 1406	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	4627	{"estado": null, "curso_id": "CU_0028", "puesto_id": 500031, "vigencia_anio": null, "id_puesto_curso": 4627, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0028", "puesto_id": 500031, "vigencia_anio": 0, "id_puesto_curso": 4627, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 19:00:04.72439+00
+1702	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	DELETE	6900	{"estado": null, "curso_id": "CU_0019", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 6900, "clasificacion_estrategica": null}	\N	2026-05-18 13:35:59.656486+00
 1186	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2788	{"estado": null, "curso_id": "CU_0013", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2788, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0013", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2788, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:23:58.162155+00
 1187	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	3278	{"estado": null, "curso_id": "CU_0252", "puesto_id": 500042, "vigencia_anio": null, "id_puesto_curso": 3278, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0252", "puesto_id": 500042, "vigencia_anio": 0, "id_puesto_curso": 3278, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:24:02.616081+00
 1188	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2800	{"estado": null, "curso_id": "CU_0182", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2800, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0182", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2800, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:24:10.860642+00
@@ -14730,6 +14776,7 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1204	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2973	{"estado": null, "curso_id": "CU_0155", "puesto_id": 500023, "vigencia_anio": null, "id_puesto_curso": 2973, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0155", "puesto_id": 500023, "vigencia_anio": 0, "id_puesto_curso": 2973, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:26:15.886427+00
 1205	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2940	{"estado": null, "curso_id": "CU_0124", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2940, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0124", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2940, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:26:21.046564+00
 1206	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2950	{"estado": null, "curso_id": "CU_0202", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2950, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0202", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2950, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:26:35.585779+00
+1706	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	DELETE	5788	{"estado": null, "curso_id": "CU_0022", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 5788, "clasificacion_estrategica": null}	\N	2026-05-18 13:38:23.1598+00
 1208	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6910	{"estado": null, "curso_id": "CU_0019", "puesto_id": 500023, "vigencia_anio": null, "id_puesto_curso": 6910, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0019", "puesto_id": 500023, "vigencia_anio": 0, "id_puesto_curso": 6910, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:26:55.304076+00
 1209	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	2966	{"estado": null, "curso_id": "CU_0155", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 2966, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0155", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 2966, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:27:00.337781+00
 1210	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6729	{"estado": null, "curso_id": "CU_0001", "puesto_id": 500023, "vigencia_anio": null, "id_puesto_curso": 6729, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0001", "puesto_id": 500023, "vigencia_anio": 0, "id_puesto_curso": 6729, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:27:04.737598+00
@@ -14748,6 +14795,7 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1223	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	4757	{"estado": null, "curso_id": "CU_0005", "puesto_id": 500030, "vigencia_anio": null, "id_puesto_curso": 4757, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0005", "puesto_id": 500030, "vigencia_anio": 0, "id_puesto_curso": 4757, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:33:27.672835+00
 1224	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	3052	{"estado": null, "curso_id": "CU_0043", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 3052, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0043", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 3052, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:34:21.208643+00
 1225	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	4758	{"estado": null, "curso_id": "CU_0005", "puesto_id": 500030, "vigencia_anio": null, "id_puesto_curso": 4758, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0005", "puesto_id": 500030, "vigencia_anio": 0, "id_puesto_curso": 4758, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:35:12.324297+00
+1707	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	DELETE	5789	{"estado": null, "curso_id": "CU_0022", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 5789, "clasificacion_estrategica": null}	\N	2026-05-18 13:38:27.780381+00
 1226	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	4058	{"estado": null, "curso_id": "CU_0163", "puesto_id": 500016, "vigencia_anio": null, "id_puesto_curso": 4058, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0163", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 4058, "clasificacion_estrategica": "NECESARIO"}	2026-04-29 16:35:34.051266+00
 1227	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	DELETE	4758	{"estado": "OK", "curso_id": "CU_0005", "puesto_id": 500030, "vigencia_anio": 0, "id_puesto_curso": 4758, "clasificacion_estrategica": "NECESARIO"}	\N	2026-04-29 16:36:05.800102+00
 1228	1be4f0d5-58a2-484f-925a-8d2623579c45	puesto_curso	UPDATE	4058	{"estado": "OK", "curso_id": "CU_0163", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 4058, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0163", "puesto_id": 500016, "vigencia_anio": 0, "id_puesto_curso": 4058, "clasificacion_estrategica": "APORTA"}	2026-04-29 16:36:21.942613+00
@@ -14993,6 +15041,51 @@ COPY "public"."log" ("id_log", "user_id", "tabla_afectada", "accion", "registro_
 1656	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0165	{"estado": null, "origen": "Matriz", "id_curso": "CU_0165", "is_active": true, "grupo_curso": null, "nombre_curso": "250 SERIES - DIESEL ENGINE - BASIC (ONLINE)", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0165", "is_active": true, "grupo_curso": null, "nombre_curso": "250 SERIES - DIESEL ENGINE - BASIC (ONLINE)", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:37:34.172667+00
 1657	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0236	{"estado": null, "origen": "Historial", "id_curso": "CU_0236", "is_active": true, "grupo_curso": null, "nombre_curso": "CÓMO DELEGAR TAREAS EN LA EMPRESA", "ultima_fecha": null, "primera_fecha": null}	{"estado": "inactivo", "origen": "Historial", "id_curso": "CU_0236", "is_active": true, "grupo_curso": null, "nombre_curso": "CÓMO DELEGAR TAREAS EN LA EMPRESA", "ultima_fecha": null, "primera_fecha": null}	2026-05-15 16:42:10.168+00
 1658	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	987	{"estado": "OK", "curso_id": "CU_0095", "puesto_id": 500001, "vigencia_anio": 0, "id_puesto_curso": 987, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0095", "puesto_id": 500001, "vigencia_anio": 0, "id_puesto_curso": 987, "clasificacion_estrategica": "NECESARIO"}	2026-05-15 20:09:32.316404+00
+1659	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0603	{"estado": "activo", "origen": "Historial", "id_curso": "CU_0603", "is_active": true, "grupo_curso": null, "nombre_curso": "RESOLUCIÓN DE PROBLEMAS: TÉCNICAS ANÁLISIS CAUSA RAÍZ", "ultima_fecha": null, "primera_fecha": null}	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0603", "is_active": true, "grupo_curso": null, "nombre_curso": "RESOLUCIÓN DE PROBLEMAS: TÉCNICAS ANÁLISIS CAUSA RAÍZ", "ultima_fecha": null, "primera_fecha": null}	2026-05-18 13:05:10.76606+00
+1660	44c828c1-057b-41d8-ae97-ce82e7a9a02a	cursos	UPDATE	CU_0006	{"estado": "activo", "origen": "Matriz", "id_curso": "CU_0006", "is_active": true, "grupo_curso": null, "nombre_curso": "ANÁLISIS DE CAUSA RAÍZ", "ultima_fecha": null, "primera_fecha": null}	{"estado": "inactivo", "origen": "Matriz", "id_curso": "CU_0006", "is_active": true, "grupo_curso": null, "nombre_curso": "ANÁLISIS DE CAUSA RAÍZ", "ultima_fecha": null, "primera_fecha": null}	2026-05-18 13:05:19.55276+00
+1661	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2907	{"estado": null, "curso_id": "CU_0603", "puesto_id": 500082, "vigencia_anio": null, "id_puesto_curso": 2907, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0603", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2907, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:08:40.561283+00
+1662	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	4867	{"estado": "OK", "curso_id": "CU_0006", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 4867, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0006", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 4867, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:08:55.245794+00
+1663	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	318	{"estado": "OK", "curso_id": "CU_0536", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 318, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0536", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 318, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:11:38.472092+00
+1664	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	468	{"estado": "OK", "curso_id": "CU_0596", "puesto_id": 500082, "vigencia_anio": null, "id_puesto_curso": 468, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0596", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 468, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:11:54.128473+00
+1665	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	854	{"estado": "OK", "curso_id": "CU_0416", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 854, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0416", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 854, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:12:01.97826+00
+1666	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	941	{"estado": "OK", "curso_id": "CU_0403", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 941, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0403", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 941, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:12:15.601715+00
+1667	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1360	{"estado": "OK", "curso_id": "CU_0324", "puesto_id": 500082, "vigencia_anio": 5, "id_puesto_curso": 1360, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0324", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1360, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:12:23.30591+00
+1668	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2295	{"estado": "OK", "curso_id": "CU_0235", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2295, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0235", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2295, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:12:32.951706+00
+1669	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2065	{"estado": "OK", "curso_id": "CU_0280", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2065, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0280", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2065, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:12:47.076228+00
+1670	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1813	{"estado": "OK", "curso_id": "CU_0263", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1813, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0263", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1813, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:12:58.564651+00
+1671	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1692	{"estado": "OK", "curso_id": "CU_0286", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1692, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0286", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1692, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:13:09.518418+00
+1675	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	4	{"estado": "OK", "curso_id": "CU_0003", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 4, "clasificacion_estrategica": "APORTA"}	{"estado": "OK", "curso_id": "CU_0003", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 4, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:13:52.432785+00
+1677	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2003	{"estado": "OK", "curso_id": "CU_0042", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2003, "clasificacion_estrategica": "APORTA"}	{"estado": "OK", "curso_id": "CU_0042", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2003, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:14:21.795561+00
+1672	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1638	{"estado": "OK", "curso_id": "CU_0485", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1638, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0485", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1638, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:13:18.383493+00
+1673	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1429	{"estado": "OK", "curso_id": "CU_0258", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1429, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0258", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1429, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:13:31.601845+00
+1674	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1003	{"estado": "OK", "curso_id": "CU_0598", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1003, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0598", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1003, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:13:39.218311+00
+1676	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1956	{"estado": "OK", "curso_id": "CU_0136", "puesto_id": 500082, "vigencia_anio": 2, "id_puesto_curso": 1956, "clasificacion_estrategica": "APORTA"}	{"estado": "OK", "curso_id": "CU_0136", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 1956, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:14:11.824407+00
+1678	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2907	{"estado": "OK", "curso_id": "CU_0603", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2907, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0603", "puesto_id": 500082, "vigencia_anio": 0, "id_puesto_curso": 2907, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:16:16.111703+00
+1679	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	78	{"estado": "OK", "curso_id": "CU_0003", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 78, "clasificacion_estrategica": "APORTA"}	{"estado": "OK", "curso_id": "CU_0003", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 78, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:19:30.371567+00
+1680	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	815	{"estado": "OK", "curso_id": "CU_0542", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 815, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0542", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 815, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:20:34.470963+00
+1681	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	878	{"estado": "OK", "curso_id": "CU_0416", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 878, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0416", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 878, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:20:47.297358+00
+1682	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1112	{"estado": "OK", "curso_id": "CU_0005", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1112, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0005", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1112, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:21:27.451233+00
+1683	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1190	{"estado": "OK", "curso_id": "CU_0211", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1190, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0211", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1190, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:22:11.662903+00
+1684	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1480	{"estado": "OK", "curso_id": "CU_0387", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1480, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0387", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1480, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:22:19.670954+00
+1685	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1523	{"estado": "OK", "curso_id": "CU_0611", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1523, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0611", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1523, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:23:04.466467+00
+1686	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1624	{"estado": "OK", "curso_id": "CU_0104", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1624, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0104", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1624, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:23:42.343133+00
+1687	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1857	{"estado": "OK", "curso_id": "CU_0285", "puesto_id": 500002, "vigencia_anio": 2, "id_puesto_curso": 1857, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0285", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1857, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:24:01.835079+00
+1688	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1953	{"estado": "OK", "curso_id": "CU_0279", "puesto_id": 500002, "vigencia_anio": 2, "id_puesto_curso": 1953, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0279", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1953, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:24:28.002858+00
+1689	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2061	{"estado": "OK", "curso_id": "CU_0264", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 2061, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0264", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 2061, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:24:39.195499+00
+1690	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	2293	{"estado": "OK", "curso_id": "CU_0306", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 2293, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0306", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 2293, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:24:48.120142+00
+1691	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	253	{"estado": "OK", "curso_id": "CU_0023", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 253, "clasificacion_estrategica": "APORTA"}	{"estado": "OK", "curso_id": "CU_0023", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 253, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:25:01.884848+00
+1692	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	718	{"estado": "OK", "curso_id": "CU_0038", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 718, "clasificacion_estrategica": "APORTA"}	{"estado": "OK", "curso_id": "CU_0038", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 718, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:25:24.473078+00
+1694	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	5327	{"estado": null, "curso_id": "CU_0020", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 5327, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0020", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 5327, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:28:31.027668+00
+1697	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	932	{"estado": "OK", "curso_id": "CU_0019", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 932, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0019", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 932, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:34:31.42268+00
+1698	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1603	{"estado": "OK", "curso_id": "CU_0550", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1603, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0550", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1603, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 13:34:56.314921+00
+1699	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1793	{"estado": "OK", "curso_id": "CU_0047", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1793, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0047", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1793, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:35:17.321855+00
+1700	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	1738	{"estado": "OK", "curso_id": "CU_0002", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1738, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0002", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 1738, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:35:24.993011+00
+1701	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	932	{"estado": "OK", "curso_id": "CU_0019", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 932, "clasificacion_estrategica": "RECOMENDADO"}	{"estado": "OK", "curso_id": "CU_0019", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 932, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:35:53.593453+00
+1703	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6667	{"estado": null, "curso_id": "CU_0004", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 6667, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0004", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 6667, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:36:24.494867+00
+1704	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	6281	{"estado": null, "curso_id": "CU_0015", "puesto_id": 500002, "vigencia_anio": null, "id_puesto_curso": 6281, "clasificacion_estrategica": null}	{"estado": "OK", "curso_id": "CU_0015", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 6281, "clasificacion_estrategica": "NECESARIO"}	2026-05-18 13:36:53.128979+00
+1705	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	999	{"estado": "OK", "curso_id": "CU_0095", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 999, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0095", "puesto_id": 500002, "vigencia_anio": 0, "id_puesto_curso": 999, "clasificacion_estrategica": "APORTA"}	2026-05-18 13:38:10.767496+00
+1708	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	447	{"estado": "OK", "curso_id": "CU_0594", "puesto_id": 500004, "vigencia_anio": 5, "id_puesto_curso": 447, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0594", "puesto_id": 500004, "vigencia_anio": 0, "id_puesto_curso": 447, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 14:49:20.70588+00
+1709	44c828c1-057b-41d8-ae97-ce82e7a9a02a	puesto_curso	UPDATE	506	{"estado": "OK", "curso_id": "CU_0596", "puesto_id": 500004, "vigencia_anio": 0, "id_puesto_curso": 506, "clasificacion_estrategica": "NECESARIO"}	{"estado": "OK", "curso_id": "CU_0596", "puesto_id": 500004, "vigencia_anio": 0, "id_puesto_curso": 506, "clasificacion_estrategica": "RECOMENDADO"}	2026-05-18 14:49:28.51152+00
 \.
 
 
@@ -15004,7 +15097,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1	APORTA	0	OK	CU_0003	500016
 2	APORTA	0	OK	CU_0003	500013
 3	APORTA	0	OK	CU_0003	500029
-4	APORTA	0	OK	CU_0003	500082
 7	APORTA	0	OK	CU_0003	500040
 6	APORTA	0	OK	CU_0003	500031
 8	NECESARIO	0	OK	CU_0003	500055
@@ -15077,7 +15169,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 75	APORTA	0	OK	CU_0003	500071
 76	APORTA	0	OK	CU_0003	500025
 77	APORTA	0	OK	CU_0003	500091
-78	APORTA	0	OK	CU_0003	500002
 79	APORTA	0	OK	CU_0003	500070
 80	APORTA	0	OK	CU_0003	500073
 81	APORTA	0	OK	CU_0003	500098
@@ -15135,11 +15226,14 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 134	APORTA	0	OK	CU_0614	500038
 135	APORTA	0	OK	CU_0614	500018
 136	APORTA	0	OK	CU_0614	500025
+4	NECESARIO	0	OK	CU_0003	500082
+78	RECOMENDADO	0	OK	CU_0003	500002
 137	APORTA	0	OK	CU_0614	500021
 138	APORTA	0	OK	CU_0614	500110
 139	APORTA	0	OK	CU_0614	500030
 140	APORTA	0	OK	CU_0614	500042
 141	APORTA	0	OK	CU_0618	500016
+253	NECESARIO	0	OK	CU_0023	500002
 143	APORTA	0	OK	CU_0618	500040
 144	APORTA	0	OK	CU_0618	500048
 145	APORTA	0	OK	CU_0618	500033
@@ -15250,7 +15344,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 250	APORTA	0	OK	CU_0023	500084
 251	APORTA	0	OK	CU_0023	500071
 252	APORTA	0	OK	CU_0023	500025
-253	APORTA	0	OK	CU_0023	500002
 254	APORTA	0	OK	CU_0023	500070
 255	APORTA	0	OK	CU_0023	500022
 256	APORTA	0	OK	CU_0023	500021
@@ -15315,7 +15408,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 315	NECESARIO	0	OK	CU_0415	500042
 316	NECESARIO	0	OK	CU_0536	500016
 317	NECESARIO	0	OK	CU_0536	500013
-318	NECESARIO	0	OK	CU_0536	500082
 319	NECESARIO	0	OK	CU_0536	500032
 320	NECESARIO	0	OK	CU_0536	500031
 321	APORTA	0	OK	CU_0536	500107
@@ -15444,7 +15536,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 444	APORTA	5	OK	CU_0594	500017
 445	APORTA	5	OK	CU_0594	500019
 446	APORTA	5	OK	CU_0594	500003
-447	NECESARIO	5	OK	CU_0594	500004
 448	APORTA	5	OK	CU_0594	500043
 449	NECESARIO	5	OK	CU_0594	500014
 450	APORTA	5	OK	CU_0594	500015
@@ -15465,7 +15556,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 465	NECESARIO	\N	OK	CU_0594	500042
 466	NECESARIO	\N	OK	CU_0596	500016
 467	NECESARIO	\N	OK	CU_0596	500013
-468	NECESARIO	\N	OK	CU_0596	500082
 469	NECESARIO	\N	OK	CU_0596	500031
 470	NECESARIO	\N	OK	CU_0596	500055
 471	NECESARIO	\N	OK	CU_0596	500012
@@ -15503,7 +15593,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 503	NECESARIO	0	OK	CU_0596	500024
 504	APORTA	0	OK	CU_0596	500017
 505	NECESARIO	0	OK	CU_0596	500019
-506	NECESARIO	0	OK	CU_0596	500004
 507	NECESARIO	0	OK	CU_0596	500043
 508	NECESARIO	0	OK	CU_0596	500014
 509	APORTA	0	OK	CU_0596	500015
@@ -15542,6 +15631,8 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 542	NECESARIO	0	OK	CU_0595	500007
 543	NECESARIO	0	OK	CU_0595	500088
 544	NECESARIO	0	OK	CU_0595	500028
+447	RECOMENDADO	0	OK	CU_0594	500004
+506	RECOMENDADO	0	OK	CU_0596	500004
 545	NECESARIO	0	OK	CU_0595	500051
 546	NECESARIO	0	OK	CU_0595	500001
 547	NECESARIO	0	OK	CU_0595	500077
@@ -15674,7 +15765,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 715	NECESARIO	0	OK	CU_0038	500045
 716	NECESARIO	0	OK	CU_0038	500071
 717	NECESARIO	0	OK	CU_0038	500025
-718	APORTA	0	OK	CU_0038	500002
 719	NECESARIO	0	OK	CU_0038	500099
 720	NECESARIO	0	OK	CU_0038	500021
 721	NECESARIO	0	OK	CU_0038	500110
@@ -15771,8 +15861,9 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 812	NECESARIO	0	OK	CU_0542	500090
 813	NECESARIO	0	OK	CU_0542	500084
 814	NECESARIO	0	OK	CU_0542	500025
-815	NECESARIO	0	OK	CU_0542	500002
 816	NECESARIO	0	OK	CU_0542	500098
+815	APORTA	0	OK	CU_0542	500002
+718	NECESARIO	0	OK	CU_0038	500002
 817	NECESARIO	0	OK	CU_0542	500021
 818	NECESARIO	0	OK	CU_0542	500110
 819	NECESARIO	0	OK	CU_0542	500023
@@ -15810,7 +15901,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 851	APORTA	0	OK	CU_0566	500042
 852	NECESARIO	0	OK	CU_0416	500016
 853	APORTA	0	OK	CU_0416	500013
-854	NECESARIO	0	OK	CU_0416	500082
 855	NECESARIO	0	OK	CU_0416	500031
 856	NECESARIO	0	OK	CU_0416	500048
 857	NECESARIO	0	OK	CU_0416	500005
@@ -15834,7 +15924,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 875	APORTA	0	OK	CU_0416	500090
 876	NECESARIO	0	OK	CU_0416	500084
 877	NECESARIO	0	OK	CU_0416	500025
-878	NECESARIO	0	OK	CU_0416	500002
 879	NECESARIO	0	OK	CU_0416	500098
 880	NECESARIO	0	OK	CU_0416	500078
 881	APORTA	0	OK	CU_0416	500095
@@ -15888,7 +15977,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 929	NECESARIO	0	OK	CU_0019	500045
 930	NECESARIO	0	OK	CU_0019	500071
 931	NECESARIO	0	OK	CU_0019	500025
-932	NECESARIO	0	OK	CU_0019	500002
 933	NECESARIO	0	OK	CU_0019	500098
 934	NECESARIO	0	OK	CU_0019	500022
 935	NECESARIO	0	OK	CU_0019	500021
@@ -15897,7 +15985,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 938	APORTA	0	OK	CU_0019	500086
 939	APORTA	0	OK	CU_0019	500023
 940	APORTA	0	OK	CU_0403	500016
-941	NECESARIO	0	OK	CU_0403	500082
 942	APORTA	0	OK	CU_0403	500032
 943	APORTA	0	OK	CU_0403	500031
 944	NECESARIO	0	OK	CU_0403	500012
@@ -15909,6 +15996,8 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 950	APORTA	0	OK	CU_0403	500046
 951	NECESARIO	0	OK	CU_0403	500054
 952	NECESARIO	0	OK	CU_0403	500093
+941	APORTA	0	OK	CU_0403	500082
+878	APORTA	0	OK	CU_0416	500002
 953	NECESARIO	0	OK	CU_0403	500087
 954	NECESARIO	0	OK	CU_0403	500007
 955	NECESARIO	0	OK	CU_0403	500088
@@ -15954,11 +16043,9 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 996	NECESARIO	0	OK	CU_0095	500090
 997	NECESARIO	0	OK	CU_0095	500084
 998	NECESARIO	0	OK	CU_0095	500025
-999	NECESARIO	0	OK	CU_0095	500002
 1000	NECESARIO	0	OK	CU_0095	500021
 1001	NECESARIO	0	OK	CU_0095	500023
 1002	NECESARIO	0	OK	CU_0598	500013
-1003	NECESARIO	0	OK	CU_0598	500082
 1004	NECESARIO	0	OK	CU_0598	500032
 1005	APORTA	0	OK	CU_0598	500031
 1006	APORTA	0	OK	CU_0598	500107
@@ -16044,6 +16131,8 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1086	NECESARIO	0	OK	CU_0005	500013
 1087	APORTA	0	OK	CU_0005	500082
 1088	NECESARIO	0	OK	CU_0005	500032
+1003	RECOMENDADO	0	OK	CU_0598	500082
+999	APORTA	0	OK	CU_0095	500002
 1089	NECESARIO	0	OK	CU_0005	500031
 1090	APORTA	0	OK	CU_0005	500048
 1091	APORTA	0	OK	CU_0005	500005
@@ -16067,7 +16156,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1109	NECESARIO	0	OK	CU_0005	500085
 1110	APORTA	0	OK	CU_0005	500018
 1111	APORTA	0	OK	CU_0005	500090
-1112	NECESARIO	0	OK	CU_0005	500002
 1113	APORTA	0	OK	CU_0005	500030
 1114	APORTA	0	OK	CU_0005	500023
 1115	APORTA	0	OK	CU_0005	500042
@@ -16128,6 +16216,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1170	NECESARIO	0	OK	CU_0312	500025
 1171	APORTA	0	OK	CU_0312	500002
 1172	APORTA	0	OK	CU_0312	500021
+1112	RECOMENDADO	0	OK	CU_0005	500002
 1174	NECESARIO	0	OK	CU_0211	500016
 1175	NECESARIO	0	OK	CU_0211	500031
 1176	APORTA	0	OK	CU_0211	500048
@@ -16144,7 +16233,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1187	APORTA	0	OK	CU_0211	500090
 1188	APORTA	0	OK	CU_0211	500084
 1189	APORTA	0	OK	CU_0211	500025
-1190	NECESARIO	0	OK	CU_0211	500002
 1191	NECESARIO	0	OK	CU_0211	500023
 1192	NECESARIO	0	OK	CU_0016	500016
 1193	NECESARIO	0	OK	CU_0016	500012
@@ -16179,6 +16267,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1222	NECESARIO	0	OK	CU_0016	500070
 1223	APORTA	0	OK	CU_0016	500073
 1224	APORTA	5	OK	CU_0016	500062
+1190	APORTA	0	OK	CU_0211	500002
 1225	APORTA	5	OK	CU_0214	500048
 1226	APORTA	0	OK	CU_0214	500087
 1227	APORTA	0	OK	CU_0214	500088
@@ -16314,7 +16403,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1357	NECESARIO	5	OK	CU_0471	500084
 1358	APORTA	5	OK	CU_0471	500073
 1359	APORTA	5	OK	CU_0324	500016
-1360	NECESARIO	5	OK	CU_0324	500082
 1361	NECESARIO	5	OK	CU_0324	500048
 1362	NECESARIO	5	OK	CU_0324	500033
 1363	NECESARIO	5	OK	CU_0324	500087
@@ -16383,7 +16471,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1426	NECESARIO	5	OK	CU_0581	500098
 1427	NECESARIO	0	OK	CU_0581	500062
 1428	NECESARIO	0	OK	CU_0258	500016
-1429	NECESARIO	0	OK	CU_0258	500082
 1430	NECESARIO	0	OK	CU_0258	500031
 1431	NECESARIO	0	OK	CU_0258	500048
 1432	NECESARIO	0	OK	CU_0258	500001
@@ -16434,7 +16521,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1477	NECESARIO	0	OK	CU_0387	500092
 1478	NECESARIO	0	OK	CU_0387	500085
 1479	NECESARIO	0	OK	CU_0387	500018
-1480	NECESARIO	0	OK	CU_0387	500002
 1481	NECESARIO	0	OK	CU_0387	500050
 1482	NECESARIO	0	OK	CU_0387	500070
 1483	NECESARIO	0	OK	CU_0387	500062
@@ -16451,6 +16537,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1494	NECESARIO	0	OK	CU_0611	500031
 1495	APORTA	0	OK	CU_0611	500093
 1496	APORTA	0	OK	CU_0611	500007
+1480	RECOMENDADO	0	OK	CU_0387	500002
 1497	NECESARIO	0	OK	CU_0611	500088
 1498	NECESARIO	0	OK	CU_0611	500035
 1499	NECESARIO	0	OK	CU_0611	500028
@@ -16477,7 +16564,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1520	NECESARIO	0	OK	CU_0611	500018
 1521	NECESARIO	0	OK	CU_0611	500045
 1522	NECESARIO	0	OK	CU_0611	500071
-1523	NECESARIO	0	OK	CU_0611	500002
 1524	APORTA	0	OK	CU_0611	500098
 1525	NECESARIO	0	OK	CU_0611	500062
 1526	NECESARIO	0	OK	CU_0611	500078
@@ -16557,7 +16643,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1600	NECESARIO	0	OK	CU_0550	500034
 1601	NECESARIO	0	OK	CU_0550	500045
 1602	NECESARIO	0	OK	CU_0550	500025
-1603	NECESARIO	0	OK	CU_0550	500002
 1604	NECESARIO	0	OK	CU_0550	500095
 1605	NECESARIO	0	OK	CU_0550	500021
 1606	APORTA	0	OK	CU_0550	500030
@@ -16578,7 +16663,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1621	APORTA	0	OK	CU_0104	500034
 1622	NECESARIO	0	OK	CU_0104	500104
 1623	APORTA	0	OK	CU_0104	500025
-1624	NECESARIO	0	OK	CU_0104	500002
 1625	NECESARIO	0	OK	CU_0104	500021
 1626	APORTA	0	OK	CU_0104	500110
 1627	NECESARIO	0	OK	CU_0104	500023
@@ -16587,12 +16671,13 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1630	APORTA	0	OK	CU_0469	500024
 1631	NECESARIO	0	OK	CU_0469	500017
 1632	NECESARIO	0	OK	CU_0469	500019
+1624	RECOMENDADO	0	OK	CU_0104	500002
+1603	RECOMENDADO	0	OK	CU_0550	500002
 1633	APORTA	0	OK	CU_0469	500034
 1634	NECESARIO	0	OK	CU_0469	500018
 1635	APORTA	0	OK	CU_0469	500021
 1636	NECESARIO	0	OK	CU_0469	500042
 1637	APORTA	0	OK	CU_0485	500016
-1638	NECESARIO	0	OK	CU_0485	500082
 1639	NECESARIO	0	OK	CU_0485	500031
 1640	NECESARIO	0	OK	CU_0485	500048
 1641	NECESARIO	0	OK	CU_0485	500005
@@ -16646,7 +16731,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1689	NECESARIO	0	OK	CU_0493	500084
 1690	NECESARIO	0	OK	CU_0493	500073
 1691	NECESARIO	0	OK	CU_0286	500016
-1692	NECESARIO	0	OK	CU_0286	500082
 1693	NECESARIO	0	OK	CU_0286	500031
 1694	NECESARIO	0	OK	CU_0286	500005
 1695	NECESARIO	0	OK	CU_0286	500033
@@ -16692,7 +16776,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1735	NECESARIO	0	OK	CU_0002	500043
 1736	NECESARIO	0	OK	CU_0002	500015
 1737	NECESARIO	0	OK	CU_0002	500018
-1738	NECESARIO	0	OK	CU_0002	500002
 1739	APORTA	0	OK	CU_0002	500098
 1740	APORTA	0	OK	CU_0002	500022
 1741	APORTA	0	OK	CU_0002	500021
@@ -16723,6 +16806,8 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1766	NECESARIO	0	OK	CU_0458	500096
 1767	NECESARIO	0	OK	CU_0458	500065
 1768	NECESARIO	0	OK	CU_0458	500041
+1638	APORTA	0	OK	CU_0485	500082
+1738	APORTA	0	OK	CU_0002	500002
 1769	NECESARIO	0	OK	CU_0458	500006
 1770	NECESARIO	0	OK	CU_0458	500092
 1771	NECESARIO	0	OK	CU_0458	500019
@@ -16747,7 +16832,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1790	NECESARIO	0	OK	CU_0047	500085
 1791	NECESARIO	0	OK	CU_0047	500104
 1792	NECESARIO	0	OK	CU_0047	500025
-1793	NECESARIO	0	OK	CU_0047	500002
 1794	NECESARIO	0	OK	CU_0047	500021
 1795	NECESARIO	0	OK	CU_0047	500064
 1796	NECESARIO	0	OK	CU_0001	500016
@@ -16767,7 +16851,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1810	NECESARIO	0	OK	CU_0001	500110
 1811	NECESARIO	0	OK	CU_0001	500042
 1812	NECESARIO	0	OK	CU_0263	500013
-1813	NECESARIO	0	OK	CU_0263	500082
 1814	NECESARIO	2	OK	CU_0263	500048
 1815	NECESARIO	2	OK	CU_0263	500058
 1816	NECESARIO	2	OK	CU_0263	500093
@@ -16811,7 +16894,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1854	APORTA	2	OK	CU_0285	500045
 1855	APORTA	2	OK	CU_0285	500071
 1856	APORTA	2	OK	CU_0285	500025
-1857	NECESARIO	2	OK	CU_0285	500002
 1858	NECESARIO	2	OK	CU_0285	500099
 1859	APORTA	2	OK	CU_0285	500021
 1860	APORTA	2	OK	CU_0285	500110
@@ -16859,6 +16941,8 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1902	NECESARIO	2	OK	CU_0010	500004
 1903	NECESARIO	2	OK	CU_0010	500015
 1904	NECESARIO	2	OK	CU_0010	500090
+1857	APORTA	0	OK	CU_0285	500002
+1793	APORTA	0	OK	CU_0047	500002
 1905	APORTA	2	OK	CU_0010	500071
 1906	NECESARIO	2	OK	CU_0010	500050
 1907	NECESARIO	2	OK	CU_0010	500073
@@ -16893,6 +16977,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1936	NECESARIO	2	OK	CU_0307	500078
 1937	NECESARIO	2	OK	CU_0307	500076
 1938	NECESARIO	2	OK	CU_0307	500023
+1956	RECOMENDADO	0	OK	CU_0136	500082
 1940	APORTA	2	OK	CU_0279	500016
 1941	APORTA	2	OK	CU_0279	500088
 1942	APORTA	2	OK	CU_0279	500001
@@ -16906,10 +16991,8 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 1950	NECESARIO	2	OK	CU_0279	500018
 1951	NECESARIO	2	OK	CU_0279	500090
 1952	NECESARIO	2	OK	CU_0279	500084
-1953	NECESARIO	2	OK	CU_0279	500002
 1954	APORTA	2	OK	CU_0279	500023
 1955	NECESARIO	2	OK	CU_0136	500016
-1956	APORTA	2	OK	CU_0136	500082
 1957	APORTA	2	OK	CU_0136	500031
 1958	APORTA	2	OK	CU_0136	500005
 1959	APORTA	2	OK	CU_0136	500087
@@ -16956,7 +17039,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 2000	APORTA	0	OK	CU_0495	500073
 2001	APORTA	0	OK	CU_0042	500016
 2002	NECESARIO	0	OK	CU_0042	500029
-2003	APORTA	0	OK	CU_0042	500082
 2004	APORTA	0	OK	CU_0042	500031
 2005	APORTA	0	OK	CU_0042	500058
 2006	APORTA	0	OK	CU_0042	500087
@@ -16994,6 +17076,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 2039	NECESARIO	0	OK	CU_0160	500021
 2040	NECESARIO	0	OK	CU_0160	500023
 2029	NECESARIO	0	OK	CU_0160	500105
+2003	RECOMENDADO	0	OK	CU_0042	500082
 2041	NECESARIO	0	OK	CU_0264	500016
 2042	APORTA	0	OK	CU_0264	500029
 2043	APORTA	0	OK	CU_0264	500082
@@ -17014,11 +17097,9 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 2058	NECESARIO	0	OK	CU_0264	500018
 2059	NECESARIO	0	OK	CU_0264	500071
 2060	NECESARIO	0	OK	CU_0264	500091
-2061	NECESARIO	0	OK	CU_0264	500002
 2062	NECESARIO	0	OK	CU_0264	500030
 2063	NECESARIO	0	OK	CU_0264	500023
 2064	NECESARIO	0	OK	CU_0280	500016
-2065	NECESARIO	0	OK	CU_0280	500082
 2066	APORTA	0	OK	CU_0280	500032
 2067	APORTA	0	OK	CU_0280	500033
 2068	APORTA	0	OK	CU_0280	500088
@@ -17130,6 +17211,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 2174	APORTA	0	OK	CU_0187	500015
 2175	APORTA	0	OK	CU_0187	500018
 2176	APORTA	0	OK	CU_0187	500095
+2061	APORTA	0	OK	CU_0264	500002
 2177	APORTA	0	OK	CU_0187	500023
 2178	APORTA	0	OK	CU_0187	500042
 2179	APORTA	5	OK	CU_0330	500016
@@ -17246,9 +17328,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 2290	NECESARIO	0	OK	CU_0306	500014
 2291	NECESARIO	0	OK	CU_0306	500015
 2292	NECESARIO	0	OK	CU_0306	500018
-2293	NECESARIO	0	OK	CU_0306	500002
 2294	NECESARIO	0	OK	CU_0235	500016
-2295	NECESARIO	0	OK	CU_0235	500082
 2296	APORTA	0	OK	CU_0235	500088
 2297	APORTA	0	OK	CU_0235	500028
 2298	APORTA	0	OK	CU_0235	500027
@@ -17266,6 +17346,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 2310	APORTA	0	OK	CU_0243	500088
 2311	APORTA	0	OK	CU_0243	500028
 2312	APORTA	0	OK	CU_0243	500106
+2293	APORTA	0	OK	CU_0306	500002
 2313	APORTA	0	OK	CU_0243	500027
 2314	APORTA	0	OK	CU_0243	500017
 2315	APORTA	0	OK	CU_0243	500018
@@ -17830,7 +17911,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 2901	\N	\N	\N	CU_0024	500018
 2902	\N	\N	\N	CU_0024	500090
 2903	\N	\N	\N	CU_0024	500084
-2907	\N	\N	\N	CU_0603	500082
 2908	\N	\N	\N	CU_0603	500088
 2909	\N	\N	\N	CU_0603	500106
 2910	\N	\N	\N	CU_0603	500049
@@ -19905,7 +19985,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 4865	NECESARIO	0	OK	CU_0006	500016
 5034	NECESARIO	0	OK	CU_0109	500013
 4866	NECESARIO	0	OK	CU_0006	500029
-4867	NECESARIO	0	OK	CU_0006	500082
 5035	NECESARIO	0	OK	CU_0109	500082
 4968	RECOMENDADO	0	OK	CU_0006	500022
 4979	NECESARIO	0	OK	CU_0030	500032
@@ -19928,6 +20007,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 4882	NECESARIO	0	OK	CU_0006	500087
 4883	NECESARIO	0	OK	CU_0006	500007
 4885	NECESARIO	0	OK	CU_0006	500088
+4867	RECOMENDADO	0	OK	CU_0006	500082
 5044	\N	\N	\N	CU_0109	500085
 5045	\N	\N	\N	CU_0109	500152
 5046	\N	\N	\N	CU_0109	500152
@@ -20185,7 +20265,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 5324	\N	\N	\N	CU_0020	500045
 5325	\N	\N	\N	CU_0020	500090
 5326	\N	\N	\N	CU_0020	500025
-5327	\N	\N	\N	CU_0020	500002
 5328	\N	\N	\N	CU_0020	500152
 5329	\N	\N	\N	CU_0020	500152
 5370	\N	\N	\N	CU_0026	500018
@@ -20252,6 +20331,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 5234	NECESARIO	0	OK	CU_0102	500005
 5288	NECESARIO	0	OK	CU_0020	500005
 5290	NECESARIO	0	OK	CU_0020	500058
+5327	NECESARIO	0	OK	CU_0020	500002
 5419	\N	\N	\N	CU_0043	500080
 5420	\N	\N	\N	CU_0043	500047
 5421	\N	\N	\N	CU_0043	500041
@@ -20285,7 +20365,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 5455	\N	\N	\N	CU_0038	500034
 5456	\N	\N	\N	CU_0038	500038
 5457	\N	\N	\N	CU_0038	500025
-5458	\N	\N	\N	CU_0038	500002
 5459	\N	\N	\N	CU_0038	500152
 5465	\N	\N	\N	CU_0023	500040
 5468	\N	\N	\N	CU_0023	500008
@@ -20315,7 +20394,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 5492	\N	\N	\N	CU_0023	500045
 5493	\N	\N	\N	CU_0023	500025
 5494	\N	\N	\N	CU_0023	500025
-5495	\N	\N	\N	CU_0023	500002
 5496	\N	\N	\N	CU_0023	500152
 5504	\N	\N	\N	CU_0146	500152
 5505	\N	\N	\N	CU_0146	500152
@@ -20603,8 +20681,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 5785	\N	\N	\N	CU_0022	500090
 5786	\N	\N	\N	CU_0022	500084
 5787	\N	\N	\N	CU_0022	500025
-5788	\N	\N	\N	CU_0022	500002
-5789	\N	\N	\N	CU_0022	500002
 5790	\N	\N	\N	CU_0022	500070
 5791	\N	\N	\N	CU_0022	500073
 5792	\N	\N	\N	CU_0022	500152
@@ -21053,7 +21129,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 6278	\N	\N	\N	CU_0015	500018
 6279	\N	\N	\N	CU_0015	500045
 6280	\N	\N	\N	CU_0015	500025
-6281	\N	\N	\N	CU_0015	500002
 6282	\N	\N	\N	CU_0015	500152
 6283	\N	\N	\N	CU_0015	500152
 6289	\N	\N	\N	CU_0158	500152
@@ -21118,6 +21193,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 6175	NECESARIO	0	OK	CU_0039	500061
 6326	NECESARIO	0	OK	CU_0078	500005
 6259	NECESARIO	0	OK	CU_0015	500058
+6281	NECESARIO	0	OK	CU_0015	500002
 6339	\N	\N	\N	CU_0078	500015
 6340	\N	\N	\N	CU_0078	500085
 6341	\N	\N	\N	CU_0078	500090
@@ -21418,7 +21494,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 6664	\N	\N	\N	CU_0004	500071
 6665	\N	\N	\N	CU_0004	500025
 6666	\N	\N	\N	CU_0004	500025
-6667	\N	\N	\N	CU_0004	500002
 6668	\N	\N	\N	CU_0004	500152
 6669	\N	\N	\N	CU_0004	500098
 6670	\N	\N	\N	CU_0004	500098
@@ -21466,6 +21541,7 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 6617	NECESARIO	0	OK	CU_0004	500093
 6619	NECESARIO	0	OK	CU_0004	500087
 6622	NECESARIO	0	OK	CU_0004	500088
+6667	NECESARIO	0	OK	CU_0004	500002
 6708	\N	\N	\N	CU_0001	500026
 6709	\N	\N	\N	CU_0001	500026
 6710	\N	\N	\N	CU_0001	500043
@@ -21645,7 +21721,6 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 6897	\N	\N	\N	CU_0019	500045
 6898	\N	\N	\N	CU_0019	500025
 6899	\N	\N	\N	CU_0019	500025
-6900	\N	\N	\N	CU_0019	500002
 6901	\N	\N	\N	CU_0019	500070
 6902	\N	\N	\N	CU_0019	500152
 6903	\N	\N	\N	CU_0019	500152
@@ -22005,6 +22080,20 @@ COPY "public"."puesto_curso" ("id_puesto_curso", "clasificacion_estrategica", "v
 6620	NECESARIO	0	OK	CU_0004	500007
 3641	NECESARIO	0	OK	CU_0061	500088
 4565	NECESARIO	0	OK	CU_0159	500088
+318	APORTA	0	OK	CU_0536	500082
+468	RECOMENDADO	0	OK	CU_0596	500082
+854	APORTA	0	OK	CU_0416	500082
+1360	APORTA	0	OK	CU_0324	500082
+2295	APORTA	0	OK	CU_0235	500082
+2065	APORTA	0	OK	CU_0280	500082
+1813	APORTA	0	OK	CU_0263	500082
+1692	RECOMENDADO	0	OK	CU_0286	500082
+1429	APORTA	0	OK	CU_0258	500082
+2907	NECESARIO	0	OK	CU_0603	500082
+1523	RECOMENDADO	0	OK	CU_0611	500002
+1953	RECOMENDADO	0	OK	CU_0279	500002
+7017	NECESARIO	0	OK	CU_0250	500002
+932	NECESARIO	0	OK	CU_0019	500002
 \.
 
 
@@ -22068,7 +22157,7 @@ COPY "storage"."vector_indexes" ("id", "name", "bucket_id", "data_type", "dimens
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 332, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 360, true);
 
 
 --
@@ -22096,7 +22185,7 @@ SELECT pg_catalog.setval('"public"."historial_cursos_id_historial_seq"', 11121, 
 -- Name: log_id_log_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."log_id_log_seq"', 1658, true);
+SELECT pg_catalog.setval('"public"."log_id_log_seq"', 1709, true);
 
 
 --
@@ -22110,6 +22199,6 @@ SELECT pg_catalog.setval('"public"."puestos_id_puesto_seq"', 500184, true);
 -- PostgreSQL database dump complete
 --
 
--- \unrestrict CawuQQSEpsx89TyY8BjPa4UokXdpeSv7BlxcOsswp5XV8OdNQPGRbQTHf8B2YNn
+-- \unrestrict 9tdAQigGpXyOMteUojypKZ2RCAtfCD7VradeNTIbV6a6f0oLEJbZfbyicVu4hJR
 
 RESET ALL;
