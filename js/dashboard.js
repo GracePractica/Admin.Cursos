@@ -93,6 +93,11 @@ async function loadDataQualityStats() {
         updateStatWithProgress('cursosInactivos', inactivos, inactivosPct);
         updateStatWithProgress('colabSinPuesto', colabSinPuesto, sinPuestoPct);
 
+        // Mostrar 0 provisional para duplicados mientras se calcula (evita parpadeos)
+        updateStatWithProgress('cursosDuplicados', 0, 0);
+        // Ceder al event loop para permitir que el navegador renderice el 0 antes del cálculo pesado
+        await new Promise(resolve => setTimeout(resolve, 0));
+
         // Cálculo costoso de duplicados en background (con bucketing optimizado)
         // No bloquea la UI siendo async
         const duplicados = getCourseDuplicatesCount(cursosSmall || []);
