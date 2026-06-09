@@ -39,7 +39,7 @@ async function restorePuesto(puestoId) {
         if (error) throw error;
 
         showAlert('Puesto restaurado correctamente', 'success');
-        await loadPuestos();
+        await loadPuestos(PAGINATION.puestos.page);
     } catch (error) {
         console.error('Error restaurando puesto:', error);
         showAlert('Error al restaurar el puesto: ' + (error.message || error), 'error');
@@ -50,16 +50,16 @@ function setupPuestosListeners() {
 
     document.getElementById('filterDepartamentoPuesto')?.addEventListener('input', (e) => {
         currentFilters.departamento = e.target.value;
-        loadPuestos();
+        loadPuestos(PAGINATION.puestos.page);
     });
 
     document.getElementById('searchPuesto')?.addEventListener('input', () => {
-        loadPuestos();
+        loadPuestos(PAGINATION.puestos.page);
     });
 
     // Inicializar dropdown-autocomplete para filtros y búsqueda
-    setupDropdownAutocomplete('filterDepartamentoPuesto', 'filterDepartamentoPuesto_list', () => loadPuestos());
-    setupDropdownAutocomplete('searchPuesto', 'searchPuesto_results', () => loadPuestos());
+    setupDropdownAutocomplete('filterDepartamentoPuesto', 'filterDepartamentoPuesto_list', () => loadPuestos(PAGINATION.puestos.page));
+    setupDropdownAutocomplete('searchPuesto', 'searchPuesto_results', () => loadPuestos(PAGINATION.puestos.page));
 }
 
 // === PUESTOS ===
@@ -237,7 +237,7 @@ async function savePuesto() {
 
         showAlert('Puesto agregado exitosamente', 'success');
         closeModal();
-        await loadPuestos();
+        await loadPuestos(PAGINATION.puestos.page);
 
     } catch (error) {
         console.error('Error guardando puesto:', error);
@@ -336,7 +336,7 @@ async function updatePuesto() {
 
         showAlert('Puesto actualizado exitosamente', 'success');
         closeModal();
-        await loadPuestos();
+        await loadPuestos(PAGINATION.puestos.page);
 
     } catch (error) {
         console.error('Error actualizando puesto:', error);
@@ -358,7 +358,7 @@ async function deletePuesto(puestoId, depId = null) {
                 .eq('dep_id', depId);
 
             showAlert('Departamento eliminado del puesto exitosamente', 'success');
-            await loadPuestos();
+            await loadPuestos(PAGINATION.puestos.page);
 
         } catch (error) {
             console.error('Error eliminando departamento del puesto:', error);
@@ -383,7 +383,7 @@ async function deletePuesto(puestoId, depId = null) {
             if (error) throw error;
 
             showAlert('Puesto eliminado exitosamente', 'success');
-            await loadPuestos();
+            await loadPuestos(PAGINATION.puestos.page);
 
         } catch (error) {
             console.error('Error eliminando puesto:', error);

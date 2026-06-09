@@ -99,25 +99,25 @@ function setupColaboradoresListeners() {
 
     document.getElementById('filterAsignacionColab')?.addEventListener('input', (e) => {
         currentFilters.asignacion = e.target.value;
-        loadColaboradores();
+        loadColaboradores(PAGINATION.colaboradores.page);
     });
 
     document.getElementById('filterDepColab')?.addEventListener('input', (e) => {
         currentFilters.departamento = e.target.value;
-        loadColaboradores();
+        loadColaboradores(PAGINATION.colaboradores.page);
     });
 
     document.getElementById('searchColab')?.addEventListener('input', (e) => {
         currentFilters.searchTerm = e.target.value;
-        loadColaboradores();
+        loadColaboradores(PAGINATION.colaboradores.page);
     });
 
     // Poblar el autocomplete de Departamento ID con valores únicos
     loadDepIdsFilter();
 
     // Inicializar dropdown-autocomplete para los filtros
-    setupDropdownAutocomplete('filterAsignacionColab', 'filterAsignacionColab_list');
-    setupDropdownAutocomplete('filterDepColab', 'filterDepColab_list');
+    setupDropdownAutocomplete('filterAsignacionColab', 'filterAsignacionColab_list', () => loadColaboradores(PAGINATION.colaboradores.page));
+    setupDropdownAutocomplete('filterDepColab', 'filterDepColab_list', () => loadColaboradores(PAGINATION.colaboradores.page));
 }
 
 async function loadDepIdsFilter() {
@@ -404,7 +404,7 @@ async function saveColaborador() {
 
         showAlert('Colaborador agregado exitosamente', 'success');
         closeModal();
-        await loadColaboradores();
+        await loadColaboradores(PAGINATION.colaboradores.page);
 
     } catch (error) {
         console.error('Error guardando colaborador:', error);
@@ -516,7 +516,7 @@ async function updateColaborador() {
 
         showAlert('Colaborador actualizado exitosamente', 'success');
         closeModal();
-        await loadColaboradores();
+        await loadColaboradores(PAGINATION.colaboradores.page);
 
     } catch (error) {
         console.error('Error actualizando colaborador:', error);
@@ -775,7 +775,7 @@ async function deleteColaborador(colaboradorId, nombre) {
 
             showAlert('Colaborador y datos relacionados eliminados exitosamente', 'success');
             closeModal();
-            await loadColaboradores();
+            await loadColaboradores(PAGINATION.colaboradores.page);
         } catch (error) {
             console.error('Error eliminando colaborador:', error);
             showAlert('Error al eliminar el colaborador: ' + error.message, 'error');
@@ -807,7 +807,7 @@ async function restoreColaborador(colaboradorId) {
         if (error) throw error;
 
         showAlert('Colaborador restaurado correctamente', 'success');
-        await loadColaboradores();
+        await loadColaboradores(PAGINATION.colaboradores.page);
     } catch (error) {
         console.error('Error restaurando colaborador:', error);
         showAlert('Error al restaurar el colaborador: ' + (error.message || error), 'error');

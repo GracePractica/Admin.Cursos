@@ -36,7 +36,7 @@ async function initHistorial() {
             { value: 'Pendiente', label: 'Pendiente' }
         ]);
     } catch (e) {}
-    setupDropdownAutocomplete('filterEstadoHistorial', 'filterEstadoHistorial_list', () => renderHistorialTable(1));
+    setupDropdownAutocomplete('filterEstadoHistorial', 'filterEstadoHistorial_list', () => renderHistorialTable(PAGINATION.historial.page));
 
     // Listener para el botón de agregar
     addHistorialButton?.addEventListener('click', () => {
@@ -102,7 +102,7 @@ async function initHistorial() {
         // Mostrar botón de agregar
         if (addHistorialButton) addHistorialButton.style.display = 'flex';
 
-        loadHistorialPorColaborador(1);
+        loadHistorialPorColaborador(PAGINATION.historial.page);
     }
 
     // Limpia la selección actual y reinicia la búsqueda
@@ -164,12 +164,12 @@ async function initHistorial() {
 
     // Búsqueda local en resultados
     resultsSearchInput?.addEventListener('input', (e) => {
-        renderHistorialTable(1);
+        renderHistorialTable(PAGINATION.historial.page);
     });
 
     // Filtro por estado
     filterEstadoInput?.addEventListener('input', () => {
-        renderHistorialTable(1);
+        renderHistorialTable(PAGINATION.historial.page);
     });
 }
 
@@ -243,6 +243,7 @@ async function loadHistorialPorColaborador(page = 1, forceRefresh = false) {
 
 // Renderiza la tabla de historial con los datos cargados
 function renderHistorialTable(page = 1) {
+    PAGINATION.historial.page = page;
     const tbody = document.getElementById('historialTableBody');
     const pagination = document.getElementById('paginationHistorial');
     const searchTerm = document.getElementById('searchHistorial')?.value.toLowerCase();

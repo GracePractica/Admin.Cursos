@@ -38,7 +38,7 @@ async function restoreCurso(cursoId) {
         if (error) throw error;
 
         showAlert('Curso restaurado correctamente', 'success');
-        await loadCursos();
+        await loadCursos(PAGINATION.cursos.page);
     } catch (error) {
         console.error('Error restaurando curso:', error);
         showAlert('Error al restaurar el curso: ' + (error.message || error), 'error');
@@ -49,26 +49,26 @@ function setupCursosListeners() {
 
     document.getElementById('filterPuestoCurso')?.addEventListener('change', (e) => {
         currentFilters.puesto = e.target.value;
-        loadCursos();
+        loadCursos(PAGINATION.cursos.page);
     });
 
     document.getElementById('filterClasificacion')?.addEventListener('change', (e) => {
         currentFilters.clasificacion = e.target.value;
-        loadCursos();
+        loadCursos(PAGINATION.cursos.page);
     });
 
     document.getElementById('searchCurso')?.addEventListener('input', () => {
-        loadCursos();
+        loadCursos(PAGINATION.cursos.page);
     });
 
     const filterEstadoInput = document.getElementById('filterEstado');
     filterEstadoInput?.addEventListener('input', () => {
-        loadCursos();
+        loadCursos(PAGINATION.cursos.page);
     });
 
     // Inicializar dropdown-autocomplete para búsqueda y estado
-    setupDropdownAutocomplete('searchCurso', 'searchCurso_results', () => loadCursos());
-    setupDropdownAutocomplete('filterEstado', 'filterEstado_list', () => loadCursos());
+    setupDropdownAutocomplete('searchCurso', 'searchCurso_results', () => loadCursos(PAGINATION.cursos.page));
+    setupDropdownAutocomplete('filterEstado', 'filterEstado_list', () => loadCursos(PAGINATION.cursos.page));
 }
 
 // === CURSOS ===
@@ -323,7 +323,7 @@ async function saveCurso() {
 
         showAlert('Curso agregado exitosamente', 'success');
         closeModal();
-        await loadCursos();
+        await loadCursos(PAGINATION.cursos.page);
 
     } catch (error) {
         console.error('Error guardando curso:', error);
@@ -449,7 +449,7 @@ async function updateCurso() {
 
         showAlert('Curso actualizado exitosamente', 'success');
         closeModal();
-        await loadCursos();
+        await loadCursos(PAGINATION.cursos.page);
 
     } catch (error) {
         console.error('Error actualizando curso:', error);
@@ -706,7 +706,7 @@ async function transferirYEliminarCurso(cursoOrigenId, cursoDestinoId, cursoNomb
 
         showAlert(`Curso "${cursoNombre}" eliminado. Sus registros fueron transferidos exitosamente.`, 'success');
         closeModal();
-        await loadCursos();
+        await loadCursos(PAGINATION.cursos.page);
 
         // Restablecer botón
         const confirmBtn = document.getElementById('confirmModal');
@@ -739,7 +739,7 @@ async function confirmDeleteCurso(cursoId) {
 
         showAlert('Curso eliminado exitosamente', 'success');
         closeModal();
-        await loadCursos();
+        await loadCursos(PAGINATION.cursos.page);
 
         const confirmBtn = document.getElementById('confirmModal');
         if (confirmBtn) {

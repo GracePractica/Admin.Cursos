@@ -24,11 +24,11 @@ function setupDepartamentosListeners() {
     document.getElementById('addDepartamentoButton')?.addEventListener('click', () => openAddDepartamentoModal());
 
     document.getElementById('searchDepartamento')?.addEventListener('input', (e) => {
-        loadDepartamentos();
+        loadDepartamentos(PAGINATION.departamentos.page);
     });
 
     // Inicializar comportamiento dropdown-autocomplete
-    setupDropdownAutocomplete('searchDepartamento', 'searchDepartamento_results', () => loadDepartamentos());
+    setupDropdownAutocomplete('searchDepartamento', 'searchDepartamento_results', () => loadDepartamentos(PAGINATION.departamentos.page));
 }
 
 // === DEPARTAMENTOS ===
@@ -124,7 +124,7 @@ async function restoreDepartamento(departamentoId) {
         if (error) throw error;
 
         showAlert('Departamento restaurado correctamente', 'success');
-        await loadDepartamentos();
+        await loadDepartamentos(PAGINATION.departamentos.page);
     } catch (error) {
         console.error('Error restaurando departamento:', error);
         showAlert('Error al restaurar el departamento: ' + (error.message || error), 'error');
@@ -172,7 +172,7 @@ async function saveDepartamento() {
 
         showAlert('Departamento agregado exitosamente', 'success');
         closeModal();
-        await loadDepartamentos();
+        await loadDepartamentos(PAGINATION.departamentos.page);
         // await loadDataQualityStats();
 
     } catch (error) {
@@ -246,7 +246,7 @@ async function updateDepartamento() {
 
         showAlert('Departamento actualizado exitosamente', 'success');
         closeModal();
-        await loadDepartamentos();
+        await loadDepartamentos(PAGINATION.departamentos.page);
 
     } catch (error) {
         console.error('Error actualizando departamento:', error);
