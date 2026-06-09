@@ -243,10 +243,16 @@ function renderAsignacionesTable(page = 1) {
 
     if (searchTerm) {
         filteredData = filteredData.filter(item => {
-            const curso = asignacionesMetadata[item.curso_id];
-            return curso && (
-                curso.nombre_curso.toLowerCase().includes(searchTerm) ||
-                curso.id_curso.toLowerCase().includes(searchTerm)
+            const curso = asignacionesMetadata[item.curso_id] || {};
+            const vigencia = item.vigencia_anio !== null && item.vigencia_anio !== undefined
+                ? item.vigencia_anio.toString().toLowerCase()
+                : '';
+
+            return (
+                item.clasificacion_estrategica?.toLowerCase().includes(searchTerm) ||
+                vigencia.includes(searchTerm) ||
+                item.estado?.toLowerCase().includes(searchTerm) ||
+                curso.origen?.toLowerCase().includes(searchTerm)
             );
         });
     }
