@@ -161,7 +161,17 @@ async function initGestionPorPuesto() {
     const triggerRender = () => renderAsignacionesTable(1);
 
     courseSearchInput.addEventListener('input', triggerRender);
-    filterClasificacion?.addEventListener('change', triggerRender);
+    // Inicializar dropdown-autocomplete para clasificación
+    try {
+        populateDropdownOptions('filterClasificacionAsignacion_list', [
+            { value: '', label: 'Todas' },
+            { value: 'NECESARIO', label: 'NECESARIO' },
+            { value: 'APORTA', label: 'APORTA' },
+            { value: 'RECOMENDADO', label: 'RECOMENDADO' }
+        ]);
+    } catch (e) {}
+    setupDropdownAutocomplete('filterClasificacionAsignacion', 'filterClasificacionAsignacion_list', triggerRender);
+    filterClasificacion?.addEventListener('input', triggerRender);
 }
 
 // Carga los cursos asignados a un puesto específico

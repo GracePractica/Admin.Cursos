@@ -27,6 +27,17 @@ async function initHistorial() {
     const filterEstadoInput = document.getElementById('filterEstadoHistorial');
     const addHistorialButton = document.getElementById('addHistorialButton');
 
+    // Inicializar dropdown-autocomplete para filtro de estado
+    try {
+        populateDropdownOptions('filterEstadoHistorial_list', [
+            { value: '', label: 'Todos' },
+            { value: 'Completado', label: 'Completado' },
+            { value: 'En Proceso', label: 'En Proceso' },
+            { value: 'Pendiente', label: 'Pendiente' }
+        ]);
+    } catch (e) {}
+    setupDropdownAutocomplete('filterEstadoHistorial', 'filterEstadoHistorial_list', () => renderHistorialTable(1));
+
     // Listener para el botón de agregar
     addHistorialButton?.addEventListener('click', () => {
         const colabId = hiddenIdInput.value;
@@ -157,7 +168,7 @@ async function initHistorial() {
     });
 
     // Filtro por estado
-    filterEstadoInput?.addEventListener('change', (e) => {
+    filterEstadoInput?.addEventListener('input', () => {
         renderHistorialTable(1);
     });
 }

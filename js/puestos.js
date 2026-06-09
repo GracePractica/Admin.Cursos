@@ -48,7 +48,7 @@ async function restorePuesto(puestoId) {
 function setupPuestosListeners() {
     document.getElementById('addPuestoButton')?.addEventListener('click', () => openAddPuestoModal());
 
-    document.getElementById('filterDepartamentoPuesto')?.addEventListener('change', (e) => {
+    document.getElementById('filterDepartamentoPuesto')?.addEventListener('input', (e) => {
         currentFilters.departamento = e.target.value;
         loadPuestos();
     });
@@ -56,6 +56,10 @@ function setupPuestosListeners() {
     document.getElementById('searchPuesto')?.addEventListener('input', () => {
         loadPuestos();
     });
+
+    // Inicializar dropdown-autocomplete para filtros y búsqueda
+    setupDropdownAutocomplete('filterDepartamentoPuesto', 'filterDepartamentoPuesto_list', () => loadPuestos());
+    setupDropdownAutocomplete('searchPuesto', 'searchPuesto_results', () => loadPuestos());
 }
 
 // === PUESTOS ===
@@ -93,6 +97,14 @@ async function loadPuestos(page = 1) {
         if (error) throw error;
 
         let puestos = allPuestos || [];
+
+        // Inicializar las opciones del dropdown de búsqueda de puestos solo una vez
+        const searchPuestoResults = document.getElementById('searchPuesto_results');
+        if (searchPuestoResults && !searchPuestoResults.hasChildNodes()) {
+            try {
+                populateDropdownOptions('searchPuesto_results', (allPuestos || []).map(p => ({ value: p.id_puesto, label: p.nombre_puesto })));
+            } catch (e) {}
+        }
 
         if (searchTerm) {
             puestos = puestos.filter(p =>
@@ -381,8 +393,9 @@ async function deletePuesto(puestoId, depId = null) {
 }
 // === FILTRO DE DEPARTAMENTOS POR ID ===
 async function loadDepartamentosFilter(selectId) {
-    const select = document.getElementById(selectId);
-    if (!select) return;
+    const resultsContainerId = `${selectId}_list`;
+    const results = document.getElementById(resultsContainerId);
+    if (!results) return;
 
     try {
         const { data: departamentos, error } = await supabaseClient
@@ -392,14 +405,9 @@ async function loadDepartamentosFilter(selectId) {
 
         if (error) throw error;
 
-        select.innerHTML = `
-            <option value="">Todos</option>
-            ${departamentos?.map(dep => `<option value="${dep.id_dep}">${dep.id_dep}</option>`).join('') || ''}
-        `;
+        populateDropdownOptions(resultsContainerId, (departamentos || []).map(d => ({ value: d.id_dep, label: d.id_dep })));
     } catch (error) {
         console.error('Error cargando departamentos:', error);
-        select.innerHTML = '<option value="">Error al cargar</option>';
+        results.innerHTML = '';
     }
-
-    
 }

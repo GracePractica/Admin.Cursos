@@ -36,17 +36,19 @@
 
 
                     <div class="filter-group" style="display: flex; gap: 1rem; align-items: flex-end;">
-                        <div style="flex: 1;">
+                        <div style="flex: 1; position: relative;">
                             <label for="searchCurso">Buscar:</label>
-                            <input type="text" id="searchCurso" class="form-input" placeholder="Buscar curso...">
+                            <input type="text" id="searchCurso" class="form-input" placeholder="Buscar curso..." autocomplete="off">
+                            <div id="searchCurso_results" class="dropdown-results" style="display:none;"></div>
                         </div>
-                        <div style="width: 200px;">
+                        <div style="width: 200px; position: relative;">
                             <label for="filterEstado">Estado:</label>
-                            <select id="filterEstado" class="form-select">
-                                <option value="">Todos</option>
-                                <option value="activo">Activos</option>
-                                <option value="inactivo">Inactivos</option>
-                            </select>
+                            <input id="filterEstado" class="form-input" placeholder="Buscar estado...">
+                            <div id="filterEstado_list" class="dropdown-results" style="display:none;">
+                                <div class="dropdown-item" data-value="">Todos</div>
+                                <div class="dropdown-item" data-value="activo">Activos</div>
+                                <div class="dropdown-item" data-value="inactivo">Inactivos</div>
+                            </div>
                         </div>
                     </div>
                 </div>

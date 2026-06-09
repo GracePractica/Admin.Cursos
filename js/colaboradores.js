@@ -97,12 +97,12 @@ function applyRolePermissions() {
 function setupColaboradoresListeners() {
     document.getElementById('addColaboradorButton')?.addEventListener('click', () => openAddColaboradorModal());
 
-    document.getElementById('filterAsignacionColab')?.addEventListener('change', (e) => {
+    document.getElementById('filterAsignacionColab')?.addEventListener('input', (e) => {
         currentFilters.asignacion = e.target.value;
         loadColaboradores();
     });
 
-    document.getElementById('filterDepColab')?.addEventListener('change', (e) => {
+    document.getElementById('filterDepColab')?.addEventListener('input', (e) => {
         currentFilters.departamento = e.target.value;
         loadColaboradores();
     });
@@ -112,8 +112,12 @@ function setupColaboradoresListeners() {
         loadColaboradores();
     });
 
-    // Poblar el select de Departamento ID con valores únicos
+    // Poblar el autocomplete de Departamento ID con valores únicos
     loadDepIdsFilter();
+
+    // Inicializar dropdown-autocomplete para los filtros
+    setupDropdownAutocomplete('filterAsignacionColab', 'filterAsignacionColab_list');
+    setupDropdownAutocomplete('filterDepColab', 'filterDepColab_list');
 }
 
 async function loadDepIdsFilter() {
@@ -124,12 +128,8 @@ async function loadDepIdsFilter() {
             .not('dep_id', 'is', null)
             .order('dep_id');
 
-        const select = document.getElementById('filterDepColab');
-        if (!select || !data) return;
-
         const uniqueIds = [...new Set(data.map(r => r.dep_id))];
-        const options = uniqueIds.map(id => `<option value="${id}">${id}</option>`).join('');
-        select.innerHTML = '<option value="">Todos los departamentos</option>' + options;
+        populateDropdownOptions('filterDepColab_list', uniqueIds.map(id => ({ value: id, label: id })));
     } catch (e) {
         console.error('Error cargando dep IDs para filtro:', e);
     }

@@ -26,6 +26,9 @@ function setupDepartamentosListeners() {
     document.getElementById('searchDepartamento')?.addEventListener('input', (e) => {
         loadDepartamentos();
     });
+
+    // Inicializar comportamiento dropdown-autocomplete
+    setupDropdownAutocomplete('searchDepartamento', 'searchDepartamento_results', () => loadDepartamentos());
 }
 
 // === DEPARTAMENTOS ===
@@ -51,6 +54,16 @@ async function loadDepartamentos(page = 1) {
         if (error) throw error;
 
         let departamentos = allDepartamentos || [];
+
+        // Inicializar las opciones del dropdown-autocomplete solo una vez
+        const searchDepartamentoResults = document.getElementById('searchDepartamento_results');
+        if (searchDepartamentoResults && !searchDepartamentoResults.hasChildNodes()) {
+            try {
+                populateDropdownOptions('searchDepartamento_results', (departamentos || []).map(d => ({ value: d.id_dep, label: d.id_dep })));
+            } catch (e) {
+                // ignore
+            }
+        }
 
         if (searchTerm) {
             departamentos = departamentos.filter(d =>

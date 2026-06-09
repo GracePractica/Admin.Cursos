@@ -59,49 +59,47 @@ function setupPageSizeSelectors() {
 }
 
 function setupSelectFilters() {
-    const puestoSelect = document.getElementById('puestoFilterSelect');
-    const cursoSelect = document.getElementById('cursoFilterSelect');
+    const puestoInput = document.getElementById('puestoFilterSelect');
+    const cursoInput = document.getElementById('cursoFilterSelect');
 
-    puestoSelect?.addEventListener('change', (e) => {
+    puestoInput?.addEventListener('input', (e) => {
         const value = e.target.value;
         FALTANTES_STATE.porColaborador.puestoId = value ? Number(value) : null;
         FALTANTES_STATE.porColaborador.page = 1;
         renderTab1();
     });
 
-    cursoSelect?.addEventListener('change', (e) => {
+    cursoInput?.addEventListener('input', (e) => {
         const value = e.target.value;
         FALTANTES_STATE.porCurso.cursoId = value ? value : null;
         FALTANTES_STATE.porCurso.page = 1;
         renderTab2();
     });
+
+    // Inicializar dropdown-autocomplete para filtros
+    setupDropdownAutocomplete('puestoFilterSelect', 'puestoFilterSelect_list', () => { FALTANTES_STATE.porColaborador.page = 1; renderTab1(); });
+    setupDropdownAutocomplete('cursoFilterSelect', 'cursoFilterSelect_list', () => { FALTANTES_STATE.porCurso.page = 1; renderTab2(); });
 }
 
 function populateSelectFiltersFromData() {
-    const puestoSelect = document.getElementById('puestoFilterSelect');
-    const cursoSelect = document.getElementById('cursoFilterSelect');
+    const puestoResults = document.getElementById('puestoFilterSelect_list');
+    const cursoResults = document.getElementById('cursoFilterSelect_list');
 
-    if (puestoSelect) {
-        puestoSelect.innerHTML = '<option value="">Todos los puestos</option>' +
-            FALTANTES_DATA.puestos.map(puesto =>
-                `<option value="${puesto.id_puesto}">${puesto.nombre_puesto}</option>`
-            ).join('');
+    if (puestoResults) {
+        populateDropdownOptions('puestoFilterSelect_list', (FALTANTES_DATA.puestos || []).map(p => ({ value: p.id_puesto, label: p.nombre_puesto })));
     }
 
-    if (cursoSelect) {
+    if (cursoResults) {
         const uniqueCourses = new Map();
         FALTANTES_DATA.rowsByCourse.forEach(row => {
             if (!uniqueCourses.has(row.cursoId)) {
                 uniqueCourses.set(row.cursoId, row.curso);
             }
         });
-
-        cursoSelect.innerHTML = '<option value="">Todos los cursos</option>' +
-            Array.from(uniqueCourses.entries())
-                .sort(([, nameA], [, nameB]) => nameA.localeCompare(nameB))
-                .map(([id, nombre]) =>
-                    `<option value="${id}">${nombre}</option>`
-                ).join('');
+        const items = Array.from(uniqueCourses.entries())
+            .sort(([, nameA], [, nameB]) => nameA.localeCompare(nameB))
+            .map(([id, nombre]) => ({ value: id, label: nombre }));
+        populateDropdownOptions('cursoFilterSelect_list', items);
     }
 }
 

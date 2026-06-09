@@ -71,14 +71,15 @@
                                     <input type="text" id="searchCursoAsignacion" class="form-input"
                                         placeholder="Nombre de curso...">
                                 </div>
-                                <div class="filter-group">
+                                <div class="filter-group" style="position:relative;">
                                     <label for="filterClasificacionAsignacion">Clasificación:</label>
-                                    <select id="filterClasificacionAsignacion" class="form-select">
-                                        <option value="">Todas</option>
-                                        <option value="NECESARIO">NECESARIO</option>
-                                        <option value="APORTA">APORTA</option>
-                                        <option value="RECOMENDADO">RECOMENDADO</option>
-                                    </select>
+                                    <input id="filterClasificacionAsignacion" class="form-input" placeholder="Buscar clasificación...">
+                                    <div id="filterClasificacionAsignacion_list" class="dropdown-results" style="display:none;">
+                                        <div class="dropdown-item" data-value="">Todas</div>
+                                        <div class="dropdown-item" data-value="NECESARIO">NECESARIO</div>
+                                        <div class="dropdown-item" data-value="APORTA">APORTA</div>
+                                        <div class="dropdown-item" data-value="RECOMENDADO">RECOMENDADO</div>
+                                    </div>
                                 </div>
                             </div>
 

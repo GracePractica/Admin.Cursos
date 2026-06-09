@@ -33,9 +33,10 @@
 
             <section class="content-section">
                 <div class="filters-card">
-                    <div class="filter-group">
+                    <div class="filter-group" style="position:relative;">
                         <label for="searchDepartamento">Buscar:</label>
-                        <input type="text" id="searchDepartamento" class="form-input" placeholder="ID del equipo...">
+                        <input type="text" id="searchDepartamento" class="form-input" placeholder="Buscar departamento..." autocomplete="off">
+                        <div id="searchDepartamento_results" class="dropdown-results" style="display:none;"></div>
                     </div>
                 </div>
 

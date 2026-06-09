@@ -33,15 +33,15 @@
 
             <section class="content-section">
                 <div class="filters-card">
-                    <div class="filter-group">
+                    <div class="filter-group" style="position:relative;">
                         <label for="filterDepartamentoPuesto">Filtrar por Departamento:</label>
-                        <select id="filterDepartamentoPuesto" class="form-select">
-                            <option value="">Todos</option>
-                        </select>
+                        <input id="filterDepartamentoPuesto" class="form-input" placeholder="Buscar departamento...">
+                        <div id="filterDepartamentoPuesto_list" class="dropdown-results" style="display:none;"></div>
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group" style="position:relative;">
                         <label for="searchPuesto">Buscar:</label>
-                        <input type="text" id="searchPuesto" class="form-input" placeholder="Buscar puesto...">
+                        <input type="text" id="searchPuesto" class="form-input" placeholder="Buscar puesto..." autocomplete="off">
+                        <div id="searchPuesto_results" class="dropdown-results" style="display:none;"></div>
                     </div>
                 </div>
 

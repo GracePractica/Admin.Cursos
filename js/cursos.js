@@ -57,13 +57,18 @@ function setupCursosListeners() {
         loadCursos();
     });
 
-    document.getElementById('searchCurso')?.addEventListener('input', (e) => {
+    document.getElementById('searchCurso')?.addEventListener('input', () => {
         loadCursos();
     });
 
-    document.getElementById('filterEstado')?.addEventListener('change', (e) => {
+    const filterEstadoInput = document.getElementById('filterEstado');
+    filterEstadoInput?.addEventListener('input', () => {
         loadCursos();
     });
+
+    // Inicializar dropdown-autocomplete para búsqueda y estado
+    setupDropdownAutocomplete('searchCurso', 'searchCurso_results', () => loadCursos());
+    setupDropdownAutocomplete('filterEstado', 'filterEstado_list', () => loadCursos());
 }
 
 // === CURSOS ===
@@ -112,6 +117,14 @@ async function loadCursos(page = 1) {
 
         let cursos = allCursos || [];
         let filterMessage = '';
+
+        // Inicializar las opciones del dropdown de búsqueda de cursos solo una vez
+        const searchCursoResults = document.getElementById('searchCurso_results');
+        if (searchCursoResults && !searchCursoResults.hasChildNodes()) {
+            try {
+                populateDropdownOptions('searchCurso_results', (allCursos || []).map(c => ({ value: c.id_curso, label: c.nombre_curso || c.id_curso })));
+            } catch (e) {}
+        }
 
         // Aplicar filtros según el parámetro de la URL
         if (filter === 'duplicados') {

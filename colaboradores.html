@@ -33,19 +33,19 @@
 
             <section class="content-section">
                 <div class="filters-card">
-                    <div class="filter-group">
+                    <div class="filter-group" style="position:relative;">
                         <label for="filterAsignacionColab">Filtrar por Asignación:</label>
-                        <select id="filterAsignacionColab" class="form-select">
-                            <option value="">Todas las asignaciones</option>
-                            <option value="Asignacion Regular">Asignación Regular</option>
-                            <option value="Asignacion Interina">Asignación Interina</option>
-                        </select>
+                        <input id="filterAsignacionColab" class="form-input" placeholder="Buscar asignación...">
+                        <div id="filterAsignacionColab_list" class="dropdown-results" style="display:none;">
+                            <div class="dropdown-item" data-value="">Todas las asignaciones</div>
+                            <div class="dropdown-item" data-value="Asignacion Regular">Asignación Regular</div>
+                            <div class="dropdown-item" data-value="Asignacion Interina">Asignación Interina</div>
+                        </div>
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group" style="position:relative;">
                         <label for="filterDepColab">Filtrar por Departamento ID:</label>
-                        <select id="filterDepColab" class="form-select">
-                            <option value="">Todos los departamentos</option>
-                        </select>
+                        <input id="filterDepColab" class="form-input" placeholder="Buscar departamento...">
+                        <div id="filterDepColab_list" class="dropdown-results" style="display:none;"></div>
                     </div>
                     <div class="filter-group">
                         <label for="searchColab">Buscar:</label>

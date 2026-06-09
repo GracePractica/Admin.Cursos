@@ -59,14 +59,15 @@
                                     <input type="text" id="searchHistorial" class="form-input"
                                         placeholder="Nombre de curso...">
                                 </div>
-                                <div class="filter-group">
+                                <div class="filter-group" style="position:relative;">
                                     <label for="filterEstadoHistorial">Estado:</label>
-                                    <select id="filterEstadoHistorial" class="form-select">
-                                        <option value="">Todos</option>
-                                        <option value="Completado">Completado</option>
-                                        <option value="En Proceso">En Proceso</option>
-                                        <option value="Pendiente">Pendiente</option>
-                                    </select>
+                                    <input id="filterEstadoHistorial" class="form-input" placeholder="Buscar estado...">
+                                    <div id="filterEstadoHistorial_list" class="dropdown-results" style="display:none;">
+                                        <div class="dropdown-item" data-value="">Todos</div>
+                                        <div class="dropdown-item" data-value="Completado">Completado</div>
+                                        <div class="dropdown-item" data-value="En Proceso">En Proceso</div>
+                                        <div class="dropdown-item" data-value="Pendiente">Pendiente</div>
+                                    </div>
                                 </div>
                             </div>
 

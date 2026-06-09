@@ -104,6 +104,67 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModalListeners();
 });
 
+// Reusable dropdown-autocomplete helper
+function populateDropdownOptions(resultsId, items, labelKey = null, valueKey = null) {
+    const results = document.getElementById(resultsId);
+    if (!results) return;
+    results.innerHTML = (items || []).map(it => {
+        const label = labelKey ? (it[labelKey] ?? '') : (typeof it === 'string' ? it : (it.label || ''));
+        const value = valueKey ? (it[valueKey] ?? label) : (typeof it === 'string' ? it : (it.value ?? label));
+        return `<div class="dropdown-item" data-value="${String(value).replace(/\"/g, '&quot;')}">${label}</div>`;
+    }).join('');
+}
+
+function setupDropdownAutocomplete(inputId, resultsId, onSelect) {
+    const input = document.getElementById(inputId);
+    const results = document.getElementById(resultsId);
+    if (!input || !results) return;
+
+    // Show all on focus
+    input.addEventListener('focus', () => {
+        results.style.display = 'block';
+        filterItems('');
+    });
+
+    input.addEventListener('input', () => {
+        if (results.style.display === 'none') {
+            results.style.display = 'block';
+        }
+        filterItems(input.value.toLowerCase());
+    });
+
+    // Click outside closes
+    document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !results.contains(e.target)) {
+            results.style.display = 'none';
+        }
+    });
+
+    // Delegate clicks on items
+    results.addEventListener('click', (e) => {
+        const item = e.target.closest('.dropdown-item');
+        if (!item) return;
+        const val = item.dataset.value ?? item.textContent;
+        input.value = val;
+        results.style.display = 'none';
+        if (typeof onSelect === 'function') onSelect(val);
+        // trigger input event so pages listening update
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    function filterItems(term) {
+        const items = Array.from(results.querySelectorAll('.dropdown-item'));
+        if (!term) {
+            items.forEach(i => i.style.display = '');
+            return;
+        }
+        items.forEach(i => {
+            const text = (i.textContent || '').toLowerCase();
+            i.style.display = text.includes(term) ? '' : 'none';
+        });
+    }
+}
+
 // Función auxiliar para actualizar estadística con barra de progreso
 function updateStatWithProgress(statName, value, percentage) {
     // Actualizar el valor principal

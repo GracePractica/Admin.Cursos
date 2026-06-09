@@ -37,11 +37,10 @@
 
                             <div id="tabPorColaborador" class="tab-content active">
                                 <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto auto; gap: 1rem; align-items: end;">
-                                    <div class="filter-group">
+                                    <div class="filter-group" style="position:relative;">
                                         <label for="puestoFilterSelect">Filtrar por Puesto</label>
-                                        <select id="puestoFilterSelect" class="form-select">
-                                            <option value="">Todos los puestos</option>
-                                        </select>
+                                        <input id="puestoFilterSelect" class="form-input" placeholder="Buscar puesto...">
+                                        <div id="puestoFilterSelect_list" class="dropdown-results" style="display:none;"></div>
                                     </div>
                                     <div class="filter-group" style="display:flex; gap:0.75rem; align-items:center; justify-content:flex-end;">
                                         <label for="tab1PageSize" style="margin:0;">Registros por página</label>
@@ -79,11 +78,10 @@
 
                             <div id="tabPorCurso" class="tab-content">
                                 <div class="filters-card" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
-                                    <div class="filter-group">
+                                    <div class="filter-group" style="position:relative;">
                                         <label for="cursoFilterSelect">Filtrar por Curso</label>
-                                        <select id="cursoFilterSelect" class="form-select">
-                                            <option value="">Todos los cursos</option>
-                                        </select>
+                                        <input id="cursoFilterSelect" class="form-input" placeholder="Buscar curso...">
+                                        <div id="cursoFilterSelect_list" class="dropdown-results" style="display:none;"></div>
                                     </div>
                                     <div class="filter-group" style="display:flex; gap:0.75rem; align-items:center; justify-content:flex-end;">
                                         <label for="tab2PageSize" style="margin:0;">Registros por página</label>
